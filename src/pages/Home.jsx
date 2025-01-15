@@ -1,11 +1,13 @@
-import React from "react";
+import "../App.css";
 
-const Home = () => {
+export default function Home() {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <>
+      <section className="py-xl-8 py-6">
+        <div className="container">
+ 
+        </div>
+      </section>
+    </>
   );
 };
-
-export default Home;

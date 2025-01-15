@@ -1,17 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Footer from "./Layouts/Footer";
-import Header from "./Layouts/Header";
+import ClientLayout from "./components/ClientLayout";
 import Home from "./pages/Home";
 
 function App() {
   return (
     <>
-      <Header />
       <Routes>
-        <Route path="/trangchu" element={<Home />} />
+        <Route path="/" element={<ClientLayout />}>
+          <Route index element={<Home />} />
+        </Route>
       </Routes>
-      <Footer />
     </>
   );
 }
