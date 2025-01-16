@@ -1,164 +1,162 @@
-
-const Footer = () => {
-  return <footer className="footer bg-dark-stable py-8">
-    <div className="container">
-      <div className="row gy-6 gy-xl-0 pb-8">
-        <div className="col-xl-3 col-lg-12 col-md-6 col-12">
-          <div className="d-flex flex-column gap-4">
-            <div>
-              <img src="" alt="logo" />
+export default function Footer() {
+  return (
+    <>
+      <footer className="pt-lg-8 pt-5 footer bg-white">
+        <div className="container mt-lg-2">
+          <div className="row">
+            <div className="col-lg-4 col-md-6 col-12">
+              <div className="mb-4">
+                <img width={50} src="https://media.discordapp.net/attachments/1196198651140243528/1329130437582524457/logo.png?ex=678938ae&is=6787e72e&hm=de4473c5cca51c510287b19a6656f70a94cdf4893f51b3fd91c67f66e5db61cd&=&format=webp&quality=lossless&width=662&height=662" alt="Geeks" className="logo-inverse" />
+                <div className="mt-4">
+                  <p>Geek is feature-rich components and beautifully Bootstrap UIKit for developers, built with bootstrap responsive framework.</p>
+                  <div className="fs-4 mt-4">
+                    <a href="#" className="me-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-facebook" viewBox="0 0 16 16">
+                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                      </svg>
+                    </a>
+                    <a href="#" className="me-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-twitter" viewBox="0 0 16 16">
+                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+                      </svg>
+                    </a>
+                    <a href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-github" viewBox="0 0 16 16">
+                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="mb-0">Nascetur nibh feugiat vulputate urna mauris tincidunt porttitor ultricies. Et dis augue
-              praesent congue.</p>
-            <div className="d-flex gap-2">
-              <a href="#langaugeModal" className="btn btn-outline-secondary" data-bs-toggle="modal">
-                <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-globe"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z" />
-                  </svg>
-                </span>
-                <span className="ms-2">English</span>
-              </a>
+            <div className="offset-lg-1 col-lg-2 col-md-3 col-6">
+              <div className="mb-4">
+                <h3 className="fw-bold mb-3">Company</h3>
+                <ul className="list-unstyled nav nav-footer flex-column nav-x-0">
+                  <li><a href="#" className="nav-link">About</a></li>
+                  <li><a href="#" className="nav-link">Pricing</a></li>
+                  <li><a href="#" className="nav-link">Blog</a></li>
+                  <li><a href="#" className="nav-link">Careers</a></li>
+                  <li><a href="#" className="nav-link">Contact</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-lg-2 col-md-3 col-6">
+              <div className="mb-4">
+                <h3 className="fw-bold mb-3">Support</h3>
+                <ul className="list-unstyled nav nav-footer flex-column nav-x-0">
+                  <li><a href="#" className="nav-link">Help and Support</a></li>
+                  <li><a href="#" className="nav-link">Become Instructor</a></li>
+                  <li><a href="#" className="nav-link">Get the app</a></li>
+                  <li><a href="#" className="nav-link">FAQ’s</a></li>
+                  <li><a href="#" className="nav-link">Tutorial</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-12">
+              <div className="mb-4">
+                <h3 className="fw-bold mb-3">Get in touch</h3>
+                <p>339 McDermott Points Hettingerhaven, NV 15283</p>
+                <p className="mb-1">
+                  Email: <a href="#">support@geeksui.com</a>
+                </p>
+                <p>
+                  Phone: <span className="text-dark fw-semibold">(000) 123 456 789</span>
+                </p>
+                <div className="d-flex">
+                  <a href="#"><img src="../../assets/images/svg/appstore.svg" alt="" className="img-fluid" /></a>
+                  <a href="#" className="ms-2"><img src="../../assets/images/svg/playstore.svg" alt="" className="img-fluid" /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row align-items-center g-0 border-top py-2 mt-6">
+            <div className="col-md-10 col-12">
+              <div className="d-lg-flex align-items-center">
+                <div className="me-4">
+                  <span>© <span id="copyright5">{new Date().getFullYear()}</span> Geeks-UI</span>
+                </div>
+                <div>
+                  <nav className="nav nav-footer">
+                    <a className="nav-link ps-0" href="#">Privacy Policy</a>
+                    <a className="nav-link px-2 px-md-3" href="#">Cookie Notice</a>
+                    <a className="nav-link d-none d-lg-block" href="#">Do Not Sell My Personal Information</a>
+                    <a className="nav-link" href="#">Terms of Use</a>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <div className="col-12 col-md-2 d-md-flex justify-content-end">
               <div className="dropdown">
-                <button className="btn btn-outline-secondary btn-icon rounded-circle d-flex align-items-center"
-                  type="button" aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme (auto)">
-                  <i className="bi theme-icon-active"></i>
-                  <span className="visually-hidden bs-theme-text">Toggle theme</span>
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bs-theme-text" data-bs-theme="dark">
+                <a href="#" className="dropdown-toggle text-body" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i className="fe fe-globe me-2 align-middle"></i> Language
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                   <li>
-                    <button type="button" className="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-                      aria-pressed="false">
-                      <i className="bi theme-icon bi-sun-fill"></i>
-                      <span className="ms-2">Light</span>
-                    </button>
+                    <a className="dropdown-item" href="#">
+                      <span className="me-2">
+                        <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g clipPath="url(#clip0_5543_19736)">
+                            <path d="M0 0.5H16V12.5H0V0.5Z" fill="#012169" />
+                            <path d="M1.875 0.5L7.975 5.025L14.05 0.5H16V2.05L10 6.525L16 10.975V12.5H14L8 8.025L2.025 12.5H0V11L5.975 6.55L0 2.1V0.5H1.875Z" fill="white" />
+                            <path d="M10.6 7.525L16 11.5V12.5L9.225 7.525H10.6ZM6 8.025L6.15 8.9L1.35 12.5H0L6 8.025ZM16 0.5V0.575L9.775 5.275L9.825 4.175L14.75 0.5H16ZM0 0.5L5.975 4.9H4.475L0 1.55V0.5Z" fill="#C8102E" />
+                            <path d="M6.025 0.5V12.5H10.025V0.5H6.025ZM0 4.5V8.5H16V4.5H0Z" fill="white" />
+                            <path d="M0 5.325V7.725H16V5.325H0ZM6.825 0.5V12.5H9.225V0.5H6.825Z" fill="#C8102E" />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_5543_19736">
+                              <rect width="16" height="12" fill="white" transform="translate(0 0.5)" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </span>
+                      English
+                    </a>
                   </li>
                   <li>
-                    <button type="button" className="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
-                      aria-pressed="false">
-                      <i className="bi theme-icon bi-moon-stars-fill"></i>
-                      <span className="ms-2">Dark</span>
-                    </button>
+                    <a className="dropdown-item" href="#">
+                      <span className="me-2">
+                        <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g clipPath="url(#clip0_5543_19744)">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 0.5H16V12.5H0V0.5Z" fill="white" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M0 0.5H5.3325V12.5H0V0.5Z" fill="#002654" />
+                            <path fillRule="evenodd" clipRule="evenodd" d="M10.668 0.5H16.0005V12.5H10.668V0.5Z" fill="#CE1126" />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_5543_19744">
+                              <rect width="16" height="12" fill="white" transform="translate(0 0.5)" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </span>
+                      Français
+                    </a>
                   </li>
                   <li>
-                    <button type="button" className="dropdown-item d-flex align-items-center active"
-                      data-bs-theme-value="auto" aria-pressed="true">
-                      <i className="bi theme-icon bi-circle-half"></i>
-                      <span className="ms-2">Auto</span>
-                    </button>
+                    <a className="dropdown-item" href="#">
+                      <span className="me-2">
+                        <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <g clipPath="url(#clip0_5543_19751)">
+                            <path d="M0 8.5H16V12.5H0V8.5Z" fill="#FFCE00" />
+                            <path d="M0 0.5H16V4.5H0V0.5Z" fill="black" />
+                            <path d="M0 4.5H16V8.5H0V4.5Z" fill="#DD0000" />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_5543_19751">
+                              <rect width="16" height="12" fill="white" transform="translate(0 0.5)" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </span>
+                      Deutsch
+                    </a>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
-        <div className="col-xl-2 col-md-3 col-6">
-          <div className="d-flex flex-column gap-3">
-            <span className="text-white-stable">Company</span>
-            <ul className="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
-              <li>
-                <a href="#!" className="nav-link">About us</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Contact us</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">News and Blogs</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Career</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Investors</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-xl-2 col-md-3 col-6">
-          <div className="d-flex flex-column gap-3">
-            <span className="text-white-stable">Community</span>
-            <ul className="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
-              <li>
-                <a href="#!" className="nav-link">Help and Support</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Affiliate</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Blog</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Geeks Business</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-xl-2 col-md-3 col-12">
-          <div className="d-flex flex-column gap-3">
-            <span className="text-white-stable">Teaching</span>
-            <ul className="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
-              <li>
-                <a href="#!" className="nav-link">Become a teacher</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">How to guide</a>
-              </li>
-              <li>
-                <a href="#!" className="nav-link">Documentation</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-xl-3 col-lg-3 col-md-6 col-12">
-          <div className="d-flex flex-column gap-5">
-            <div className="d-flex flex-column gap-3">
-              <span className="text-white-stable">Contact</span>
-              <ul className="list-unstyled mb-0 d-flex flex-column nav nav-footer nav-x-0">
-                <li>
-                  Toll free:
-                  <span className="fw-semibold">+1234 567 890</span>
-                </li>
-                <li>
-                  Time:
-                  <span className="fw-semibold">9AM to 8:PM IST</span>
-                </li>
-                <li>
-                  Email:
-                  <span className="fw-semibold">example@gmail.com</span>
-                </li>
-              </ul>
-            </div>
-            <div className="d-flex flex-row gap-2">
-              <a href="#"><img src="assets/images/svg/appstore.svg" alt="" className="img-fluid" /></a>
-              <a href="#"><img src="assets/images/svg/playstore.svg" alt="" className="img-fluid" /></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row align-items-center g-0 border-top border-gray-800 pt-3 flex-column gap-1 flex-lg-row gap-lg-0">
-        {/* <!-- Desc --> */}
-        <div className="col-lg-6 col-12 text-center text-md-start">
-          <span>
-            ©
-            <span id="copyright">
-              
-            </span>
-
-          </span>
-        </div>
-        {/* <!-- Links --> */}
-        <div className="col-12 col-lg-6">
-          <nav className="nav nav-footer justify-content-center justify-content-md-start justify-content-lg-end">
-            <a className="nav-link active" href="#!">Terms of use</a>
-            <a className="nav-link" href="#!">Cookies Settings</a>
-            <a className="nav-link" href="#!">Privacy policy</a>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </footer>
-};
-
-export default Footer;
+      </footer>
+    </>
+  );
+}

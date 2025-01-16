@@ -1,13 +1,16 @@
 import "../App.css";
+import MentorList from "../components/MentorList";
+import MostPopularCourse from "../components/MostPopularCourse";
+import Banner from "../components/Banner";
+// import CourseSale from "../components/CourseSale";
 
 export default function Home() {
   return (
     <>
-      <section className="py-xl-8 py-6">
-        <div className="container">
- 
-        </div>
-      </section>
+      <Banner />
+      {/* <CourseSale /> */}
+      <MentorList />
+      <MostPopularCourse />
     </>
   );
 };
