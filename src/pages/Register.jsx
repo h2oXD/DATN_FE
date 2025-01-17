@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from "../api/axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    confirmPassword: "", // Thêm confirmPassword
+    password_confirmation: "", // Thêm password_confirmation
   });
 
   const [errors, setErrors] = useState({}); // State lưu trữ lỗi validation
@@ -38,23 +39,23 @@ const Register = () => {
       errors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
     }
 
-    if (!formData.confirmPassword) {
-      errors.confirmPassword = "Vui lòng nhập lại mật khẩu.";
-    } else if (formData.confirmPassword !== formData.password) {
-      errors.confirmPassword = "Mật khẩu xác nhận không khớp.";
+    if (!formData.password_confirmation) {
+      errors.password_confirmation = "Vui lòng nhập lại mật khẩu.";
+    } else if (formData.password_confirmation !== formData.password) {
+      errors.password_confirmation = "Mật khẩu xác nhận không khớp.";
     }
 
     return errors;
   };
 
   // Hàm xử lý gửi form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Ngăn trình duyệt reload
-
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors); // Hiển thị lỗi nếu có
     } else {
+      await axios.post("/register", formData)
       console.log("Form data:", formData); // Xử lý logic gửi dữ liệu
       alert("Đăng ký thành công!");
       setErrors({});
@@ -62,7 +63,7 @@ const Register = () => {
         username: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        password_confirmation: "",
       }); // Reset form
     }
   };
@@ -100,9 +101,8 @@ const Register = () => {
                 </label>
                 <input
                   type="text"
-                  className={`form-control ${
-                    errors.username ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.username ? "is-invalid" : ""
+                    }`}
                   id="username"
                   name="username"
                   value={formData.username}
@@ -140,9 +140,8 @@ const Register = () => {
                 </label>
                 <input
                   type="password"
-                  className={`form-control ${
-                    errors.password ? "is-invalid" : ""
-                  }`}
+                  className={`form-control ${errors.password ? "is-invalid" : ""
+                    }`}
                   id="password"
                   name="password"
                   value={formData.password}
@@ -156,23 +155,22 @@ const Register = () => {
 
               {/* Trường Xác nhận Mật khẩu */}
               <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label">
+                <label htmlFor="password_confirmation" className="form-label">
                   Confirm Password
                 </label>
                 <input
                   type="password"
-                  className={`form-control ${
-                    errors.confirmPassword ? "is-invalid" : ""
-                  }`}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
+                  className={`form-control ${errors.password_confirmation ? "is-invalid" : ""
+                    }`}
+                  id="password_confirmation"
+                  name="password_confirmation"
+                  value={formData.password_confirmation}
                   onChange={handleChange}
                   placeholder="Nhập lại mật khẩu"
                 />
-                {errors.confirmPassword && (
+                {errors.password_confirmation && (
                   <div className="invalid-feedback">
-                    {errors.confirmPassword}
+                    {errors.password_confirmation}
                   </div>
                 )}
               </div>
