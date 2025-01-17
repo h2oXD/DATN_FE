@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import ClientLayout from "./components/ClientLayout";
+import ClientLayout from "./layouts/ClientLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import CourseDetail from "./pages/CourseDetail";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -11,7 +13,9 @@ function App() {
         <Route path="/" element={<ClientLayout />}>
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/course" element={<CourseDetail />} />
         </Route>
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );
