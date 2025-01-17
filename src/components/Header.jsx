@@ -1,4 +1,4 @@
-import Signup from "../pages/SignupModal";
+import Register from "../pages/Register";
 import { CategoriesDropdown, LanguageModal } from "./CategoriesDropdown";
 
 const Header = () => {
@@ -34,14 +34,14 @@ const Header = () => {
                 Đăng nhập
               </a>
               <button
-                href="#signupModal"
+                href="#registerModal"
                 className="btn btn-dark d-none d-md-block"
                 data-bs-toggle="modal"
-                data-bs-target="#signupModal"
+                data-bs-target="#registerModal"
               >
                 Đăng ký
               </button>
-              <Signup />
+              <Register />
             </div>
           </div>
           <button

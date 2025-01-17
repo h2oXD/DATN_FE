@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-const SignupModal = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "", // Thêm confirmPassword
   });
 
   const [errors, setErrors] = useState({}); // State lưu trữ lỗi validation
@@ -37,6 +38,12 @@ const SignupModal = () => {
       errors.password = "Mật khẩu phải có ít nhất 6 ký tự.";
     }
 
+    if (!formData.confirmPassword) {
+      errors.confirmPassword = "Vui lòng nhập lại mật khẩu.";
+    } else if (formData.confirmPassword !== formData.password) {
+      errors.confirmPassword = "Mật khẩu xác nhận không khớp.";
+    }
+
     return errors;
   };
 
@@ -51,23 +58,31 @@ const SignupModal = () => {
       console.log("Form data:", formData); // Xử lý logic gửi dữ liệu
       alert("Đăng ký thành công!");
       setErrors({});
-      setFormData({ username: "", email: "", password: "" }); // Reset form
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      }); // Reset form
     }
   };
 
   return (
     <div
       className="modal fade row align-items-center justify-content-center g-0 h-lg-100 py-8"
-      id="signupModal"
+      id="registerModal"
       tabIndex="-1"
-      aria-labelledby="signupModalLabel"
+      aria-labelledby="registerModalLabel"
       aria-hidden="true"
     >
       <div className="col-lg-5 col-md-8 py-8 py-xl-0 modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h1 className="modal-title w-100 text-center" id="signupModalLabel">
-              Signup
+            <h1
+              className="modal-title w-100 text-center"
+              id="registerModalLabel"
+            >
+              Register
             </h1>
             <button
               type="button"
@@ -81,7 +96,7 @@ const SignupModal = () => {
               {/* Trường Tên người dùng */}
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">
-                  Username
+                  Tên
                 </label>
                 <input
                   type="text"
@@ -139,13 +154,36 @@ const SignupModal = () => {
                 )}
               </div>
 
+              {/* Trường Xác nhận Mật khẩu */}
+              <div className="mb-3">
+                <label htmlFor="confirmPassword" className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  className={`form-control ${
+                    errors.confirmPassword ? "is-invalid" : ""
+                  }`}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Nhập lại mật khẩu"
+                />
+                {errors.confirmPassword && (
+                  <div className="invalid-feedback">
+                    {errors.confirmPassword}
+                  </div>
+                )}
+              </div>
+
               <button type="submit" className="btn btn-primary w-100">
-                Signup
+                Register
               </button>
               <span>
                 Already have an account?
                 <a href="#" className="ms-1">
-                  Sign in
+                  Login
                 </a>
               </span>
             </form>
@@ -156,4 +194,4 @@ const SignupModal = () => {
   );
 };
 
-export default SignupModal;
+export default Register;
