@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import ClientLayout from "./components/ClientLayout";
+import ClientLayout from "./layouts/ClientLayout";
 import Home from "./pages/Home";
 import CourseDetail from "./pages/CourseDetail";
-import SignupModal from "./pages/SignupModal";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
           <Route path="/course" element={<CourseDetail />} />
         </Route>
 
-        <Route path="/signup" element={<SignupModal />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );
