@@ -3,7 +3,7 @@ import { CategoriesDropdown, LanguageModal } from "./CategoriesDropdown";
 
 const Header = () => {
   return (
-    <nav className="navbar navbar-expand-lg fixed-top ms-0">
+    <nav className="navbar navbar-expand-lg">
       <div className="container px-0">
         <a className="navbar-brand" href="../index.html">
           <img src="../assets/images/brand/logo/logo.svg" alt="" />
