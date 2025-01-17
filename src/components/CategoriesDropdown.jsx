@@ -1,5 +1,4 @@
 // import React from 'react';
-
 const CategoriesDropdown = () => {
     return (
         <li className="nav-item dropdown">
