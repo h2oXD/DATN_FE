@@ -1,3 +1,4 @@
+import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { CategoriesDropdown, LanguageModal } from "./CategoriesDropdown";
 
@@ -30,9 +31,16 @@ const Header = () => {
                 </a>
                 <LanguageModal />
               </div>
-              <a href="#" className="btn btn-outline-dark shadow-sm me-1">
+              <button
+                href="#loginModal"
+                className="btn btn-outline-dark shadow-sm me-1"
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"
+              >
                 Đăng nhập
-              </a>
+              </button>
+              <Login />
+
               <button
                 href="#registerModal"
                 className="btn btn-dark d-none d-md-block"
