@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "../api/axios";
+// import axios from "../api/axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -55,7 +55,7 @@ const Register = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors); // Hiển thị lỗi nếu có
     } else {
-      await axios.post("/register", formData)
+      // await axios.post("/register", formData)
       console.log("Form data:", formData); // Xử lý logic gửi dữ liệu
       alert("Đăng ký thành công!");
       setErrors({});

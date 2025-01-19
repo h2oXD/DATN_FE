@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Scroll from "../components/Scroll";
 
-export default function ClientLayout() {
+export default function GuestLayout() {
     return (
         <>
             <Header />
