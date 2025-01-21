@@ -27,20 +27,27 @@ import "./assets/js/theme.min.js";
 import "./assets/libs/tiny-slider/dist/min/tiny-slider.js";
 import "./assets/js/vendors/tnsSlider.js";
 
-// import './assets/libs/prismjs/prism.js';
-//import "./assets/libs/prismjs/components/prism-scss.min.js";
-//import "./assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js";
-//import "./assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js";
+import './assets/libs/prismjs/prism.js';
+import "./assets/libs/prismjs/components/prism-scss.min.js";
+import "./assets/libs/prismjs/plugins/toolbar/prism-toolbar.min.js";
+import "./assets/libs/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js";
 import "./assets/libs/glightbox/dist/js/glightbox.min.js";
 import "./assets/js/vendors/glight.js";
 import "./assets/libs/typed.js/dist/typed.umd.js";
 import "./assets/js/vendors/typed.js";
-//import "./assets/libs/prismjs/themes/prism-okaidia.min.css";
+import "./assets/libs/prismjs/themes/prism-okaidia.min.css";
+import "./assets/js/vendors/validation.js";
+import { ContextPorvider } from "./contexts/ContextProvider.jsx";
+import { ToastProvider } from "./contexts/ToastProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ToastProvider>
+        <ContextPorvider>
+          <App />
+        </ContextPorvider>
+      </ToastProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

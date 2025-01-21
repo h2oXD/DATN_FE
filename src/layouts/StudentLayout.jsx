@@ -1,10 +1,10 @@
+// import React from 'react'
+
 import { useStateContext } from "../contexts/ContextProvider";
 
-export default function AdminLayout() {
+export default function StudentLayout() {
     // const { user, token, role } = useStateContext();
     return (
-        <>
-            <h1>Admin Layout</h1>
-        </>
-    );
+        <div>StudentLayout</div>
+    )
 }
