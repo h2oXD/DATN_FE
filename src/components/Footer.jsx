@@ -6,7 +6,7 @@ export default function Footer() {
           <div className="row">
             <div className="col-lg-4 col-md-6 col-12">
               <div className="mb-4">
-                <img width={50} src="https://media.discordapp.net/attachments/1196198651140243528/1329130437582524457/logo.png?ex=678938ae&is=6787e72e&hm=de4473c5cca51c510287b19a6656f70a94cdf4893f51b3fd91c67f66e5db61cd&=&format=webp&quality=lossless&width=662&height=662" alt="Geeks" className="logo-inverse" />
+                <img width={50} src="" alt="Geeks" className="logo-inverse" />
                 <div className="mt-4">
                   <p>Geek is feature-rich components and beautifully Bootstrap UIKit for developers, built with bootstrap responsive framework.</p>
                   <div className="fs-4 mt-4">
