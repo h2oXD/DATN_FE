@@ -1,24 +1,22 @@
+// import React from 'react'
 import { useContext, useState } from "react";
 import axiosClient from "../../api/axios";
-import { useStateContext } from "../../contexts/ContextProvider";
 import { ToastContext } from "../../contexts/ToastProvider";
+import Cookies from "js-cookie";
 
+export default function FormRegister() {
+  const { toast } = useContext(ToastContext);
 
-const Register = () => {
-  const { setToken, setUser, setRole } = useStateContext();
-
-  const { toast } = useContext(ToastContext)
-
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    password_confirmation: "", 
+    password_confirmation: "",
   });
 
-  const [errors, setErrors] = useState({}); 
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,44 +62,38 @@ const Register = () => {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors); // Hiển thị lỗi nếu có
     } else {
-      if (isLoading === true) return
-      setIsLoading(true)
-      await axiosClient.post("/register", formData)
-        .then(res => {
-          setToken(res.data.token)
-          setUser(res.data.user)
-          setRole(res.data.role)
-          toast.success('Đăng ký thành công')
-          setIsLoading(false)
-          setErrors({})
+      if (isLoading === true) return;
+      setIsLoading(true);
+      await axiosClient
+        .post("/register", formData)
+        .then((res) => {
+          const { token, role, user } = res.data;
+
+          Cookies.set("token", token);
+          Cookies.set("role", role);
+          Cookies.set("userID", user);
+          toast.success("Đăng ký thành công");
+          setIsLoading(false);
+          setErrors({});
           setFormData({
             name: "",
             email: "",
             password: "",
             password_confirmation: "",
-          })
+          });
         })
-        .catch(errors => {
+        .catch((errors) => {
           if (errors.status === 400) {
             console.log(errors.response.data.errors);
-            setErrors(errors.response.data.errors)
-            toast.error('Đăng ký thất bại')
-            setIsLoading(false)
+            setErrors(errors.response.data.errors);
+            toast.error("Đăng ký thất bại");
+            setIsLoading(false);
           }
-        })
+        });
     }
-
-  }
+  };
   return (
     <>
-      <button
-        href="#registerModal"
-        className="btn btn-dark d-none d-md-block shadow-sm me-1"
-        data-bs-toggle="modal"
-        data-bs-target="#registerModal"
-      >
-        Đăng ký
-      </button>
       <div
         className="modal fade row align-items-center justify-content-center g-0 h-lg-100 py-8"
         id="registerModal"
@@ -120,7 +112,7 @@ const Register = () => {
               </h1>
               <button
                 type="button"
-                className="btn-close"
+                className="btn-close bg-light rounded-5"
                 data-bs-dismiss="modal"
                 aria-label="Close"
               ></button>
@@ -134,8 +126,9 @@ const Register = () => {
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${errors.name ? "is-invalid" : ""
-                      }`}
+                    className={`form-control ${
+                      errors.name ? "is-invalid" : ""
+                    }`}
                     id="name"
                     name="name"
                     value={formData.name}
@@ -154,7 +147,9 @@ const Register = () => {
                   </label>
                   <input
                     type="email"
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
                     id="email"
                     name="email"
                     value={formData.email}
@@ -173,8 +168,9 @@ const Register = () => {
                   </label>
                   <input
                     type="password"
-                    className={`form-control ${errors.password ? "is-invalid" : ""
-                      }`}
+                    className={`form-control ${
+                      errors.password ? "is-invalid" : ""
+                    }`}
                     id="password"
                     name="password"
                     value={formData.password}
@@ -193,8 +189,9 @@ const Register = () => {
                   </label>
                   <input
                     type="password"
-                    className={`form-control ${errors.password_confirmation ? "is-invalid" : ""
-                      }`}
+                    className={`form-control ${
+                      errors.password_confirmation ? "is-invalid" : ""
+                    }`}
                     id="password_confirmation"
                     name="password_confirmation"
                     value={formData.password_confirmation}
@@ -208,12 +205,24 @@ const Register = () => {
                   )}
                 </div>
 
-                {isLoading ? (<button className="btn btn-primary w-100" type="button" disabled>
-                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  Loading...
-                </button>) : (<button type="submit" className="btn btn-primary w-100">
-                  Đăng ký
-                </button>)}
+                {isLoading ? (
+                  <button
+                    className="btn btn-primary w-100"
+                    type="button"
+                    disabled
+                  >
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Loading...
+                  </button>
+                ) : (
+                  <button type="submit" className="btn btn-primary w-100">
+                    Đăng ký
+                  </button>
+                )}
                 <span>
                   Bạn đã có tài khoản?
                   <a href="#" className="ms-1">
@@ -227,6 +236,4 @@ const Register = () => {
       </div>
     </>
   );
-};
-
-export default Register;
+}

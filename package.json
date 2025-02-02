@@ -12,12 +12,15 @@
   "dependencies": {
     "axios": "^1.7.9",
     "bootstrap-icons": "^1.11.3",
+    "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
     "react-router-dom": "^7.1.1",
     "react-toastify": "^11.0.3",
-    "tiny-slider": "^2.9.4"
+    "tiny-slider": "^2.9.4",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

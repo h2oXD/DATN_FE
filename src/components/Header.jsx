@@ -1,20 +1,28 @@
-import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
+import { useContext } from "react";
 import { CategoriesDropdown, LanguageModal } from "./CategoriesDropdown";
+import { StoreContext } from "../contexts/StoreProvider";
+import UserHeader from "./UserHeader";
+import Cookies from "js-cookie";
+import ButtonAuth from "../pages/Auth/ButtonAuth";
 
 const Header = () => {
+  const { userInfo } = useContext(StoreContext)
+  console.log(userInfo)
+  const token = Cookies.get('token')
   return (
-    <nav className="navbar navbar-expand-lg">
-      <div className="container px-0">
-        <a className="navbar-brand" href="../index.html">
+    <nav className="navbar navbar-expand-lg sticky-top">
+      <div className="container-fluid px-0">
+        <a className="navbar-brand" href="">
           <img src="../assets/images/brand/logo/logo.svg" alt="" />
         </a>
         <div className="order-lg-3 d-flex align-items-center">
           <div>
             <div className="d-flex align-items-center">
-              <LanguageModal />
-              <Login />
-              <Register />
+              {token ? 
+              (<UserHeader />) : 
+              (<><LanguageModal />
+              <ButtonAuth value='Đăng nhập' classData='btn btn-outline-dark shadow-sm me-1' dataTarget='#loginModal' />
+              <ButtonAuth value='Đăng ký' classData='btn btn-dark d-none d-md-block shadow-sm me-1' dataTarget='#registerModal' /></>)}            
             </div>
           </div>
           <button
@@ -46,13 +54,14 @@ const Header = () => {
             <CategoriesDropdown />
           </ul>
           <form className="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center">
-            <span className="position-absolute ps-3 search-icon">
+            <span className="position-absolute d-flex ps-3 search-icon">
               <i className="fe fe-search "></i>
             </span>
             <input
               type="search"
-              className="form-control ps-6"
+              className="form-control ps-6 rounded-5"
               placeholder="Tìm kiếm"
+              style={{width: '400px'}}
             />
           </form>
         </div>

@@ -3,7 +3,7 @@ export default function Banner() {
         <>
             <section className="pb-6 pt-2">
                 <div className="">
-                    <div className="row">
+                    <div className="row w-100">
                         <div className="col-xl-10 offset-xl-1 col-md-12 col-12">
                             <div className="bg-primary py-6 px-6 px-xl-0 rounded-4 ">
                                 <div className="row align-items-center">
