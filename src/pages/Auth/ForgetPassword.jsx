@@ -3,7 +3,7 @@
 export default function ForgetPassword() {
     return (
         <>
-            <a href="forget-password.html">Quên mật khẩu?</a>
+            <a className="mt-1" href="">Quên mật khẩu?</a>
         </>
     )
 }
