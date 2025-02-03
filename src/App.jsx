@@ -7,6 +7,9 @@ import StudentLayout from "./layouts/StudentLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
 import PageNotFound from "./pages/PageNotFound";
 import CourseList from "./pages/Guest/CourseList";
+import HomeLecturer from "./pages/Lecturer/HomeLecturer";
+import List from "./pages/Lecturer/Course/List";
+import Create from "./pages/Lecturer/Course/Create";
 
 function App() {
   return (
@@ -27,7 +30,9 @@ function App() {
 
         {/* Giảng Viên */}
         <Route path="/lecturer" element={<LecturerLayout />} >
-          <Route index element={<Home />} />
+          <Route index element={<HomeLecturer />} />
+          <Route path="/lecturer/course" element={<List />} />
+          <Route path="/lecturer/course/create" element={<Create />} />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
