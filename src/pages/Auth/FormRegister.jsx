@@ -67,12 +67,11 @@ export default function FormRegister() {
       await axiosClient
         .post("/register", formData)
         .then((res) => {
-          const { token, role, user } = res.data;
+          const { token } = res.data;
 
           Cookies.set("token", token);
-          Cookies.set("role", role);
-          Cookies.set("userID", user);
           toast.success("Đăng ký thành công");
+          window.location = "/";
           setIsLoading(false);
           setErrors({});
           setFormData({
