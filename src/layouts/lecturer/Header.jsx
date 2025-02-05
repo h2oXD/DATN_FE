@@ -44,7 +44,7 @@ export default function Header() {
                             <a className="text-body" href="#">
                               <div className="d-flex">
                                 <img
-                                  src="../assets/images/avatar/avatar-1.jpg"
+                                  src="/assets/images/avatar/avatar-1.jpg"
                                   alt=""
                                   className="avatar-md rounded-circle"
                                 />
@@ -228,7 +228,7 @@ export default function Header() {
                   <div className="avatar avatar-md avatar-indicators avatar-online">
                     <img
                       alt="avatar"
-                      src="../assets/images/avatar/avatar-1.jpg"
+                      src="/assets/images/avatar/avatar-1.jpg"
                       className="rounded-circle"
                     />
                   </div>
@@ -239,7 +239,7 @@ export default function Header() {
                       <div className="avatar avatar-md avatar-indicators avatar-online">
                         <img
                           alt="avatar"
-                          src="../assets/images/avatar/avatar-1.jpg"
+                          src="/assets/images/avatar/avatar-1.jpg"
                           className="rounded-circle"
                         />
                       </div>
