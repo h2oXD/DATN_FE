@@ -1,9 +1,29 @@
 // import React from 'react'
 
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import axiosClient from "../../../api/axios";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 // import Icon from "../../../components/Icon";
 
 export default function List() {
+    const lecturer_id = Cookies.get('lecturer_id')
+    useEffect(() => {
+        const fetchCourse = async () => {
+            try {
+                await axiosClient.get(`lecturer/${lecturer_id}/courses`)
+                    .then(res => {
+                        console.log(res.data);
+
+                    })
+            } catch (error) {
+                console.log(error);
+                toast.error("Không thể tải .");
+            }
+        };
+        fetchCourse();
+    }, []);
     return (
         <>
             <div className="card">

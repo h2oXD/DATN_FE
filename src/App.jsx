@@ -10,6 +10,7 @@ import CourseList from "./pages/Guest/CourseList";
 import HomeLecturer from "./pages/Lecturer/HomeLecturer";
 import List from "./pages/Lecturer/Course/List";
 import Create from "./pages/Lecturer/Course/Create";
+// import Edit from "./pages/Lecturer/Course/Edit";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route index element={<HomeLecturer />} />
           <Route path="/lecturer/course" element={<List />} />
           <Route path="/lecturer/course/create" element={<Create />} />
+          {/* <Route path="/lecturer/course/edit/:id" element={<Edit />} /> */}
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
