@@ -7,7 +7,11 @@ import ButtonAuth from "../pages/Auth/ButtonAuth";
 
 const Header = () => {
   const { userInfo } = useContext(StoreContext)
-  console.log(userInfo)
+  if (userInfo) {
+    if(userInfo.lecturer_id){
+      Cookies.set('lecturer_id',userInfo.lecturer_id)
+    }
+  }
   const token = Cookies.get('token')
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
@@ -18,11 +22,11 @@ const Header = () => {
         <div className="order-lg-3 d-flex align-items-center">
           <div>
             <div className="d-flex align-items-center">
-              {token ? 
-              (<UserHeader />) : 
-              (<><LanguageModal />
-              <ButtonAuth value='Đăng nhập' classData='btn btn-outline-dark shadow-sm me-1' dataTarget='#loginModal' />
-              <ButtonAuth value='Đăng ký' classData='btn btn-dark d-none d-md-block shadow-sm me-1' dataTarget='#registerModal' /></>)}            
+              {token ?
+                (<UserHeader />) :
+                (<><LanguageModal />
+                  <ButtonAuth value='Đăng nhập' classData='btn btn-outline-dark shadow-sm me-1' dataTarget='#loginModal' />
+                  <ButtonAuth value='Đăng ký' classData='btn btn-dark d-none d-md-block shadow-sm me-1' dataTarget='#registerModal' /></>)}
             </div>
           </div>
           <button
@@ -61,7 +65,7 @@ const Header = () => {
               type="search"
               className="form-control ps-6 rounded-5"
               placeholder="Tìm kiếm"
-              style={{width: '400px'}}
+              style={{ width: '400px' }}
             />
           </form>
         </div>

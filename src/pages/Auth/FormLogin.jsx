@@ -35,8 +35,8 @@ export default function FormLogin() {
         .then((res) => {
 
           const { token } = res.data;
-
           Cookies.set("token", token);
+          
           window.location = "/";
           toast.success("Đăng nhập thành công");
           setIsLoading(false);

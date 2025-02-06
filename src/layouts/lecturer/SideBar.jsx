@@ -11,7 +11,7 @@ export default function SideBar() {
       >
         <div className="vh-100">
           <a className="navbar-brand d-flex justify-content-center" href="/">
-            <img src="../src\assets\logo.png" alt="logo" />
+            <img src="/logo.png" alt="logo" />
           </a>
           <ul className="navbar-nav flex-column" id="sideNavbar">
             <li className="nav-item">

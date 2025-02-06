@@ -71,8 +71,11 @@ export default function FormRegister() {
 
           Cookies.set("token", token);
           toast.success("Đăng ký thành công");
+
           window.location = "/";
+          
           setIsLoading(false);
+
           setErrors({});
           setFormData({
             name: "",
