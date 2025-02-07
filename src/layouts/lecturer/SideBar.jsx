@@ -34,7 +34,14 @@ export default function SideBar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-dark" to={"/lecturer/infor"}>
+              <Link
+                className="nav-link text-dark collapsed"
+                to={"#"}
+                data-bs-toggle="collapse"
+                data-bs-target="#navProfile"
+                aria-expanded="false"
+                aria-controls="navProfile"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -51,6 +58,24 @@ export default function SideBar() {
                 </svg>
                 Thông tin
               </Link>
+              <div
+                id="navProfile"
+                class="collapse "
+                data-bs-parent="#sideNavbar"
+              >
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <Link className="nav-link " to={"/lecturer/inforLecturers"}>
+                      Giảng viên
+                    </Link>
+                  </li>
+                  <li class="nav-item">
+                    <Link className="nav-link " to={"/lecturer/inforStudents"}>
+                      Học viên
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </li>
             <li className="nav-item">
               <Link
@@ -84,12 +109,12 @@ export default function SideBar() {
               >
                 <ul className="nav flex-column">
                   <li className="nav-item">
-                    <Link className="nav-link " to={'/lecturer/course'}>
+                    <Link className="nav-link " to={"/lecturer/course"}>
                       Tất cả khoá học
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link " to={'/lecturer/course/create'}>
+                    <Link className="nav-link " to={"/lecturer/course/create"}>
                       Tạo mới khoá học
                     </Link>
                   </li>
