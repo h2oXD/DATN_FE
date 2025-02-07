@@ -40,18 +40,22 @@ export default function Create() {
             setIsLoading(true);
             console.log(values);
             await axiosClient
-                .post("/lecturer/course/create", values)
+                .post("/lecturer/courses", values)
                 .then((res) => {
                     console.log(res);
                     toast.success("Thành công");
                     setIsLoading(false);
-                    navigate('/lecturer/course/edit')
+                    navigate(`/lecturer/course/edit/${res.data.course_id}`)
                 })
                 .catch((errors) => {
-                    if (errors.status === 401) {
-                        toast.error("Thất bại");
-                        setIsLoading(false);
+                    if (errors.status == 422) {
+                        const errorsMessageServe = errors.response.data.errors
+                        console.log(errorsMessageServe);
+                    } else {
+                        console.log(errors);
                     }
+                    toast.error("Thất bại");
+                    setIsLoading(false);
                 });
         },
     });
