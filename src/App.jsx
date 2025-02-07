@@ -12,6 +12,7 @@ import List from "./pages/Lecturer/Course/List";
 import Create from "./pages/Lecturer/Course/Create";
 import InforLecturer from "./pages/Lecturer/Infor/InforLecturer";
 import InforStudent from "./pages/Lecturer/Infor/InforStudent";
+import WalletLecturer from "./pages/Lecturer/Wallet/WalletLecturer";
 // import Edit from "./pages/Lecturer/Course/Edit";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           {/* <Route path="/lecturer/course/edit/:id" element={<Edit />} /> */}
           <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
+          <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />

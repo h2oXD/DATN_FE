@@ -48,11 +48,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       <StoreProvider>
         <ToastProvider>
-
           <App />
-
         </ToastProvider>
       </StoreProvider>
     </BrowserRouter>
-  </React.StrictMode >
+  </React.StrictMode>
 );
