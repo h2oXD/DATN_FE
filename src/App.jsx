@@ -9,7 +9,6 @@ import PageNotFound from "./pages/PageNotFound";
 import CourseList from "./pages/Guest/CourseList";
 import HomeLecturer from "./pages/Lecturer/HomeLecturer";
 import List from "./pages/Lecturer/Course/List";
-import Create from "./pages/Lecturer/Course/Create";
 import Edit from "./pages/Lecturer/Course/Edit";
 import InforLecturer from "./pages/Lecturer/Infor/InforLecturer";
 import InforStudent from "./pages/Lecturer/Infor/InforStudent";
@@ -35,9 +34,7 @@ function App() {
         <Route path="/lecturer" element={<LecturerLayout />}>
           <Route index element={<HomeLecturer />} />
           <Route path="/lecturer/course" element={<List />} />
-          <Route path="/lecturer/course/create" element={<Create />} />
           <Route path="/lecturer/course/edit/:course_id" element={<Edit />} />
-          {/* <Route path="/lecturer/course/edit/:id" element={<Edit />} /> */}
           <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
         </Route>

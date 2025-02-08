@@ -1,15 +1,17 @@
-// import React from 'react'
-
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axiosClient from "../../../api/axios";
 import { toast } from "react-toastify";
-// import Icon from "../../../components/Icon";
+import { Modal } from "antd";
+import * as Yup from "yup";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import axiosClient from "../../../api/axios";
 
 export default function List() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [page, setPage] = useState(1);
     const [courses, setCourses] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCourse = async () => {
@@ -28,6 +30,54 @@ export default function List() {
         };
         fetchCourse();
     }, [page]);
+    const [categories, setCategories] = useState([]);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axiosClient.get("/categories"); // Gọi API backend để lấy danh mục
+
+                setCategories(response.data.data); // Lưu dữ liệu danh mục vào state
+            } catch (error) {
+                console.log(error);
+
+                toast.error("Không thể tải danh mục.");
+            }
+        };
+        fetchCategories();
+    }, []);
+    const [isLoading, setIsLoading] = useState(false);
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            category_id: "",
+        },
+        validationSchema: Yup.object({
+            title: Yup.string()
+                .required("Tiêu đề không được để trống"),
+        }),
+        onSubmit: async (values) => {
+            if (isLoading === true) return;
+            setIsLoading(true);
+            console.log(values);
+            await axiosClient
+                .post("/lecturer/courses", values)
+                .then((res) => {
+                    console.log(res);
+                    setIsLoading(false);
+                    navigate(`/lecturer/course/edit/${res.data.course_id}`)
+                })
+                .catch((errors) => {
+                    if (errors.status == 422) {
+                        const errorsMessageServe = errors.response.data.errors
+                        console.log(errorsMessageServe);
+                    } else {
+                        console.log(errors);
+                    }
+                    toast.error("Thất bại");
+                    setIsLoading(false);
+                });
+        },
+    });
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= totalPages) {
             setPage(newPage);
@@ -58,7 +108,59 @@ export default function List() {
                             </select>
                         </div>
                         <div className="col-lg-2 col-md-4 col-12">
-                            <Link to={'/lecturer/course/create'} className="btn btn-success">Tạo mới khoá học</Link>
+                            <button type="button" className="btn btn-success" onClick={() => setIsModalOpen(true)}>Tạo mới khoá học</button>
+                            <Modal
+                                open={isModalOpen}
+                                onCancel={() => {
+                                    setIsModalOpen(false); // Đóng modal
+                                    formik.resetForm(); // Xoá message validate khi đóng modal
+                                }}
+                                footer={null} // Ẩn nút OK & Cancel mặc định
+                            >
+                                <h3 className="text-center">Tạo mới khoá học</h3>
+                                <form className="row" onSubmit={formik.handleSubmit}>
+                                    <div className="mb-3 col-12">
+                                        <div className="d-flex">
+                                            <label htmlFor="addCourseTitle" className="form-label">Tiêu đề</label>
+                                            <small className="ms-1 text-danger">*</small>
+                                            {formik.errors.title && <span className="text-danger mx-3">{formik.errors.title}</span>}
+                                        </div>
+                                        <input name="title" value={formik.values.title}
+                                            onChange={formik.handleChange} type="text" className="form-control" id="addCourseTitle" placeholder="Tiêu đề của khoá học" />
+                                        <small className="ms-1">Nếu bạn không nghĩ ra được một tiêu đề hay ngay bây giờ. Bạn có thể thay đổi sau.</small>
+                                    </div>
+                                    <div className="mb-3 col-12">
+                                        <div className="d-flex">
+                                            <label htmlFor="" className="form-label">Danh mục</label>
+                                        </div>
+                                        <select name="category_id" value={formik.values.category_id}
+                                            onChange={formik.handleChange} className="form-select text-dark">
+                                            <option value="">Chọn một danh mục</option>
+                                            {categories.length > 0 ? (
+                                                categories.map((category) => (
+                                                    <option key={category.id} value={category.id}>
+                                                        {category.name}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option disabled>Đang tải danh mục...</option>
+                                            )}
+                                        </select>
+                                        <small className="ms-1">Nếu không chắc chắn về thể loại phù hợp, bạn có thể thay đổi sau.</small>
+                                    </div>
+                                    <div>
+                                        <button
+                                            type="submit"
+                                            className="h-100 w-100 btn btn-primary"
+                                            onClick={(e) => {
+                                                e.preventDefault(); // Ngăn chặn hành vi mặc định của button
+                                                formik.handleSubmit(); // Submit form trước khi chuyển trang
+                                            }}
+                                            disabled={!formik.values.title || !!formik.errors.title}
+                                        >Tiếp tục</button>
+                                    </div>
+                                </form>
+                            </Modal>
                         </div>
                     </form>
                 </div>
@@ -143,10 +245,10 @@ export default function List() {
                                             </a>
                                             <span className="dropdown-menu" aria-labelledby="courseDropdown">
                                                 <span className="dropdown-header">Setting</span>
-                                                <a className="dropdown-item" href="#">
+                                                <Link className="dropdown-item" to={`/lecturer/course/edit/${course.id}`}>
                                                     <i className="fe fe-edit dropdown-item-icon"></i>
                                                     Edit
-                                                </a>
+                                                </Link>
                                                 <a className="dropdown-item" href="#">
                                                     <i className="fe fe-trash dropdown-item-icon"></i>
                                                     Remove
@@ -159,7 +261,7 @@ export default function List() {
 
                         </tbody>
                     </table>
-                    <div className="p-5">
+                    <div className="p-5 d-flex justify-content-end">
                         <ul className="pagination mb-0">
                             <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
                                 <button className="page-link mx-1 rounded" onClick={() => handlePageChange(page - 1)}>

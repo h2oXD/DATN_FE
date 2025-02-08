@@ -3,6 +3,8 @@ import App from "./App.jsx";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
+import "antd/dist/reset.css";
+
 import "./assets/css/theme.min.css";
 import "./assets/js/theme.min.js";
 

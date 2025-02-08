@@ -60,16 +60,16 @@ export default function SideBar() {
               </Link>
               <div
                 id="navProfile"
-                class="collapse "
+                className="collapse "
                 data-bs-parent="#sideNavbar"
               >
-                <ul class="nav flex-column">
-                  <li class="nav-item">
+                <ul className="nav flex-column">
+                  <li className="nav-item">
                     <Link className="nav-link " to={"/lecturer/inforLecturers"}>
                       Giảng viên
                     </Link>
                   </li>
-                  <li class="nav-item">
+                  <li className="nav-item">
                     <Link className="nav-link " to={"/lecturer/inforStudents"}>
                       Học viên
                     </Link>
@@ -111,11 +111,6 @@ export default function SideBar() {
                   <li className="nav-item">
                     <Link className="nav-link " to={"/lecturer/course"}>
                       Tất cả khoá học
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link " to={"/lecturer/course/create"}>
-                      Tạo mới khoá học
                     </Link>
                   </li>
                 </ul>
