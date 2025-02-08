@@ -1,103 +1,85 @@
 export default function InforStudent() {
   return (
     <>
-      <div class="col-lg-12 col-md-12 col-12">
-        {/* <!-- Page Header --> */}
-        <div class="border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center">
-          <div class="d-flex flex-column gap-1">
-            <h1 class="mb-0 h2 fw-bold">
-              Học viên
-              <span class="fs-5">(1,22,105 )</span>
-            </h1>
-            {/* <!-- Breadcrumb  --> */}
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="">Thống kê</a>
-                </li>
-                <li class="breadcrumb-item">
-                  <a href="">Thông tin</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                  Học viên
-                </li>
-              </ol>
-            </nav>
+      <div className="container-fluid d-flex">
+        <div className="col-lg-12 col-md-8 col-12">
+          {/* <!-- Card --> */}
+          <div className="card mb-4">
+            {/* <!-- Card body --> */}
+            <div className="p-4 d-flex justify-content-between align-items-center">
+              <div>
+                <h3 className="mb-0">My Students</h3>
+                <span>Meet people taking your course.</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="card">
-        {/* <!-- Card Header --> */}
-        <div className="card-header">
-          <input
-            type="search"
-            className="form-control"
-            placeholder="Tìm kiếm học viên"
-          />
-        </div>
-        {/* <!-- Table --> */}
-        <div className="table-responsive">
-          <table className="table mb-0 text-nowrap table-hover table-centered">
-            <thead className="table-light">
-              <tr>
-                <th>Họ và tên</th>
-                <th>Đã đăng ký</th>
-                <th>Thời gian tham gia</th>
-                <th>Tổng số tiền thanh toán</th>
-                <th>Địa điểm</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                  <div className="d-flex align-items-center flex-row gap-2">
-                    <div className="position-relative">
-                      <img
-                        src="../../assets/images/avatar/avatar-11.jpg"
-                        alt=""
-                        className="rounded-circle avatar-md"
-                      />
-                      <a href="#" className="position-absolute mt-5 ms-n4">
-                        <span className="status bg-success"></span>
+          {/* <!-- Tab content --> */}
+          <div className="tab-content">
+            <div
+              className="tab-pane fade show active pb-4"
+              id="tabPaneGrid"
+              role="tabpanel"
+              aria-labelledby="tabPaneGrid"
+            >
+              <div className="row">
+                <div className="col-xl-12 col-lg-12 col-12 mb-3">
+                  {/* <!-- Content --> */}
+                  <div className="row">
+                    <div className="col pe-0">
+                      {/* <!-- Form --> */}
+                      <form>
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search by Name"
+                        />
+                      </form>
+                    </div>
+                    {/* <!-- Button --> */}
+                    <div className="col-auto">
+                      <a href="#" className="btn btn-secondary">
+                        Export CSV
                       </a>
                     </div>
-                    <h5 className="mb-0">Nguyễn Văn A</h5>
                   </div>
-                </td>
-                <td>6 khóa học</td>
-                <td>7 February, 2025</td>
-                <td>$5,45</td>
-                <td>Hà Nội</td>
-
-                <td>
-                  <span className="dropdown dropstart">
-                    <a
-                      className="btn-icon btn btn-ghost btn-sm rounded-circle"
-                      href="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      data-bs-offset="-20,20"
-                      aria-expanded="false"
-                    >
-                      <i className="fe fe-more-vertical"></i>
-                    </a>
-                    <span className="dropdown-menu">
-                      <span className="dropdown-header">Settings</span>
-                      <a className="dropdown-item" href="#">
-                        <i className="fe fe-edit dropdown-item-icon"></i>
-                        Edit
-                      </a>
-                      <a className="dropdown-item" href="#">
-                        <i className="fe fe-trash dropdown-item-icon"></i>
-                        Remove
-                      </a>
-                    </span>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+                <div className="col-lg-4 col-md-6 col-12">
+                  {/* <!-- Card --> */}
+                  <div className="card mb-4">
+                    {/* <!-- Card body --> */}
+                    <div className="card-body">
+                      <div className="text-center">
+                        <img
+                          src="../assets/images/avatar/avatar-3.jpg"
+                          className="rounded-circle avatar-xl mb-3"
+                          alt="avatar"
+                        />
+                        <h4 className="mb-1">Wade Warren</h4>
+                        <p className="mb-0">
+                          <i className="fe fe-map-pin me-1"></i>
+                          United States
+                        </p>
+                        <a
+                          href="#"
+                          className="btn btn-sm btn-outline-secondary mt-3"
+                        >
+                          Message
+                        </a>
+                      </div>
+                      <div className="d-flex justify-content-between border-bottom py-2 mt-4 fs-6">
+                        <span>Enrolled</span>
+                        <span className="text-dark">3/12/2020</span>
+                      </div>
+                      <div className="d-flex justify-content-between pt-2 fs-6">
+                        <span>Progress</span>
+                        <span className="text-success">0%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
