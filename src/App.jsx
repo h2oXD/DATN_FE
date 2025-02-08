@@ -12,6 +12,7 @@ import List from "./pages/Lecturer/Course/List";
 import Create from "./pages/Lecturer/Course/Create";
 import InforLecturer from "./pages/Lecturer/Infor/InforLecturer";
 import InforStudent from "./pages/Lecturer/Infor/InforStudent";
+import EditInfLecturers from "./pages/Lecturer/Infor/EditInfLecturers";
 // import Edit from "./pages/Lecturer/Course/Edit";
 
 function App() {
@@ -37,6 +38,10 @@ function App() {
           <Route path="/lecturer/course/create" element={<Create />} />
           {/* <Route path="/lecturer/course/edit/:id" element={<Edit />} /> */}
           <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
+          <Route
+            path="/lecturer/inforLecturers/edit"
+            element={<EditInfLecturers />}
+          />
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
         </Route>
 
