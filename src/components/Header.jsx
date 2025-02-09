@@ -17,7 +17,7 @@ const Header = () => {
     <nav className="navbar navbar-expand-lg sticky-top">
       <div className="container-fluid px-0">
         <a className="navbar-brand" href="">
-          <img src="../assets/images/brand/logo/logo.svg" alt="" />
+          <img src="/logo.png" width={'133px'} height={'31px'} alt="" />
         </a>
         <div className="order-lg-3 d-flex align-items-center">
           <div>
