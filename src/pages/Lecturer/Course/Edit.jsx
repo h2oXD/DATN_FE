@@ -40,11 +40,10 @@ export default function Edit() {
 
     return (
         <>
-            <div className="row">
+            <div className="d-flex gap-3 ">
                 {/* Cột trái - Sidebar */}
-                <div className="col-md-3">
-
-                    <div className="card p-3">
+                <div className="">
+                    <div className="card p-3" style={{width: '250px'}}>
                         <ul className="nav flex-column nav-pills">
                             <li className="nav-item">
                                 <NavLink
@@ -77,7 +76,7 @@ export default function Edit() {
                 </div>
 
                 {/* Cột phải - Nội dung */}
-                <div className="col-md-9">
+                <div className="">
 
                     <Outlet />
 
