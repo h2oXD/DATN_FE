@@ -13,6 +13,7 @@ export default function Basic() {
         script.onload = () => {
             window.tinymce.init({
                 selector: "textarea#coursedescriptioneditor",
+                license_key: 'gpl',
                 height: 250,
                 menubar: false,
             });

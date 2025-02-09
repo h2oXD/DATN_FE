@@ -7,8 +7,9 @@ import { StoreContext } from "../contexts/StoreProvider";
 
 export default function UserHeader() {
   const { userInfo } = useContext(StoreContext);
+  console.log(userInfo);
   const isLecturer = userInfo?.roles?.some((role) => role.name === "lecturer");
-
+  console.log(isLecturer);
   return (
     <>
       <ul className="navbar-nav navbar-right-wrap mx-2 flex-row">

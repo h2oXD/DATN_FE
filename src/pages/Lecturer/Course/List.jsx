@@ -64,7 +64,7 @@ export default function List() {
                 .then((res) => {
                     console.log(res);
                     setIsLoading(false);
-                    navigate(`/lecturer/course/edit/${res.data.course_id}`)
+                    navigate(`/lecturer/course/${res.data.course_id}/edit`)
                 })
                 .catch((errors) => {
                     if (errors.status == 422) {
