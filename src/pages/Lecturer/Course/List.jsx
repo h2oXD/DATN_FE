@@ -245,7 +245,7 @@ export default function List() {
                                             </a>
                                             <span className="dropdown-menu" aria-labelledby="courseDropdown">
                                                 <span className="dropdown-header">Setting</span>
-                                                <Link className="dropdown-item" to={`/lecturer/course/edit/${course.id}`}>
+                                                <Link className="dropdown-item" to={`/lecturer/course/${course.id}/edit/basic`}>
                                                     <i className="fe fe-edit dropdown-item-icon"></i>
                                                     Edit
                                                 </Link>

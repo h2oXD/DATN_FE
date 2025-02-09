@@ -14,12 +14,15 @@ import "./assets/libs/@popperjs/core/dist/umd/popper.min.js";
 import "./assets/libs/bootstrap/dist/js/bootstrap.min.js";
 import "./assets/libs/glightbox/dist/js/glightbox.min.js";
 
+import "./assets/libs/simplebar/dist/simplebar.min.css";
+import "./assets/libs/simplebar/dist/simplebar.min.js";
+
 //<!-- Favicon icon-->
 // import "./assets/images/favicon/favicon.ico";
 //<!-- darkmode js -->
 // import "./assets/js/vendors/darkMode.js";
 //<!-- Libs CSS -->
-// import "./assets/libs/simplebar/dist/simplebar.min.css";
+
 //<!-- Theme CSS -->
 // import "./assets/libs/tiny-slider/dist/tiny-slider.css";
 // import "./assets/js/vendors/sidebarMenu.js";
@@ -27,7 +30,7 @@ import "./assets/libs/glightbox/dist/js/glightbox.min.js";
 //<!-- Scripts -->
 //<!-- Libs JS -->
 
-// import "./assets/libs/simplebar/dist/simplebar.min.js";
+
 //<!-- Theme JS -->
 // import "./assets/libs/tiny-slider/dist/min/tiny-slider.js";
 // import "./assets/js/vendors/tnsSlider.js";

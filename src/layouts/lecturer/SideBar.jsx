@@ -9,7 +9,7 @@ export default function SideBar() {
         className="navbar-vertical navbar"
         style={{ backgroundColor: "white" }}
       >
-        <div className="vh-100">
+        <div className="vh-100" data-simplebar>
           <a className="navbar-brand d-flex justify-content-center" href="/">
             <img src="/logo.png" alt="logo" />
           </a>
