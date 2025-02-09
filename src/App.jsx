@@ -12,10 +12,14 @@ import List from "./pages/Lecturer/Course/List";
 import Edit from "./pages/Lecturer/Course/Edit";
 import InforLecturer from "./pages/Lecturer/Infor/InforLecturer";
 import InforStudent from "./pages/Lecturer/Infor/InforStudent";
+
+import WalletLecturer from "./pages/Lecturer/Wallet/WalletLecturer";
+
 import EditInfLecturers from "./pages/Lecturer/Infor/EditInfLecturers";
 import Goals from "./pages/Lecturer/Course/Goals";
 import Basic from "./pages/Lecturer/Course/Basic";
 import Curriculum from "./pages/Lecturer/Course/Curriculum";
+
 // import Edit from "./pages/Lecturer/Course/Edit";
 
 function App() {
@@ -50,6 +54,7 @@ function App() {
             element={<EditInfLecturers />}
           />
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
+          <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />

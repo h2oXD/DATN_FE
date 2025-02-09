@@ -117,7 +117,10 @@ export default function SideBar() {
               </div>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-dark" to={""}>
+              <Link
+                className="nav-link text-dark"
+                to={"/lecturer/walletLecturer"}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
