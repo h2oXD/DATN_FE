@@ -34,7 +34,7 @@ export default function SideBar({ collapsed }) {
             },
           }}
         >
-          <NavLink className="text-dark" to={"/lecturer/dashboard"}>
+          <NavLink className="text-dark" to={"/lecturer/overview"}>
             <MenuItem
               rootStyles={{
                 ["." + "ps-menu-icon"]: {},
@@ -59,16 +59,15 @@ export default function SideBar({ collapsed }) {
                 Giảng viên
               </MenuItem>
             </NavLink>
+            <NavLink className="text-dark" to={"/lecturer/inforStudents"}>
+              <MenuItem
+                className="text-dark"
+                active={currentPath === "/lecturer/inforStudents"}
+              >
+                Học viên
+              </MenuItem>
+            </NavLink>
           </SubMenu>
-          <NavLink className="text-dark" to={"/lecturer/inforStudents"}>
-            <MenuItem
-              className="text-dark"
-              icon={<HocVienIcon />}
-              active={currentPath === "/lecturer/inforStudents"}
-            >
-              Học viên
-            </MenuItem>
-          </NavLink>
           <NavLink to={"/lecturer/course"} className="text-dark">
             <MenuItem
               className="text-dark"
@@ -87,11 +86,33 @@ export default function SideBar({ collapsed }) {
               Ví tiền
             </MenuItem>
           </NavLink>
-          <NavLink className="text-dark" to={""}>
+          <NavLink className="text-dark" to={"/lecturer/chat"}>
             <MenuItem className="text-dark" icon={<TinNhanIcon />}>
               Tin nhắn
             </MenuItem>
           </NavLink>
+          <SubMenu
+            className="text-dark"
+            label="Đánh giá"
+            icon={<ThongTinIcon />}
+          >
+            <NavLink className="text-dark" to={"/lecturer/courseReviews"}>
+              <MenuItem
+                active={currentPath === "/lecturer/inforLecturers"}
+                className="text-dark"
+              >
+                Khóa học
+              </MenuItem>
+            </NavLink>
+            <NavLink className="text-dark" to={"/lecturer/inforStudents"}>
+              <MenuItem
+                className="text-dark"
+                active={currentPath === "/lecturer/inforStudents"}
+              >
+                Giảng viên
+              </MenuItem>
+            </NavLink>
+          </SubMenu>
         </Menu>
       </Sidebar>
     </>
