@@ -15,7 +15,6 @@ import InforStudent from "./pages/Lecturer/Infor/InforStudent";
 
 import WalletLecturer from "./pages/Lecturer/Wallet/WalletLecturer";
 
-import EditInfLecturers from "./pages/Lecturer/Infor/EditInfLecturers";
 import Goals from "./pages/Lecturer/Course/Goals";
 import Basic from "./pages/Lecturer/Course/Basic";
 import Curriculum from "./pages/Lecturer/Course/Curriculum";

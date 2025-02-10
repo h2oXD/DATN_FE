@@ -34,12 +34,12 @@ export default function SideBar({ collapsed }) {
             },
           }}
         >
-          <NavLink className="text-dark" to={"/lecturer/overview"}>
+          <NavLink className="text-dark" to={"/lecturer/dashboard"}>
             <MenuItem
               rootStyles={{
                 ["." + "ps-menu-icon"]: {},
               }}
-              active={currentPath === "/lecturer/overview"}
+              active={currentPath === "/lecturer/dashboard"}
               className="text-dark"
               icon={<ThongKeIcon />}
             >
