@@ -19,6 +19,7 @@ import EditInfLecturers from "./pages/Lecturer/Infor/EditInfLecturers";
 import Goals from "./pages/Lecturer/Course/Goals";
 import Basic from "./pages/Lecturer/Course/Basic";
 import Curriculum from "./pages/Lecturer/Course/Curriculum";
+import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 
@@ -49,12 +50,10 @@ function App() {
             <Route path="curriculum" element={<Curriculum />} />
           </Route>
           <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
-          <Route
-            path="/lecturer/inforLecturers/edit"
-            element={<EditInfLecturers />}
-          />
+
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
           <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
+          <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
