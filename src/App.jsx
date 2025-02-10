@@ -49,10 +49,7 @@ function App() {
             <Route path="curriculum" element={<Curriculum />} />
           </Route>
           <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
-          <Route
-            path="/lecturer/inforLecturers/edit"
-            element={<EditInfLecturers />}
-          />
+
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
           <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
         </Route>
