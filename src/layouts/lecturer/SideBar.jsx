@@ -4,7 +4,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   CourseIcon,
-  HocVienIcon,
+  DanhGiaIcon,
   ThongKeIcon,
   ThongTinIcon,
   TinNhanIcon,
@@ -94,7 +94,7 @@ export default function SideBar({ collapsed }) {
           <SubMenu
             className="text-dark"
             label="Đánh giá"
-            icon={<ThongTinIcon />}
+            icon={<DanhGiaIcon />}
           >
             <NavLink className="text-dark" to={"/lecturer/courseReviews"}>
               <MenuItem
