@@ -90,6 +90,28 @@ export default function SideBar({ collapsed }) {
               Tin nhắn
             </MenuItem>
           </NavLink>
+          <SubMenu
+            className="text-dark"
+            label="Đánh giá"
+            icon={<ThongTinIcon />}
+          >
+            <NavLink className="text-dark" to={"/lecturer/courseReviews"}>
+              <MenuItem
+                active={currentPath === "/lecturer/inforLecturers"}
+                className="text-dark"
+              >
+                Khóa học
+              </MenuItem>
+            </NavLink>
+            <NavLink className="text-dark" to={"/lecturer/inforStudents"}>
+              <MenuItem
+                className="text-dark"
+                active={currentPath === "/lecturer/inforStudents"}
+              >
+                Giảng viên
+              </MenuItem>
+            </NavLink>
+          </SubMenu>
         </Menu>
       </Sidebar>
     </>
