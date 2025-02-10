@@ -1,112 +1,74 @@
 export default function EditInfLecturers() {
   return (
     <>
-      <div className="card">
-        <div className="card-body">
-          <div>
-            <h1 className="mb-0">Chi tiết hồ sơ</h1>
-            <p className="mb-4">Chỉnh sửa thông tin cá nhân</p>
-            {/* <!-- Form --> */}
-            <form className="row gx-3 needs-validation" novalidate>
-              {/* <!-- First name --> */}
-              <div className="mb-3 col-12 col-md-6">
-                <label className="form-label" for="profileEditFname">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="profileEditFname"
-                  name="profileEditFname"
-                  className="form-control"
-                  placeholder="First Name"
-                  required
-                />
-                <div className="invalid-feedback">Please enter first name.</div>
-              </div>
-              {/* <!-- Last name --> */}
-              <div className="mb-3 col-12 col-md-6">
-                <label className="form-label" for="profileEditLname">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="profileEditLname"
-                  name="profileEditLname"
-                  className="form-control"
-                  placeholder="Last Name"
-                  required
-                />
-                <div className="invalid-feedback">Please enter last name.</div>
-              </div>
-              {/* <!-- Phone --> */}
-              <div className="mb-3 col-12 col-md-6">
-                <label className="form-label" for="profileEditPhone">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  id="profileEditPhone"
-                  name="profileEditPhone"
-                  className="form-control"
-                  placeholder="Phone"
-                  required
-                />
-                <div className="invalid-feedback">
-                  Please enter phone number.
+      <div
+        className="modal fade"
+        id="editProfileModal"
+        tabindex="-1"
+        aria-labelledby="editProfileModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="modal-title" id="editProfileModalLabel">
+                Chỉnh Sửa Hồ Sơ
+              </h2>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="mb-3">
+                  <label className="form-label">Họ và tên</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="Le Thi Thu Trang"
+                  />
                 </div>
-              </div>
-              {/* <!-- Birthday --> */}
-              <div className="mb-3 col-12 col-md-6">
-                <label className="form-label" for="profileEditBirth">
-                  Birthday
-                </label>
-                <input
-                  className="form-control flatpickr"
-                  type="text"
-                  placeholder="Birth of Date"
-                  id="profileEditBirth"
-                  name="profileEditBirth"
-                />
-                <div className="invalid-feedback">Please choose a date.</div>
-              </div>
-              {/* <!-- Address --> */}
-              <div className="mb-3 col-12 col-md-6">
-                <label className="form-label" for="profileEditAddress1">
-                  Address Line 1
-                </label>
-                <input
-                  type="text"
-                  id="profileEditAddress1"
-                  name="profileEditAddress1"
-                  className="form-control"
-                  placeholder="Address"
-                  required
-                />
-                <div className="invalid-feedback">Please enter address.</div>
-              </div>
-              {/* <!-- Address --> */}
-              <div className="mb-3 col-12 col-md-6">
-                <label className="form-label" for="profileEditAddress2">
-                  Address Line 2
-                </label>
-                <input
-                  type="text"
-                  id="profileEditAddress2"
-                  name="profileEditAddress2"
-                  className="form-control"
-                  placeholder="Address"
-                  required
-                />
-                <div className="invalid-feedback">Please enter address.</div>
-              </div>
-
-              <div className="col-12">
-                {/* <!-- Button --> */}
-                <button className="btn btn-primary" type="submit">
-                  Update Profile
-                </button>
-              </div>
-            </form>
+                <div className="mb-3">
+                  <label className="form-label">Chuyên ngành</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="Công nghệ thông tin"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value="giangviena@gmail.com"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Số điện thoại</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value="0123456789"
+                  />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Đóng
+              </button>
+              <button type="button" className="btn btn-primary">
+                Lưu thay đổi
+              </button>
+            </div>
           </div>
         </div>
       </div>

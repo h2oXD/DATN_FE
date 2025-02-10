@@ -4,6 +4,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   CourseIcon,
+  HocVienIcon,
   ThongKeIcon,
   ThongTinIcon,
   TinNhanIcon,
