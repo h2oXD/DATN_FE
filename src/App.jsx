@@ -23,7 +23,7 @@ import Chat from "./pages/Lecturer/Chat/chat";
 import CourseReviews from "./pages/Lecturer/Reviews/CourseReviews";
 
 import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
-
+import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 
@@ -60,9 +60,11 @@ function App() {
 
           <Route path="/lecturer/chat" element={<Chat />} />
           <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
-
+          <Route
+            path="/lecturer/instructorReviews"
+            element={<InstructorReviews />}
+          />
           <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
-
         </Route>
 
         <Route path="*" element={<PageNotFound />} />
