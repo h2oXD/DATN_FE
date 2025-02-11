@@ -1,64 +1,30 @@
 export default function CourseReviews() {
   return (
     <>
-      <div className="container mt-5">
-        <div className="text-center mb-4">
-          <h2>Tên Khóa Học: Lập Trình Web Căn Bản</h2>
-          <h4>Giảng viên: Nguyễn Văn A</h4>
-          {/* <img
-            src="course-image.jpg"
-            alt="Khóa học"
-            className="img-fluid rounded"
-            style={{ maxWidth: "300px" }}
-          /> */}
-        </div>
+      <div className="w-3/4 p-6">
+        <h2 className="text-xl font-semibold mb-4">Đánh giá</h2>
+        <select className="border p-2 mb-4">
+          <option>Lập trình C++ cơ bản, nâng cao</option>
+          <option value="">Lập trình JavaScript nâng cao</option>
+          <option value="">Thiết kế UI/UX</option>
+        </select>
 
-        <div className="mb-4">
-          <h3>
-            Đánh giá: <span className="text-warning">4.5/5</span>
-          </h3>
-          <div>
-            {Array(5)
-              .fill()
-              .map((_, index) => (
-                <span key={index} className="text-warning">
-                  ⭐
-                </span>
-              ))}
+        <div className="rounded shadow-md w-2/3">
+          <div className="bg-white border w-20 shadow-sm text-center p-3 rounded mb-3 flex justify-between items-center">
+            <div>
+              <img
+                src="../assets/images/avatar/avatar-1.jpg"
+                alt="avatar"
+                className="rounded-circle avatar-xl border-white border border-4 position-relative "
+              />
+              <h4 className="font-semibold">Lê Thị Thùy Linh</h4>
+              <p className="text-sm text-gray-500">01/12/2024</p>
+              <div className="text-yellow-500">⭐⭐⭐⭐⭐</div>
+              <p className="mt-2">Khóa học rất hay</p>
+              <button className="btn btn-primary m-1">Phản hồi</button>
+            </div>
           </div>
         </div>
-
-        <div
-          className="review-card border rounded p-3 mb-3 shadow-sm bg-light transition-transform transform hover:scale-105 hover:shadow-lg"
-          style={{
-            backgroundColor: "#f9f9f9",
-          }}
-        >
-          <h4>Nguyễn Văn B</h4>
-          <div className="text-muted">Ngày đánh giá: 10/02/2025</div>
-          <p>Nội dung: Khóa học rất hữu ích, phương pháp giảng dạy rõ ràng.</p>
-          <span className="text-primary" style={{ cursor: "pointer" }}>
-            Thích
-          </span>{" "}
-          <span className="text-muted">(0 bình luận)</span>
-        </div>
-
-        <div
-          className="review-card border rounded p-3 mb-3 shadow-sm bg-light transition-transform transform hover:scale-105 hover:shadow-lg"
-          style={{
-            backgroundColor: "#f9f9f9",
-          }}
-        >
-          <h4>Trần Thị C</h4>
-          <div className="text-muted">Ngày đánh giá: 09/02/2025</div>
-          <p>Nội dung: Tôi không thể hiểu bài giảng về JavaScript.</p>
-          <span className="text-primary" style={{ cursor: "pointer" }}>
-            Thích
-          </span>{" "}
-          <span className="text-muted">(1 bình luận)</span>
-        </div>
-
-        {/* Thêm nhiều đánh giá ở đây */}
       </div>
     </>
   );
