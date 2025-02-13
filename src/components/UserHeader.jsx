@@ -4,15 +4,14 @@ import { Link } from "react-router-dom";
 import Logout from "../pages/Auth/Logout";
 import { useContext } from "react";
 import { StoreContext } from "../contexts/StoreProvider";
+import Skeleton from "react-loading-skeleton";
 
 export default function UserHeader() {
-  const { userInfo } = useContext(StoreContext);
-  console.log(userInfo);
-  const isLecturer = userInfo?.roles?.some((role) => role.name === "lecturer");
-  console.log(isLecturer);
+  const { user } = useContext(StoreContext);
+  const isLecturer = user?.roles?.some((role) => role.name === "lecturer");
   return (
     <>
-      <ul className="navbar-nav navbar-right-wrap mx-2 flex-row">
+      {user ? <ul className="navbar-nav navbar-right-wrap mx-2 flex-row">
         <li className="nav nav-link">
           <Link to="/student">Học viên</Link>
         </li>
@@ -248,8 +247,8 @@ export default function UserHeader() {
                   />
                 </div>
                 <div className="ms-3 lh-1">
-                  <h5 className="mb-1">Annette Black</h5>
-                  <p className="mb-0">annette@geeksui.com</p>
+                  <h5 className="mb-1">{user ? user.name : <Skeleton />}</h5>
+                  <p className="mb-0">{user ? user.email : <Skeleton />}</p>
                 </div>
               </div>
             </div>
@@ -320,7 +319,7 @@ export default function UserHeader() {
             </ul>
           </div>
         </li>
-      </ul>
+      </ul> : <Skeleton />}
     </>
   );
 }

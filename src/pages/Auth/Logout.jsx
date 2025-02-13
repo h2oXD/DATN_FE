@@ -10,8 +10,6 @@ export default function Logout() {
       .post("/logout")
       .then((res) => {
         Cookies.remove("token");
-        Cookies.remove("role");
-        Cookies.remove("userID");
         toast.success(res.data.message);
         window.location.href = "/";
         console.log(res);

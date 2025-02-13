@@ -1,8 +1,8 @@
 // import React from 'react'
 import { useContext, useState } from "react";
-import axiosClient from "../../api/axios";
 import { ToastContext } from "../../contexts/ToastProvider";
 import Cookies from "js-cookie";
+import { register } from "../../api/apiService";
 
 export default function FormRegister() {
   const { toast } = useContext(ToastContext);
@@ -56,7 +56,7 @@ export default function FormRegister() {
   };
 
   // Hàm xử lý gửi form
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -64,8 +64,7 @@ export default function FormRegister() {
     } else {
       if (isLoading === true) return;
       setIsLoading(true);
-      await axiosClient
-        .post("/register", formData)
+      register(formData)
         .then((res) => {
           const { token } = res.data;
 
@@ -73,7 +72,7 @@ export default function FormRegister() {
           toast.success("Đăng ký thành công");
 
           window.location = "/";
-          
+
           setIsLoading(false);
 
           setErrors({});
@@ -128,9 +127,8 @@ export default function FormRegister() {
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${
-                      errors.name ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.name ? "is-invalid" : ""
+                      }`}
                     id="name"
                     name="name"
                     value={formData.name}
@@ -149,9 +147,8 @@ export default function FormRegister() {
                   </label>
                   <input
                     type="email"
-                    className={`form-control ${
-                      errors.email ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.email ? "is-invalid" : ""
+                      }`}
                     id="email"
                     name="email"
                     value={formData.email}
@@ -170,9 +167,8 @@ export default function FormRegister() {
                   </label>
                   <input
                     type="password"
-                    className={`form-control ${
-                      errors.password ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.password ? "is-invalid" : ""
+                      }`}
                     id="password"
                     name="password"
                     value={formData.password}
@@ -191,9 +187,8 @@ export default function FormRegister() {
                   </label>
                   <input
                     type="password"
-                    className={`form-control ${
-                      errors.password_confirmation ? "is-invalid" : ""
-                    }`}
+                    className={`form-control ${errors.password_confirmation ? "is-invalid" : ""
+                      }`}
                     id="password_confirmation"
                     name="password_confirmation"
                     value={formData.password_confirmation}
