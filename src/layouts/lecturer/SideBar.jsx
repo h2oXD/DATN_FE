@@ -98,8 +98,8 @@ export default function SideBar({ collapsed }) {
             </MenuItem>
             <MenuItem
               className="text-dark"
-              active={currentPath === "/lecturer/inforStudents"}
-              component={<Link to={"/lecturer/inforStudents"} />}
+              active={currentPath === "/lecturer/instructorReviews"}
+              component={<Link to={"/lecturer/instructorReviews"} />}
             >
               Giảng viên
             </MenuItem>
