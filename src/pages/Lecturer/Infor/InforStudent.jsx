@@ -1,7 +1,7 @@
 export default function InforStudent() {
   return (
     <>
-      <div className="container-fluid d-flex">
+      <div className="d-flex">
         <div className="col-lg-12 col-md-8 col-12">
           {/* <!-- Card --> */}
           <div className="card mb-4">
@@ -51,45 +51,44 @@ export default function InforStudent() {
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-lg-3 col-md-6 col-12">
-                    <div className="card mb-4">
-                      <div className="card-body">
-                        <div className="text-center">
-                          <img
-                            src="../assets/images/avatar/avatar-3.jpg"
-                            className="rounded-circle avatar-xl mb-3"
-                            alt="avatar"
-                          />
-                          <h4 className="mb-1">Học viên A</h4>
-                          <p className="mb-0">
-                            <i className="fe fe-map-pin me-1"></i>
-                            Hà Nội
-                          </p>
-                        </div>
-                        <div className="d-flex justify-content-between border-bottom py-2 mt-4 fs-6">
-                          <span>Thời gian đăng ký</span>
-                          <span className="text-dark">3/12/2020</span>
-                        </div>
-                        <div className="d-flex justify-content-between pt-2 fs-6">
-                          <span>Tiến độ</span>
-                          <span className="text-success">0%</span>
-                        </div>
 
-                        <div className="d-flex justify-content-center mt-2">
-                          <a
-                            href="#"
-                            className="btn btn-sm btn-outline-secondary m-1"
-                          >
-                            Xem thông tin
-                          </a>
-                          <a
-                            href="#"
-                            className="btn btn-sm btn-outline-secondary m-1"
-                          >
-                            Nhắn tin
-                          </a>
-                        </div>
+                <div className="col-lg-3 col-md-6 col-12">
+                  <div className="card mb-4">
+                    <div className="card-body">
+                      <div className="text-center">
+                        <img
+                          src="../assets/images/avatar/avatar-3.jpg"
+                          className="rounded-circle avatar-xl mb-3"
+                          alt="avatar"
+                        />
+                        <h4 className="mb-1">Học viên A</h4>
+                        <p className="mb-0">
+                          <i className="fe fe-map-pin me-1"></i>
+                          Hà Nội
+                        </p>
+                      </div>
+                      <div className="d-flex justify-content-between border-bottom py-2 mt-4 fs-6">
+                        <span>Thời gian đăng ký</span>
+                        <span className="text-dark">3/12/2020</span>
+                      </div>
+                      <div className="d-flex justify-content-between pt-2 fs-6">
+                        <span>Tiến độ</span>
+                        <span className="text-success">0%</span>
+                      </div>
+
+                      <div className="d-flex justify-content-center mt-2">
+                        <a
+                          href="#"
+                          className="btn btn-sm btn-outline-secondary m-1"
+                        >
+                          Xem thông tin
+                        </a>
+                        <a
+                          href="#"
+                          className="btn btn-sm btn-outline-secondary m-1"
+                        >
+                          Nhắn tin
+                        </a>
                       </div>
                     </div>
                   </div>
