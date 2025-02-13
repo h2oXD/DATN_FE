@@ -98,16 +98,16 @@ export default function SideBar({ collapsed }) {
           >
             <NavLink className="text-dark" to={"/lecturer/courseReviews"}>
               <MenuItem
-                active={currentPath === "/lecturer/inforLecturers"}
+                active={currentPath === "/lecturer/courseReviews"}
                 className="text-dark"
               >
                 Khóa học
               </MenuItem>
             </NavLink>
-            <NavLink className="text-dark" to={"/lecturer/inforStudents"}>
+            <NavLink className="text-dark" to={"/lecturer/instructorReviews"}>
               <MenuItem
                 className="text-dark"
-                active={currentPath === "/lecturer/inforStudents"}
+                active={currentPath === "/lecturer/instructorReviews"}
               >
                 Giảng viên
               </MenuItem>
