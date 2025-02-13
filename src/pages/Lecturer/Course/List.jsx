@@ -25,7 +25,7 @@ export default function List() {
                     })
             } catch (error) {
                 console.log(error);
-                toast.error("Không thể tải .");
+                toast.error("Gọi Api danh sách khoá học của giảng viên thất bại");
             }
         };
         fetchCourse();
@@ -40,7 +40,7 @@ export default function List() {
             } catch (error) {
                 console.log(error);
 
-                toast.error("Không thể tải danh mục.");
+                toast.error("Gọi Api danh sách danh mục thất bại");
             }
         };
         fetchCategories();
@@ -73,7 +73,7 @@ export default function List() {
                     } else {
                         console.log(errors);
                     }
-                    toast.error("Thất bại");
+                    toast.error("Gửi request đến Api thêm mới khoá học thất bại");
                     setIsLoading(false);
                 });
         },

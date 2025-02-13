@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   CourseIcon,
   DanhGiaIcon,
@@ -34,84 +34,75 @@ export default function SideBar({ collapsed }) {
             },
           }}
         >
-          <NavLink className="text-dark" to={"/lecturer/dashboard"}>
-            <MenuItem
-              rootStyles={{
-                ["." + "ps-menu-icon"]: {},
-              }}
-              active={currentPath === "/lecturer/dashboard"}
-              className="text-dark"
-              icon={<ThongKeIcon />}
-            >
-              Thống kê
-            </MenuItem>
-          </NavLink>
+          <MenuItem
+            rootStyles={{
+              ["." + "ps-menu-icon"]: {},
+            }}
+            active={currentPath === "/lecturer/dashboard"}
+            className="text-dark"
+            icon={<ThongKeIcon />}
+            component={<Link to={"/lecturer/dashboard"} />}
+          >
+            Thống kê
+          </MenuItem>
           <SubMenu
             className="text-dark"
             label="Thông tin"
             icon={<ThongTinIcon />}
           >
-            <NavLink className="text-dark" to={"/lecturer/inforLecturers"}>
-              <MenuItem
-                active={currentPath === "/lecturer/inforLecturers"}
-                className="text-dark"
-              >
-                Giảng viên
-              </MenuItem>
-            </NavLink>
-            <NavLink className="text-dark" to={"/lecturer/inforStudents"}>
-              <MenuItem
-                className="text-dark"
-                active={currentPath === "/lecturer/inforStudents"}
-              >
-                Học viên
-              </MenuItem>
-            </NavLink>
+            <MenuItem
+              active={currentPath === "/lecturer/inforLecturers"}
+              className="text-dark"
+              component={<Link to={"/lecturer/inforLecturers"} />}
+            >
+              Giảng viên
+            </MenuItem>
+            <MenuItem
+              className="text-dark"
+              active={currentPath === "/lecturer/inforStudents"}
+              component={<Link to={"/lecturer/inforStudents"} />}
+            >
+              Học viên
+            </MenuItem>
           </SubMenu>
-          <NavLink to={"/lecturer/course"} className="text-dark">
-            <MenuItem
-              className="text-dark"
-              icon={<CourseIcon />}
-              active={currentPath === "/lecturer/course"}
-            >
-              Khoá học
-            </MenuItem>
-          </NavLink>
-          <NavLink to={"/lecturer/walletLecturer"} className="text-dark">
-            <MenuItem
-              className="text-dark"
-              icon={<ViTienIcon />}
-              active={currentPath === "/lecturer/walletLecturer"}
-            >
-              Ví tiền
-            </MenuItem>
-          </NavLink>
-          <NavLink className="text-dark" to={"/lecturer/chat"}>
-            <MenuItem className="text-dark" icon={<TinNhanIcon />}>
-              Tin nhắn
-            </MenuItem>
-          </NavLink>
+          <MenuItem
+            className="text-dark"
+            icon={<CourseIcon />}
+            active={currentPath === "/lecturer/course"}
+            component={<Link to={"/lecturer/course"} />}
+          >
+            Khoá học
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<ViTienIcon />}
+            active={currentPath === "/lecturer/walletLecturer"}
+            component={<Link to={"/lecturer/walletLecturer"} />}
+          >
+            Ví tiền
+          </MenuItem>
+          <MenuItem className="text-dark" icon={<TinNhanIcon />} component={<Link to={"/lecturer/chat"} />}>
+            Tin nhắn
+          </MenuItem>
           <SubMenu
             className="text-dark"
             label="Đánh giá"
             icon={<DanhGiaIcon />}
           >
-            <NavLink className="text-dark" to={"/lecturer/courseReviews"}>
-              <MenuItem
-                active={currentPath === "/lecturer/courseReviews"}
-                className="text-dark"
-              >
-                Khóa học
-              </MenuItem>
-            </NavLink>
-            <NavLink className="text-dark" to={"/lecturer/instructorReviews"}>
-              <MenuItem
-                className="text-dark"
-                active={currentPath === "/lecturer/instructorReviews"}
-              >
-                Giảng viên
-              </MenuItem>
-            </NavLink>
+            <MenuItem
+              active={currentPath === "/lecturer/inforLecturers"}
+              className="text-dark"
+              component={<Link to={"/lecturer/courseReviews"} />}
+            >
+              Khóa học
+            </MenuItem>
+            <MenuItem
+              className="text-dark"
+              active={currentPath === "/lecturer/instructorReviews"}
+              component={<Link to={"/lecturer/instructorReviews"} />}
+            >
+              Giảng viên
+            </MenuItem>
           </SubMenu>
         </Menu>
       </Sidebar>

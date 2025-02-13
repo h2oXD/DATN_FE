@@ -4,7 +4,7 @@ import {
   BiPaperclip,
   BiSend,
   BiSearch,
-  BiCircleFill,
+  // BiCircleFill,
 } from "react-icons/bi";
 
 export default function Chat() {
@@ -52,7 +52,7 @@ export default function Chat() {
           <div>
             <h6 className="mb-0 fw-bold">Giảng viên Olivia</h6>
             <p className="mb-0 text-white-50 small d-flex align-items-center">
-              <BiCircleFill className="text-success me-1" size={10} /> Online
+              {/* <BiCircleFill className="text-success me-1" size={10} /> Online */}
             </p>
           </div>
         </div>

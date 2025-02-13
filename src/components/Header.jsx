@@ -1,17 +1,9 @@
-import { useContext } from "react";
 import { CategoriesDropdown, LanguageModal } from "./CategoriesDropdown";
-import { StoreContext } from "../contexts/StoreProvider";
 import UserHeader from "./UserHeader";
 import Cookies from "js-cookie";
 import ButtonAuth from "../pages/Auth/ButtonAuth";
 
 const Header = () => {
-  const { userInfo } = useContext(StoreContext)
-  if (userInfo) {
-    if(userInfo.lecturer_id){
-      Cookies.set('lecturer_id',userInfo.lecturer_id)
-    }
-  }
   const token = Cookies.get('token')
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
