@@ -22,10 +22,11 @@ import Curriculum from "./pages/Lecturer/Course/Curriculum";
 import CourseReviews from "./pages/Lecturer/Reviews/CourseReviews";
 
 import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
-import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
-import Chat from "./pages/Lecturer/Chat/Chat";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
+import Coding from "./pages/Lecturer/Course/Coding";
+import Chat from "./pages/Lecturer/Chat/Chat";
+import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
             <Route path="basic" element={<Basic />} />
             <Route path="goals" element={<Goals />} />
             <Route path="curriculum" element={<Curriculum />} />
+            <Route path="coding" element={<Coding />} />
           </Route>
           <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
 

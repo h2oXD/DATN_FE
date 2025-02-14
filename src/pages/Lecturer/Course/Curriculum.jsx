@@ -1,17 +1,19 @@
 import { useState } from "react";
-import VideoUpload from "./VideoUpload";
+import { NavLink } from "react-router-dom";
 import DocumentUpload from "./DocumentUpload";
+import Quizz from "./Quizz";
+import VideoUpload from "./VideoUpload";
 
 export default function Curriculum() {
   const [showContentOptions, setShowContentOptions] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
   const [showFrameworkItems, setShowFrameworkItems] = useState(false);
   const [showChapterForm, setShowChapterForm] = useState(false);
   const [chapterTitle, setChapterTitle] = useState("");
   const [learningObjectives, setLearningObjectives] = useState("");
   const [lectureTitle, setLectureTitle] = useState("");
   const [showLectureForm, setShowLectureForm] = useState(false);
-
+  const [showForm, setShowForm] = useState(false);
+  const [showFormQuiz, setShowFormQuiz] = useState(false);
   return (
     <>
       <div className="card">
@@ -41,7 +43,7 @@ export default function Curriculum() {
                 </div>
                 <div className="d-flex align-items-center">
                   <button
-                    className="btn border border-dark bg-white text-dark"
+                    className="btn border border-secondary bg-white text-dark"
                     onClick={() => setShowContentOptions(!showContentOptions)}
                   >
                     <i
@@ -49,6 +51,9 @@ export default function Curriculum() {
                         showContentOptions ? "bi-chevron-up" : "bi-chevron-down"
                       }`}
                     ></i>
+                  </button>
+                  <button className="btn border border-secondary bg-white text-dark m-2">
+                    <i className="bi bi-list"></i>
                   </button>
                 </div>
               </div>
@@ -77,14 +82,18 @@ export default function Curriculum() {
                       <i className="bi bi-play-circle"></i> Video
                     </button>
                     <VideoUpload />
+                    <NavLink to="../coding">
+                      <button className="btn btn-light border">
+                        <i className="bi bi-easel"></i> Bài tập coding
+                      </button>
+                    </NavLink>
 
-                    <button className="btn btn-light border">
-                      <i className="bi bi-easel"></i> Bài tập coding
-                    </button>
-                    <button className="btn btn-light border">
+                    <button
+                      className="btn btn-light border"
+                      onClick={() => setShowForm(true)}
+                    >
                       <i className="bi bi-easel"></i> Bài tập trắc nghiệm
                     </button>
-
                     <button
                       className="btn btn-light border"
                       data-bs-toggle="modal"
@@ -94,18 +103,40 @@ export default function Curriculum() {
                     </button>
                     <DocumentUpload />
                   </div>
+                  {showForm && (
+                    <div className="border p-4 mt-3 rounded">
+                      <h5>Tạo bài tập trắc nghiệm:</h5>
+                      <input
+                        type="text"
+                        className="form-control my-2"
+                        placeholder="Nhập tiêu đề"
+                      />
+                      <label>Mô tả</label>
+                      <textarea
+                        className="form-control my-2"
+                        placeholder="Mô tả"
+                      ></textarea>
+                      <div className="d-flex justify-content-end">
+                        <button
+                          className="btn btn-secondary me-2"
+                          onClick={() => setShowForm(false)}
+                        >
+                          Hủy
+                        </button>
+                        <button
+                          className="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#quizzModal"
+                        >
+                          Thêm bài tập
+                        </button>
+                        <Quizz />
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
-              {showDetails && (
-                <div className="mt-2">
-                  <button className="btn btn-outline-primary me-2">
-                    + Mô tả
-                  </button>
-                  <button className="btn btn-outline-primary">
-                    + Tài nguyên
-                  </button>
-                </div>
-              )}
+
               <button
                 className="btn btn-outline-secondary mt-2"
                 onClick={() => setShowFrameworkItems(!showFrameworkItems)}
@@ -121,13 +152,17 @@ export default function Curriculum() {
                   >
                     + Bài giảng
                   </button>
-                  <button className="btn btn-light border">
-                    {" "}
+                  <button
+                    className="btn btn-light border"
+                    onClick={() => setShowFormQuiz(true)}
+                  >
                     + Bài tập trắc nghiệm
                   </button>
-                  <button className="btn btn-light border">
-                    + Bài tập coding
-                  </button>
+                  <NavLink to="../coding">
+                    <button className="btn btn-light border">
+                      + Bài tập coding
+                    </button>
+                  </NavLink>
                   <button
                     className="btn btn-light border"
                     data-bs-toggle="modal"
@@ -136,7 +171,6 @@ export default function Curriculum() {
                     + Tài liệu
                   </button>
                   <DocumentUpload />
-
                   {showLectureForm && (
                     <div className="border p-3 mt-3 bg-white rounded shadow-sm w-100">
                       <h5>Bài giảng mới:</h5>
@@ -158,6 +192,37 @@ export default function Curriculum() {
                         <button className="btn btn-primary">
                           Thêm bài giảng
                         </button>
+                      </div>
+                    </div>
+                  )}
+                  {showFormQuiz && (
+                    <div className="border p-4 mt-3 rounded w-100">
+                      <h5>Tạo bài tập trắc nghiệm:</h5>
+                      <input
+                        type="text"
+                        className="form-control my-2"
+                        placeholder="Nhập tiêu đề"
+                      />
+                      <label>Mô tả</label>
+                      <textarea
+                        className="form-control my-2"
+                        placeholder="Mô tả"
+                      ></textarea>
+                      <div className="d-flex justify-content-end">
+                        <button
+                          className="btn btn-secondary me-2"
+                          onClick={() => setShowFormQuiz(false)}
+                        >
+                          Hủy
+                        </button>
+                        <button
+                          className="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#quizzModal"
+                        >
+                          Thêm bài tập
+                        </button>
+                        <Quizz />
                       </div>
                     </div>
                   )}
