@@ -1,83 +1,124 @@
-// import React from 'react'
-import {
-  FaMedal,
-  FaBook,
-  FaTrophy,
-  FaLightbulb,
-  FaUsers,
-  FaCheckCircle,
-} from "react-icons/fa";
+import { useState } from "react";
+import { FaTimes } from "react-icons/fa";
 
 export default function Goals() {
+  const [goals, setGoals] = useState([""]);
+  const [prereqs, setPrereqs] = useState([""]);
+  const [audience, setAudience] = useState([""]);
+
+  const addInput = (setFunction) => {
+    setFunction((prev) => [...prev, ""]);
+  };
+
+  const removeInput = (setFunction, index, list) => {
+    if (list.length > 1) {
+      setFunction(list.filter((_, i) => i !== index));
+    }
+  };
+
   return (
-    <div className="container mt-4">
-      {/* Tiêu đề */}
-      <div className="text-center">
-        <h2 className="fw-bold">
-          <FaTrophy className="text-success me-2" /> Mục Tiêu Khóa Học
+    <div className="card p-3 mx-3" style={{ width: "800px" }}>
+      <h2 className="text-center mb-3">Mục tiêu học viên</h2>
+      <div className="mb-4">
+        <h2 className="h5 text-secondary">
+          Học viên sẽ học được gì trong khóa học của bạn?
         </h2>
-        <p className="text-muted">
-          Định nghĩa mục tiêu học tập để thu hút học viên tham gia khóa học.
-        </p>
+        <div className="d-flex flex-column gap-2">
+          {goals.map((goal, index) => (
+            <div className="position-relative" key={index}>
+              <input
+                type="text"
+                className="form-control border-black position-relative"
+                placeholder="Nhập mục tiêu..."
+                value={goal}
+                onChange={(e) => {
+                  const newGoals = [...goals];
+                  newGoals[index] = e.target.value;
+                  setGoals(newGoals);
+                }}
+              />
+              <FaTimes
+                className="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary cursor-pointer"
+                style={{ cursor: "pointer" }}
+                onClick={() => removeInput(setGoals, index, goals)}
+              />
+            </div>
+          ))}
+        </div>
+        <button
+          className="btn btn-secondary w-100 mt-2"
+          onClick={() => addInput(setGoals)}
+        >
+          + Thêm mục tiêu
+        </button>
       </div>
 
-      {/* Mục tiêu khóa học */}
-      <div className="card p-3 shadow-sm mb-4">
-        <h5 className="fw-bold">
-          <FaBook className="text-primary me-2" /> Mục Tiêu Học Tập
-        </h5>
-        <ul className="list-group">
-          <li className="list-group-item">
-            <FaCheckCircle className="text-success me-2" /> Hiểu cơ bản về lập
-            trình Python.
-          </li>
-          <li className="list-group-item">
-            <FaCheckCircle className="text-success me-2" /> Xây dựng ứng dụng
-            web với ReactJS.
-          </li>
-          <li className="list-group-item">
-            <FaCheckCircle className="text-success me-2" /> Thành thạo SQL và
-            quản lý dữ liệu.
-          </li>
-        </ul>
+      <div className="mb-4">
+        <h2 className="h5 text-secondary">
+          Yêu cầu hoặc điều kiện tiên quyết để tham gia khóa học?
+        </h2>
+        <div className="d-flex flex-column gap-2">
+          {prereqs.map((prereq, index) => (
+            <div className="position-relative" key={index}>
+              <input
+                type="text"
+                className="form-control border-black position-relative"
+                placeholder="Ví dụ: Không cần kinh nghiệm lập trình.Bạn sẽ học mọi thứ mà bạn cần biết."
+                value={prereq}
+                onChange={(e) => {
+                  const newPrereqs = [...prereqs];
+                  newPrereqs[index] = e.target.value;
+                  setPrereqs(newPrereqs);
+                }}
+              />
+              <FaTimes
+                className="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary cursor-pointer"
+                style={{ cursor: "pointer" }}
+                onClick={() => removeInput(setPrereqs, index, prereqs)}
+              />
+            </div>
+          ))}
+        </div>
+        <button
+          className="btn btn-secondary w-100 mt-2"
+          onClick={() => addInput(setPrereqs)}
+        >
+          + Thêm điều kiện tiên quyết
+        </button>
       </div>
 
-      {/* Yêu cầu đầu vào */}
-      <div className="card p-3 shadow-sm mb-4">
-        <h5 className="fw-bold">
-          <FaUsers className="text-danger me-2" /> Yêu Cầu Tham Gia
-        </h5>
-        <p>Học viên cần có kiến thức cơ bản về toán và tư duy logic.</p>
-        <p>Không yêu cầu kinh nghiệm lập trình trước.</p>
-      </div>
-
-      {/* Đối tượng phù hợp */}
-      <div className="card p-3 shadow-sm mb-4">
-        <h5 className="fw-bold">
-          <FaLightbulb className="text-warning me-2" /> Ai Nên Tham Gia?
-        </h5>
-        <ul className="list-group">
-          <li className="list-group-item">
-            Người mới bắt đầu muốn học lập trình.
-          </li>
-          <li className="list-group-item">
-            Sinh viên CNTT cần kiến thức nền tảng.
-          </li>
-          <li className="list-group-item">
-            Những ai muốn ứng dụng SQL vào công việc.
-          </li>
-        </ul>
-      </div>
-
-      {/* Hệ thống huy hiệu */}
-      <div className="card p-3 shadow-sm mb-4">
-        <h5 className="fw-bold">
-          <FaMedal className="text-warning me-2" /> Huy Hiệu & Chứng Chỉ
-        </h5>
-        <p>
-          Học viên sẽ nhận được chứng chỉ hoàn thành khóa học và huy hiệu thành
-          tích.
-        </p>
+      <div className="mb-4">
+        <h2 className="h5 text-secondary">
+          Khóa học này dành cho đối tượng nào?
+        </h2>
+        <div className="d-flex flex-column gap-2">
+          {audience.map((aud, index) => (
+            <div className="position-relative" key={index}>
+              <input
+                type="text"
+                className="form-control border-black position-relative"
+                placeholder="Ví dụ: Các nhà phát triển Python có trình độ sơ cấp muốn tìm hiểu về khoa học dữ liệu"
+                value={aud}
+                onChange={(e) => {
+                  const newAudience = [...audience];
+                  newAudience[index] = e.target.value;
+                  setAudience(newAudience);
+                }}
+              />
+              <FaTimes
+                className="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary cursor-pointer"
+                style={{ cursor: "pointer" }}
+                onClick={() => removeInput(setAudience, index, audience)}
+              />
+            </div>
+          ))}
+        </div>
+        <button
+          className="btn btn-secondary w-100 mt-2"
+          onClick={() => addInput(setAudience)}
+        >
+          + Thêm đối tượng
+        </button>
       </div>
     </div>
   );
