@@ -46,7 +46,7 @@ export default function Goals() {
           ))}
         </div>
         <button
-          className="btn btn-secondary w-100 mt-2"
+          className="btn btn-outline-primary w-100 mt-2"
           onClick={() => addInput(setGoals)}
         >
           + Thêm mục tiêu
@@ -80,7 +80,7 @@ export default function Goals() {
           ))}
         </div>
         <button
-          className="btn btn-secondary w-100 mt-2"
+          className="btn btn-outline-primary w-100 mt-2"
           onClick={() => addInput(setPrereqs)}
         >
           + Thêm điều kiện tiên quyết
@@ -114,7 +114,7 @@ export default function Goals() {
           ))}
         </div>
         <button
-          className="btn btn-secondary w-100 mt-2"
+          className="btn btn-outline-primary w-100 mt-2"
           onClick={() => addInput(setAudience)}
         >
           + Thêm đối tượng
