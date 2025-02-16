@@ -15,4 +15,7 @@ const getCategories = async () => {
 const getTags = async () => {
     return await axiosClient.get(`/tags`)
 }
-export {getUser , login , register , getCategories , getTags}
+const showCourseBasic = async (id) => {
+    return await axiosClient.get(`/lecturer/courses/`+id)
+}
+export {getUser , login , register , getCategories , getTags , showCourseBasic}
