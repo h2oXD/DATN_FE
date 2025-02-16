@@ -76,7 +76,7 @@ export default function Edit() {
                 </div>
 
                 {/* Cột phải - Nội dung */}
-                <div className="">
+                <div className="w-100">
 
                     <Outlet />
 
