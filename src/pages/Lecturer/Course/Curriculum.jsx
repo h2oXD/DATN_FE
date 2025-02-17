@@ -1,16 +1,15 @@
 import { useState } from "react";
 // import DocumentUpload from "./DocumentUpload";
-import Quizz from "./Quizz";
 // import VideoUpload from "./VideoUpload";
 import { Modal } from "antd";
-// import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ReactQuill from "react-quill";
 
 export default function Curriculum() {
   // const [showContentOptions, setShowContentOptions] = useState(false);
   const [showFrameworkItems, setShowFrameworkItems] = useState(false);
   const [chapterTitle, setChapterTitle] = useState("");
   const [learningObjectives, setLearningObjectives] = useState("");
-  const [lectureTitle, setLectureTitle] = useState("");
+  // const [lectureTitle, setLectureTitle] = useState("");
   const [showLectureForm, setShowLectureForm] = useState(false);
   // const [showForm, setShowForm] = useState(false);
   const [showFormQuiz, setShowFormQuiz] = useState(false);
@@ -18,6 +17,23 @@ export default function Curriculum() {
   const [isModalCodingOpen, setIsModalCodingOpen] = useState(false);
   const [showButtonLesson, setShowButtonLesson] = useState(true);
   const [showFormDocument, setShowFormDocument] = useState(false);
+
+  //Tạo video bài giảng
+  const [value, setValue] = useState('');
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);
+  const handleThumbnailChange = (event) => {
+    const file = event.target.files[0];
+    // Tạo URL preview cho thumbnail
+    const url = URL.createObjectURL(file);
+    setVideoPreviewUrl(url);
+  };
+
+  const handleChange = (content) => {
+    setValue(content);
+  };
+
+  //Tài liệu
+
   return (
     <>
       <div className="card p-3">
@@ -153,18 +169,180 @@ export default function Curriculum() {
                   >
                     + Video bài giảng
                   </button>
+                  <Modal
+                    width={1000}
+                    open={showLectureForm}
+                    onCancel={() => {
+                      setShowLectureForm(false); // Đóng modal
+                      // formik.resetForm(); // Xoá message validate khi đóng modal
+                    }}
+                    footer={null} // Ẩn nút OK & Cancel mặc định
+                  >
+                    <h3 className="mb-3">Thêm video bài giảng</h3>
+                    <form className="row">
+                      <div className="col-lg-6 col-12">
+                        <div className="mb-3">
+                          <label htmlFor="title" className="form-label">
+                            Tên bài tập
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="title"
+                            placeholder="Nhập tên bài tập"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label htmlFor="description" className="form-label">
+                            Mô tả
+                          </label>
+                          <ReactQuill
+                            value={value}
+                            onChange={handleChange}
+                            modules={{
+                              toolbar: [
+                                ['bold', 'italic'], // Các nút định dạng
+                              ],
+                            }}
+                          />
+                        </div>
+
+                      </div>
+                      <div className="col-lg-6 col-12">
+                        <div className="mb-3">
+                          <label htmlFor="description" className="form-label">
+                            Tải lên video
+                          </label>
+                          <input className="form-control" type="file" name="video_url" id="video_url" />
+                        </div>
+                        <div className="mb-3">
+                          <label htmlFor="video" className="form-label" onChange={handleThumbnailChange}>
+                            Video
+                          </label>
+                          {videoPreviewUrl ? <video src={videoPreviewUrl}></video> : <img src="/placeholder.jpg" alt="" className="w-100 rounded border" />}
+                          
+                        </div>
+                      </div>
+                      <div className="col-12">
+                        <div className="d-flex justify-content-end">
+                          <button type="submit" className="btn btn-primary">
+                            Hoàn tất
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </Modal>
                   <button
                     className="btn btn-sm btn-outline-primary mx-1 border"
                     onClick={() => { setShowFormQuiz(!showFormQuiz); setShowLectureForm(false); setShowFormDocument(false) }}
                   >
                     + Bài tập trắc nghiệm
                   </button>
+                  <Modal
+                    open={showFormQuiz}
+                    onCancel={() => {
+                      setShowFormQuiz(false); // Đóng modal
+                      // formik.resetForm(); // Xoá message validate khi đóng modal
+                    }}
+                    footer={null} // Ẩn nút OK & Cancel mặc định
+                  >
+                    <h3 className="mb-3">Tạo bài tập trắc nghiệm</h3>
+                    <form>
+                      <div className="mb-3">
+                        <label htmlFor="title" className="form-label">
+                          Tên bài tập
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="title"
+                          placeholder="Nhập tên bài tập"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="description" className="form-label">
+                          Mô tả
+                        </label>
+                        <textarea
+                          className="form-control"
+                          id="description"
+                          rows="1"
+                          placeholder="Nhập mô tả"
+                        ></textarea>
+                      </div>
+
+                      <div className="d-flex justify-content-end">
+                        <button type="reset" className="btn btn-danger me-2">
+                          Hủy
+                        </button>
+                        <button type="submit" className="btn btn-primary">
+                          Tiếp theo
+                        </button>
+                      </div>
+                    </form>
+                  </Modal>
                   <button
                     className="btn btn-sm btn-outline-primary mx-1 border"
                     onClick={() => { setShowFormDocument(!showFormDocument); setShowLectureForm(false); setShowFormQuiz(false) }}
                   >
                     + Tài liệu
                   </button>
+                  <Modal
+                    width={1000}
+                    open={showFormDocument}
+                    onCancel={() => {
+                      setShowFormDocument(false); // Đóng modal
+                      // formik.resetForm(); // Xoá message validate khi đóng modal
+                    }}
+                    footer={null}
+                  >
+                    <h3 className="mb-3">Tạo tài liệu</h3>
+                    <form className="row">
+                      <div className="col-lg-6 col-12">
+                        <div className="mb-3">
+                          <label htmlFor="title" className="form-label">
+                            Tiêu đề
+                          </label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="title"
+                            placeholder="Nhập tên bài tập"
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label htmlFor="description" className="form-label">
+                            Mô tả
+                          </label>
+                          <ReactQuill
+                            value={value}
+                            onChange={handleChange}
+                            modules={{
+                              toolbar: [
+                                ['bold', 'italic'], // Các nút định dạng
+                              ],
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-12">
+                        <div className="mb-3">
+                          <label htmlFor="document_url" className="form-label">
+                            Tải lên tài liệu
+                          </label>
+                          <input type="file" className="form-control" />
+                        </div>
+                        <div className="mb-3">
+
+                        </div>
+                      </div>
+                      <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-primary">
+                          Hoàn tất
+                        </button>
+                      </div>
+                    </form>
+                  </Modal>
                   <button className="btn btn-sm btn-outline-primary mx-1 border"
                     onClick={() => { setIsModalCodingOpen(true) }}
                   >
@@ -225,93 +403,12 @@ export default function Curriculum() {
                 </div>
                 <button
                   className="btn btn-sm btn-sm btn-outline-light text-dark border"
-                  onClick={() => { setShowFrameworkItems(!showFrameworkItems); setShowButtonLesson(true); setShowLectureForm(false); setShowFormQuiz(false); setShowFormDocument(false) }}
+                  onClick={() => { setShowFrameworkItems(!showFrameworkItems); }}
                 >
                   ✖
                 </button>
               </div>
             )}
-            {showLectureForm && (
-              <div className="border p-3 mt-2 bg-white rounded w-100">
-                <h5>Tiêu đề của video bài giảng</h5>
-                <input
-                  type="text"
-                  className="form-control mt-2"
-                  placeholder="Nhập tiêu đề"
-                  value={lectureTitle}
-                  onChange={(e) => setLectureTitle(e.target.value)}
-                  maxLength={80}
-                />
-                <div className="d-flex justify-content-end mt-3">
-                  <button
-                    className="btn btn-sm btn-danger me-2"
-                    onClick={() => setShowLectureForm(false)}
-                  >
-                    Hủy
-                  </button>
-                  <button className="btn btn-sm btn-primary">
-                    Thêm bài giảng
-                  </button>
-                </div>
-              </div>
-            )}
-            {showFormQuiz && (
-              <div className="border p-3 mt-2 bg-white rounded w-100">
-                <h5>Tạo bài tập trắc nghiệm:</h5>
-                <input
-                  type="text"
-                  className="form-control my-2"
-                  placeholder="Nhập tiêu đề"
-                />
-                <label>Mô tả</label>
-                <textarea
-                  className="form-control my-2"
-                  placeholder="Mô tả"
-                ></textarea>
-                <div className="d-flex justify-content-end">
-                  <button
-                    className="btn btn-sm btn-danger me-2"
-                    onClick={() => setShowFormQuiz(false)}
-                  >
-                    Hủy
-                  </button>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#quizzModal"
-                  >
-                    Thêm bài tập
-                  </button>
-                  <Quizz />
-                </div>
-              </div>
-            )}
-            {showFormDocument && (
-              <div className="border p-3 mt-2 bg-white rounded w-100">
-                <div className="mb-3">
-                  <label className="form-label">Tiêu đề tài liệu</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Nhập tiêu đề..."
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Mô tả</label>
-                  <textarea
-                    className="form-control"
-                    placeholder="Nhập mô tả..."
-                  ></textarea>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Tải lên tài liệu</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
-                  />
-                </div>
-              </div>)}
           </div>
         </div>
 
