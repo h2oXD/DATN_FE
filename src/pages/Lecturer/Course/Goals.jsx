@@ -17,10 +17,10 @@ export default function Goals() {
   };
 
   return (
-    <div className="card p-3 mx-3" style={{ width: "800px" }}>
+    <div className="card p-3" style={{ width: "800px" }}>
       <h2 className="text-center mb-3">Mục tiêu học viên</h2>
       <div className="mb-4">
-        <h2 className="h5 text-secondary">
+        <h2 className="h5 text-dark">
           Học viên sẽ học được gì trong khóa học của bạn?
         </h2>
         <div className="d-flex flex-column gap-2">
@@ -28,7 +28,7 @@ export default function Goals() {
             <div className="position-relative" key={index}>
               <input
                 type="text"
-                className="form-control border-black position-relative"
+                className="form-control"
                 placeholder="Nhập mục tiêu..."
                 value={goal}
                 onChange={(e) => {
@@ -38,7 +38,7 @@ export default function Goals() {
                 }}
               />
               <FaTimes
-                className="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary cursor-pointer"
+                className="position-absolute top-50 end-0 translate-middle-y me-2 text-dark cursor-pointer"
                 style={{ cursor: "pointer" }}
                 onClick={() => removeInput(setGoals, index, goals)}
               />
@@ -46,7 +46,7 @@ export default function Goals() {
           ))}
         </div>
         <button
-          className="btn btn-outline-primary w-100 mt-2"
+          className="btn btn-outline-primary tw-border-none mt-2"
           onClick={() => addInput(setGoals)}
         >
           + Thêm mục tiêu
@@ -54,7 +54,7 @@ export default function Goals() {
       </div>
 
       <div className="mb-4">
-        <h2 className="h5 text-secondary">
+        <h2 className="h5 text-dark">
           Yêu cầu hoặc điều kiện tiên quyết để tham gia khóa học?
         </h2>
         <div className="d-flex flex-column gap-2">
@@ -62,7 +62,7 @@ export default function Goals() {
             <div className="position-relative" key={index}>
               <input
                 type="text"
-                className="form-control border-black position-relative"
+                className="form-control"
                 placeholder="Ví dụ: Không cần kinh nghiệm lập trình.Bạn sẽ học mọi thứ mà bạn cần biết."
                 value={prereq}
                 onChange={(e) => {
@@ -72,7 +72,7 @@ export default function Goals() {
                 }}
               />
               <FaTimes
-                className="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary cursor-pointer"
+                className="position-absolute top-50 end-0 translate-middle-y me-2 text-dark cursor-pointer"
                 style={{ cursor: "pointer" }}
                 onClick={() => removeInput(setPrereqs, index, prereqs)}
               />
@@ -80,7 +80,7 @@ export default function Goals() {
           ))}
         </div>
         <button
-          className="btn btn-outline-primary w-100 mt-2"
+          className="btn btn-outline-primary tw-border-none mt-2"
           onClick={() => addInput(setPrereqs)}
         >
           + Thêm điều kiện tiên quyết
@@ -88,15 +88,13 @@ export default function Goals() {
       </div>
 
       <div className="mb-4">
-        <h2 className="h5 text-secondary">
-          Khóa học này dành cho đối tượng nào?
-        </h2>
+        <h2 className="h5 text-dark">Khóa học này dành cho đối tượng nào?</h2>
         <div className="d-flex flex-column gap-2">
           {audience.map((aud, index) => (
             <div className="position-relative" key={index}>
               <input
                 type="text"
-                className="form-control border-black position-relative"
+                className="form-control"
                 placeholder="Ví dụ: Các nhà phát triển Python có trình độ sơ cấp muốn tìm hiểu về khoa học dữ liệu"
                 value={aud}
                 onChange={(e) => {
@@ -106,7 +104,7 @@ export default function Goals() {
                 }}
               />
               <FaTimes
-                className="position-absolute top-50 end-0 translate-middle-y me-2 text-secondary cursor-pointer"
+                className="position-absolute top-50 end-0 translate-middle-y me-2 text-dark cursor-pointer"
                 style={{ cursor: "pointer" }}
                 onClick={() => removeInput(setAudience, index, audience)}
               />
@@ -114,7 +112,7 @@ export default function Goals() {
           ))}
         </div>
         <button
-          className="btn btn-outline-primary w-100 mt-2"
+          className="btn btn-outline-primary tw-border-none mt-2"
           onClick={() => addInput(setAudience)}
         >
           + Thêm đối tượng

@@ -12,10 +12,10 @@ const register = async (values) => {
 const getCategories = async () => {
     return await axiosClient.get(`/categories`)
 }
-const getTags = async () => {
-    return await axiosClient.get(`/tags`)
-}
+// const getTags = async () => {
+//     return await axiosClient.get(`/tags`)
+// }
 const showCourseBasic = async (id) => {
     return await axiosClient.get(`/lecturer/courses/`+id)
 }
-export {getUser , login , register , getCategories , getTags , showCourseBasic}
+export {getUser , login , register , getCategories , showCourseBasic}
