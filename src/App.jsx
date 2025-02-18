@@ -30,6 +30,7 @@ import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
 import HomeStudent from "./pages/Student/HomeStudent";
+import Dashboard from "./pages/Student/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         {/* Học Viên */}
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
+          <Route path="/student/dashboard" element={<Dashboard />} />
         </Route>
 
         {/* Giảng Viên */}
