@@ -29,6 +29,8 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
+import HomeStudent from "./pages/Student/HomeStudent";
+import Dashboard from "./pages/Student/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -43,14 +45,29 @@ function App() {
 
         {/* Học Viên */}
         <Route path="/student" element={<StudentLayout />}>
-          <Route index element={<Home />} />
+          <Route index element={<HomeStudent />} />
+          <Route path="/student/dashboard" element={<Dashboard />} />
         </Route>
 
         {/* Giảng Viên */}
-        <Route path="/lecturer" element={<LecturerProvider><LecturerLayout /></LecturerProvider>}>
+        <Route
+          path="/lecturer"
+          element={
+            <LecturerProvider>
+              <LecturerLayout />
+            </LecturerProvider>
+          }
+        >
           <Route index element={<HomeLecturer />} />
           <Route path="/lecturer/course" element={<List />} />
-          <Route path="/lecturer/course/:course_id/edit" element={<CourseProvider><Edit /></CourseProvider>}>
+          <Route
+            path="/lecturer/course/:course_id/edit"
+            element={
+              <CourseProvider>
+                <Edit />
+              </CourseProvider>
+            }
+          >
             <Route index element={<Navigate to="basic" replace />} />
             <Route path="basic" element={<Basic />} />
             <Route path="goals" element={<Goals />} />
