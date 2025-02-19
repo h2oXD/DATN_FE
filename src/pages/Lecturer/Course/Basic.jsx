@@ -10,7 +10,7 @@ import { getImageUrl } from "../../../api/common";
 import { toast } from "react-toastify";
 
 export default function Basic() {
-    const { course_id } = useParams()
+    const { course_id } = useParams();
     const formRef = useRef(null);
     const { courseData, loading, error } = useCourseContext(); // Sử dụng custom hook
     const { categories } = useLecturerContext();
@@ -18,16 +18,16 @@ export default function Basic() {
     const [selectedThumbnail, setSelectedThumbnail] = useState(null);
     const [selectedVideoPreview, setSelectedVideoPreview] = useState(null);
     const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState(null); // Thêm state cho URL preview của thumbnail
-    const [videoPreviewUrl, setVideoPreviewUrl] = useState(null);     // Thêm state cho URL preview của video
-
+    const [videoPreviewUrl, setVideoPreviewUrl] = useState(null); // Thêm state cho URL preview của video
+    const [isFreeCourse, setIsFreeCourse] = useState(false);
     const [serverErrors, setServerErrors] = useState({});
 
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleThumbnailChange = (event) => {
         const file = event.target.files[0];
         setSelectedThumbnail(file);
-        formik.setFieldValue('thumbnail', file);
+        formik.setFieldValue("thumbnail", file);
 
         // Tạo URL preview cho thumbnail
         const url = URL.createObjectURL(file);
@@ -37,7 +37,7 @@ export default function Basic() {
     const handleVideoPreviewChange = (event) => {
         const file = event.target.files[0];
         setSelectedVideoPreview(file);
-        formik.setFieldValue('videoPreview', file);
+        formik.setFieldValue("videoPreview", file);
 
         // Tạo URL preview cho video
         const url = URL.createObjectURL(file);
@@ -67,15 +67,17 @@ export default function Basic() {
 
         validationSchema: Yup.object({
             title: Yup.string(),
-            description: Yup.string()
-                .min(2, "Mô tả phải dài ít nhất 200 từ"),
+            description: Yup.string().min(2, "Mô tả phải dài ít nhất 200 từ"),
             price_regular: Yup.number()
                 .typeError("Giá phải là số")
                 .positive("Giá phải lớn hơn 0"),
             price_sale: Yup.number()
                 .typeError("Giá khuyến mãi phải là số")
                 .positive("Giá phải lớn hơn 0")
-                .lessThan(Yup.ref('price_regular'), "Giá khuyến mãi phải nhỏ hơn giá gốc"),
+                .lessThan(
+                    Yup.ref("price_regular"),
+                    "Giá khuyến mãi phải nhỏ hơn giá gốc"
+                ),
             language: Yup.string(),
             level: Yup.string(),
             category_id: Yup.string(),
@@ -83,18 +85,22 @@ export default function Basic() {
             // Các trường khác nếu cần validate
         }),
         onSubmit: async (values) => {
-            setIsSubmitting(true)
-            values._method = 'PUT'
+            setIsSubmitting(true);
+            values._method = "PUT";
             console.log(values);
 
             try {
-                const res = await axiosClient.post('/lecturer/courses/' + course_id, values, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
+                const res = await axiosClient.post(
+                    "/lecturer/courses/" + course_id,
+                    values,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
                 console.log(res);
-                toast.success('Cập nhật thành công')
+                toast.success("Cập nhật thành công");
             } catch (error) {
                 setServerErrors(error.response.data.errors);
             } finally {
@@ -105,13 +111,13 @@ export default function Basic() {
 
     if (loading) {
         return (
-            <div>
+            <div className="card p-5">
                 <Skeleton active />
                 <Skeleton active />
                 <Skeleton active />
                 <Skeleton active />
             </div>
-        ); // Hiển thị loading
+        );
     }
 
     if (error) {
@@ -121,27 +127,7 @@ export default function Basic() {
     if (!course) {
         return <div>Không có dữ liệu khóa học.</div>; // Xử lý trường hợp không có dữ liệu
     }
-    // if (course) {
-    //     const loadTinyMCE = () => {
-    //         const script = document.createElement("script");
-    //         script.src =
-    //             "https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.6.0/tinymce.min.js";
-    //         script.integrity =
-    //             "sha512-/4EpSbZW47rO/cUIb0AMRs/xWwE8pyOLf8eiDWQ6sQash5RP1Cl8Zi2aqa4QEufjeqnzTK8CLZWX7J5ZjLcc1Q==";
-    //         script.crossOrigin = "anonymous";
-    //         script.referrerPolicy = "no-referrer";
-    //         script.onload = () => {
-    //             window.tinymce.init({
-    //                 selector: "textarea#descriptions",
-    //                 license_key: "gpl", // Consider removing or replacing this if not needed
-    //                 height: 250,
-    //                 menubar: false,
-    //             });
-    //         };
-    //         document.body.appendChild(script);
-    //     };
-    //     loadTinyMCE();
-    // }
+
     return (
         <>
             <div className="card">
@@ -152,11 +138,21 @@ export default function Basic() {
                     <div>
                         {isSubmitting ? (
                             <button className="btn btn-sm btn-primary" type="button" disabled>
-                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                               
+                                <span
+                                    className="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                ></span>
                             </button>
-                        ) : <button type="submit" className="btn btn-sm btn-primary" onClick={() => formRef.current.requestSubmit()}>Lưu</button>}
-                        
+                        ) : (
+                            <button
+                                type="submit"
+                                className="btn btn-sm btn-primary"
+                                onClick={() => formRef.current.requestSubmit()}
+                            >
+                                Lưu
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="card-body">
@@ -198,36 +194,67 @@ export default function Basic() {
                             ></textarea>
                             <small>Mô tả phải dài ít nhất là 200 từ.</small>
                         </div>
-                        <div className="col-6 mb-3">
-                            <label htmlFor="" className="fw-bold">
-                                Mức giá thông thường
-                            </label>
-                            <input
-                                placeholder="Nhập giá tiền"
-                                className="form-control"
-                                type="number"
-                                name="price_regular"
-                                id="price_regular"
-                                value={formik.values.price_regular}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
+                        <div className="col-12 mb-3">
+                            <div className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="isFreeCourse"
+                                    checked={isFreeCourse}
+                                    onChange={() => setIsFreeCourse(!isFreeCourse)}
+                                />
+                                <label className="form-check-label" htmlFor="isFreeCourse">
+                                    Khóa học miễn phí
+                                </label>
+                            </div>
                         </div>
-                        <div className="col-6 mb-3">
-                            <label htmlFor="" className="fw-bold">
-                                Mức giá khuyến mãi
-                            </label>
-                            <input
-                                type="number"
-                                placeholder="Nhập giá khuyến mãi"
-                                className="form-control"
-                                name="price_sale"
-                                id="price_sale"
-                                value={formik.values.price_sale}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
-                        </div>
+                        {!isFreeCourse && (
+                            <>
+                                <div className="col-6 mb-3">
+                                    <label htmlFor="" className="fw-bold">
+                                        Mức giá thông thường
+                                    </label>
+                                    <input
+                                        min={1}
+                                        placeholder="Nhập giá tiền"
+                                        className="form-control"
+                                        type="number"
+                                        name="price_regular"
+                                        id="price_regular"
+                                        value={formik.values.price_regular}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    {formik.touched.price_regular &&
+                                        formik.errors.price_regular && (
+                                            <div className="invalid-feedback">
+                                                {formik.errors.price_regular}
+                                            </div>
+                                        )}
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <label htmlFor="" className="fw-bold">
+                                        Mức giá khuyến mãi
+                                    </label>
+                                    <input
+                                        min={0}
+                                        type="number"
+                                        placeholder="Nhập giá khuyến mãi"
+                                        className="form-control"
+                                        name="price_sale"
+                                        id="price_sale"
+                                        value={formik.values.price_sale}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                    />
+                                    {formik.touched.price_sale && formik.errors.price_sale && (
+                                        <div className="invalid-feedback">
+                                            {formik.errors.price_sale}
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
                         <div className="col-12 mb-3">
                             <label htmlFor="" className="fw-bold">
                                 Thông tin cơ bản
@@ -308,11 +335,23 @@ export default function Basic() {
                                         </label>
                                         {/* Hiển thị preview của thumbnail */}
                                         {thumbnailPreviewUrl ? (
-                                            <img src={thumbnailPreviewUrl} alt="Thumbnail Preview" className="w-100 rounded border mb-2" />
+                                            <img
+                                                src={thumbnailPreviewUrl}
+                                                alt="Thumbnail Preview"
+                                                className="w-100 rounded border mb-2"
+                                            />
                                         ) : course.thumbnail ? (
-                                            <img src={getImageUrl(course.thumbnail)} alt="ảnh khoá học" className="w-100 rounded border" />
+                                            <img
+                                                src={getImageUrl(course.thumbnail)}
+                                                alt="ảnh khoá học"
+                                                className="w-100 rounded border"
+                                            />
                                         ) : (
-                                            <img src="/default-thumbnail.jpg" alt="ảnh khoá học" className="w-100 rounded border" />
+                                            <img
+                                                src="/default-thumbnail.jpg"
+                                                alt="ảnh khoá học"
+                                                className="w-100 rounded border"
+                                            />
                                         )}
                                     </div>
                                     <div className="col-6 mt-3">
@@ -322,8 +361,13 @@ export default function Basic() {
                                             Hướng dẫn quan trọng: 750x422 pixel; .jpg, .jpeg,. gif,
                                             hoặc .png. và không có chữ trên hình ảnh.
                                         </p>
-                                        <input type="file" name="thumbnail" className="form-control" id="thumbnail" onChange={handleThumbnailChange} />
-
+                                        <input
+                                            type="file"
+                                            name="thumbnail"
+                                            className="form-control"
+                                            id="thumbnail"
+                                            onChange={handleThumbnailChange}
+                                        />
                                     </div>
                                 </div>
                                 <div className="col-12 row mb-3">
@@ -333,15 +377,26 @@ export default function Basic() {
                                         </label>
                                         {/* Hiển thị preview của video */}
                                         {videoPreviewUrl ? (
-                                            <video src={videoPreviewUrl} controls className="w-100 rounded border mb-2" />
+                                            <video
+                                                src={videoPreviewUrl}
+                                                controls
+                                                className="w-100 rounded border mb-2"
+                                            />
                                         ) : course.video_preview ? (
-                                            <video className="w-100" controls src={getImageUrl(course.video_preview)}></video>
-                                            // <ReactPlayer url={getImageUrl(course.video_preview)} controls={true} width="100%" />
+                                            <video
+                                                className="w-100"
+                                                controls
+                                                src={getImageUrl(course.video_preview)}
+                                            ></video>
                                         ) : (
-                                            <img src="/default-thumbnail.jpg" alt="ảnh khoá học" className="w-100 rounded border" />
+                                            // <ReactPlayer url={getImageUrl(course.video_preview)} controls={true} width="100%" />
+                                            <img
+                                                src="/default-thumbnail.jpg"
+                                                alt="ảnh khoá học"
+                                                className="w-100 rounded border"
+                                            />
                                         )}
                                     </div>
-
 
                                     <div className="col-6 mt-3">
                                         <p>
@@ -350,17 +405,34 @@ export default function Basic() {
                                             Hướng dẫn quan trọng: 750x422 pixel; .jpg, .jpeg,. gif,
                                             hoặc .png. và không có chữ trên hình ảnh.
                                         </p>
-                                        <input type="file" name="video_preview" className="form-control" id="video_preview" onChange={handleVideoPreviewChange} />
-                                        {serverErrors.video_preview && <span className="text-danger">{serverErrors.video_preview[0]}</span>}
+                                        <input
+                                            type="file"
+                                            name="video_preview"
+                                            className="form-control"
+                                            id="video_preview"
+                                            onChange={handleVideoPreviewChange}
+                                        />
+                                        {serverErrors.video_preview && (
+                                            <span className="text-danger">
+                                                {serverErrors.video_preview[0]}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                                 <div>
                                     {isSubmitting ? (
                                         <button className="btn btn-primary" type="button" disabled>
-                                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                            <span
+                                                className="spinner-border spinner-border-sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></span>
                                         </button>
-                                    ) : <button type="submit" className="btn btn-primary">Lưu</button>}
-
+                                    ) : (
+                                        <button type="submit" className="btn btn-primary">
+                                            Lưu
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

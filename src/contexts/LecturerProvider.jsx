@@ -7,43 +7,9 @@ import axiosClient from "../api/axios";
 const LecturerContext = createContext();
 
 export const LecturerProvider = ({ children }) => {
-    const [courseData, setCourseData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
     const [categories, setCategories] = useState([]);
     const [loadingCategories, setLoadingCategories] = useState(true); 
     const [errorCategories, setErrorCategories] = useState(null);
-
-    useEffect(() => {
-        let isMounted = true;
-
-        const fetchData = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await axiosClient.get("lecturer/courses"); // API bạn muốn gọi
-                if (isMounted) {
-                    setCourseData(res.data);
-                }
-            } catch (error) {
-                console.error(error);
-                if (isMounted) {
-                    setError(error);
-                }
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchData();
-
-        return () => {
-            isMounted = false;
-        };
-    },[]);
 
     useEffect(() => {
         let isMounted = true;
@@ -76,9 +42,6 @@ export const LecturerProvider = ({ children }) => {
     }, []);
 
     const contextValue = {
-        courseData,
-        loading,
-        error,
         categories,        
         loadingCategories,
         errorCategories,   

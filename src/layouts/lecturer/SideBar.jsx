@@ -2,6 +2,8 @@
 // import React from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
+import { LiaQuestionSolid } from "react-icons/lia";
+
 import {
   CourseIcon,
   DanhGiaIcon,
@@ -104,6 +106,9 @@ export default function SideBar({ collapsed }) {
               Giảng viên
             </MenuItem>
           </SubMenu>
+          <MenuItem className="text-dark" icon={<LiaQuestionSolid className="tw-size-7" />} component={<Link to={"/lecturer/quiz"} />}>
+            Bộ câu hỏi trắc nghiệm
+          </MenuItem>
         </Menu>
       </Sidebar>
     </>
