@@ -9,13 +9,13 @@ const login = async (values) => {
 const register = async (values) => {
     return await axiosClient.post(`/register`,values)
 }
-const getCategories = async () => {
-    return await axiosClient.get(`/categories`)
-}
-// const getTags = async () => {
-//     return await axiosClient.get(`/tags`)
-// }
 const showCourseBasic = async (id) => {
     return await axiosClient.get(`/lecturer/courses/`+id)
 }
-export {getUser , login , register , getCategories , showCourseBasic}
+const getCourseData = async (id) => {
+    return await axiosClient.get(`/lecturer/courses/${id}`)
+}
+const createSection = async (id, data) => {
+    return await axiosClient.post(`/lecturer/courses/${id}/sections`,data)
+}
+export {getUser , login , register  , showCourseBasic, createSection, getCourseData}
