@@ -27,6 +27,7 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 // import Coding from "./pages/Lecturer/Course/Coding";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
+import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import Chat from "./pages/Lecturer/Chat/Chat";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
@@ -60,14 +61,8 @@ function App() {
         >
           <Route index element={<HomeLecturer />} />
           <Route path="/lecturer/course" element={<List />} />
-          <Route
-            path="/lecturer/course/:course_id/edit"
-            element={
-              <CourseProvider>
-                <Edit />
-              </CourseProvider>
-            }
-          >
+          <Route path="/lecturer/quiz" element={<ListQuiz />} />
+          <Route path="/lecturer/course/:course_id/edit" element={<CourseProvider><Edit /></CourseProvider>}>
             <Route index element={<Navigate to="basic" replace />} />
             <Route path="basic" element={<Basic />} />
             <Route path="goals" element={<Goals />} />
