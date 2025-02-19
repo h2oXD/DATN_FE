@@ -1,23 +1,23 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import GuestLayout from "./layouts/GuestLayout";
-import Home from "./pages/Guest/Home";
-import CourseDetail from "./pages/Guest/CourseDetail";
-import StudentLayout from "./layouts/StudentLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
-import PageNotFound from "./pages/PageNotFound";
+import StudentLayout from "./layouts/StudentLayout";
+import CourseDetail from "./pages/Guest/CourseDetail";
 import CourseList from "./pages/Guest/CourseList";
-import HomeLecturer from "./pages/Lecturer/HomeLecturer";
-import List from "./pages/Lecturer/Course/List";
+import Home from "./pages/Guest/Home";
 import Edit from "./pages/Lecturer/Course/Edit";
+import List from "./pages/Lecturer/Course/List";
+import HomeLecturer from "./pages/Lecturer/HomeLecturer";
 import InforLecturer from "./pages/Lecturer/Infor/InforLecturer";
 import InforStudent from "./pages/Lecturer/Infor/InforStudent";
+import PageNotFound from "./pages/PageNotFound";
 
 import WalletLecturer from "./pages/Lecturer/Wallet/WalletLecturer";
 
-import Goals from "./pages/Lecturer/Course/Goals";
 import Basic from "./pages/Lecturer/Course/Basic";
 import Curriculum from "./pages/Lecturer/Course/Curriculum";
+import Goals from "./pages/Lecturer/Course/Goals";
 
 import CourseReviews from "./pages/Lecturer/Reviews/CourseReviews";
 
@@ -25,11 +25,13 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 // import Coding from "./pages/Lecturer/Course/Coding";
-import Chat from "./pages/Lecturer/Chat/Chat";
-import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
 import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
+import Chat from "./pages/Lecturer/Chat/Chat";
+import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
+import HomeStudent from "./pages/Student/HomeStudent";
+import OverView from "./pages/Student/OverView/OverView";
 
 function App() {
   return (
@@ -44,11 +46,19 @@ function App() {
 
         {/* Học Viên */}
         <Route path="/student" element={<StudentLayout />}>
-          <Route index element={<Home />} />
+          <Route index element={<HomeStudent />} />
+          <Route path="/student/overview" element={<OverView />} />
         </Route>
 
         {/* Giảng Viên */}
-        <Route path="/lecturer" element={<LecturerProvider><LecturerLayout /></LecturerProvider>}>
+        <Route
+          path="/lecturer"
+          element={
+            <LecturerProvider>
+              <LecturerLayout />
+            </LecturerProvider>
+          }
+        >
           <Route index element={<HomeLecturer />} />
           <Route path="/lecturer/course" element={<List />} />
           <Route path="/lecturer/quiz" element={<ListQuiz />} />
