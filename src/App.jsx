@@ -32,6 +32,8 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
+import RegisterTeacher from "./components/RegisterTeacher";
+import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
 
 function App() {
   return (
@@ -48,6 +50,14 @@ function App() {
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
           <Route path="/student/overview" element={<OverView />} />
+          <Route
+            path="/student/registerTeacher"
+            element={<RegisterTeacher />}
+          />
+          <Route
+            path="/student/formRegisterTeacher"
+            element={<FormRegisterTeacher />}
+          />
         </Route>
 
         {/* Giảng Viên */}

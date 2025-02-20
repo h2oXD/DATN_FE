@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 export default function FormRegisterTeacher() {
   const [step, setStep] = useState(1);
-  const [avatar, setAvatar] = useState(null);
-  const [certificate, setCertificate] = useState(null);
+  const avatarRef = useRef(null);
+  const certificateRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -28,8 +30,51 @@ export default function FormRegisterTeacher() {
         .matches(/^[0-9]{10,11}$/, "Số điện thoại không hợp lệ!")
         .required("Vui lòng nhập số điện thoại"),
     }),
-    onSubmit: (values) => {
-      console.log("Dữ liệu đăng ký:", { ...values, avatar, certificate });
+    onSubmit: async (values) => {
+      setLoading(true);
+      setMessage(null);
+
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("email", values.email);
+      formData.append("phone", values.phone);
+      formData.append(
+        "teachingExperience",
+        JSON.stringify(values.teachingExperience)
+      );
+      formData.append("teachingField", JSON.stringify(values.teachingField));
+      formData.append("teachingGoals", JSON.stringify(values.teachingGoals));
+      if (avatarRef.current) formData.append("avatar", avatarRef.current);
+      if (certificateRef.current)
+        formData.append("certificate", certificateRef.current);
+
+      try {
+        const response = await axios.post("/register/answers", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (response.status === 200) {
+          setMessage({ type: "success", text: "Đăng ký thành công!" });
+          formik.resetForm();
+          avatarRef.current = null;
+          certificateRef.current = null;
+          setStep(1);
+        } else {
+          setMessage({
+            type: "error",
+            text: response.data.message || "Đăng ký thất bại!",
+          });
+        }
+      } catch (error) {
+        setMessage({
+          type: "error",
+          text: error.response?.data?.message || "Lỗi kết nối đến máy chủ!",
+        });
+      }
+
+      setLoading(false);
     },
   });
 
@@ -50,6 +95,17 @@ export default function FormRegisterTeacher() {
         <h2 className="text-center text-primary fw-bold mt-0">
           Đăng ký giảng viên
         </h2>
+
+        {message && (
+          <div
+            className={`alert ${
+              message.type === "success" ? "alert-success" : "alert-danger"
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
         <form onSubmit={formik.handleSubmit}>
           {step === 1 && (
             <div>
@@ -95,13 +151,11 @@ export default function FormRegisterTeacher() {
                 <input
                   type="file"
                   className="form-control rounded-2"
-                  onChange={(event) => {
-                    setAvatar(event.currentTarget.files[0]);
-                  }}
+                  onChange={(e) => (avatarRef.current = e.target.files[0])}
                 />
-                {avatar && (
+                {avatarRef.current && (
                   <p className="small text-success">
-                    Ảnh đã chọn: {avatar.name}
+                    Ảnh đã chọn: {avatarRef.current.name}
                   </p>
                 )}
               </div>
@@ -114,6 +168,7 @@ export default function FormRegisterTeacher() {
               </button>
             </div>
           )}
+
           {step === 2 && (
             <div>
               <h5 className="mb-3 text-secondary">Thông tin giảng dạy</h5>
@@ -168,20 +223,19 @@ export default function FormRegisterTeacher() {
                 </div>
               ))}
               <div className="mb-3">
-                <label className="form-label">Chứng chỉ</label>
+                <label className="form-label">Chứng chỉ giảng dạy</label>
                 <input
                   type="file"
-                  className="form-control rounded-2"
-                  onChange={(event) => {
-                    setCertificate(event.currentTarget.files[0]);
-                  }}
+                  className="form-control"
+                  onChange={(e) => (certificateRef.current = e.target.files[0])}
                 />
-                {certificate && (
+                {certificateRef.current && (
                   <p className="small text-success">
-                    Tệp đã chọn: {certificate.name}
+                    Chứng chỉ đã chọn: {certificateRef.current.name}
                   </p>
                 )}
               </div>
+
               <div className="d-flex justify-content-between">
                 <button
                   type="button"
@@ -190,8 +244,12 @@ export default function FormRegisterTeacher() {
                 >
                   Quay lại
                 </button>
-                <button type="submit" className="btn btn-success rounded-2">
-                  Hoàn tất
+                <button
+                  type="submit"
+                  className="btn btn-success rounded-2"
+                  disabled={loading}
+                >
+                  {loading ? "Đang gửi..." : "Hoàn tất"}
                 </button>
               </div>
             </div>
