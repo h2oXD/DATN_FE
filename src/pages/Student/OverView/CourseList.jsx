@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function CourseList() {
   const listRef = useRef(null);
   const [courses, setCourses] = useState([]);
+  const nav = useNavigate();
 
   useEffect(() => {
     axiosClient
@@ -17,6 +19,10 @@ export default function CourseList() {
         console.error("Lỗi khi lấy danh sách khoá học:", error);
       });
   }, []);
+
+  const handleCourseClick = (id) => {
+    nav(`/student/overview/coursedetail/${id}`);
+  };
 
   const scrollLeft = () => {
     if (listRef.current) {
@@ -67,12 +73,16 @@ export default function CourseList() {
                 </a>
                 <div className="px-1 py-1">
                   <h4 className="mt-1 mb-1 text-truncate-line-2">
-                    <a
-                      href={`../course/${item.course.id}`}
-                      className="text-inherit"
+                    <span
+                      className="text-inherit cursor-pointer"
+                      onClick={() => handleCourseClick(item.course.id)}
+                      style={{
+                        cursor: "pointer",
+                        color: "black",
+                      }}
                     >
                       {item.course.title}
-                    </a>
+                    </span>
                   </h4>
                   <ul className="mb-1 list-inline">
                     <li className="list-inline-item">
