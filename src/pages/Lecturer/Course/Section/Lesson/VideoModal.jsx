@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axiosClient from "../../../../../api/axios";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -16,6 +16,7 @@ const VideoModal = ({
     section_id,
     setLessons
 }) => {
+    const { updateCheckData } = useOutletContext();
     const { course_id } = useParams()
     const [uploadVideo, setUploadVideo] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -28,7 +29,6 @@ const VideoModal = ({
         // Tạo URL preview cho thumbnail
         const url = URL.createObjectURL(file);
         setVideoPreviewUrl(url);
-
     };
 
     const formik = useFormik({
@@ -41,11 +41,29 @@ const VideoModal = ({
         validationSchema: Yup.object({
             title: Yup.string().required("Tiêu đề không được để trống"),
             description: Yup.string(),
-            video_url: Yup.mixed().required("Video không được để trống"),
+            video_url: Yup.mixed().required("Video không được để trống").test(
+                "fileType",
+                "Chỉ chấp nhận file video (MP4, MOV, AVI, WMV, FLV, WEBM)",
+                (value) =>
+                    !value ||
+                    [
+                        "video/mp4",
+                        "video/quicktime", // MOV
+                        "video/x-msvideo", // AVI
+                        "video/x-ms-wmv", // WMV
+                        "video/x-flv", // FLV
+                        "video/webm", // WEBM
+                    ].includes(value.type)
+            )
+                .test(
+                    "fileSize",
+                    "Dung lượng video không được vượt quá 2GB",
+                    (value) => !value || value.size <= 2 * 1024 * 1024 * 1024 // 2GB
+                ),
         }),
         onSubmit: async (values) => {
             setLoading(true)
-            const createLesson = { title: values.title, description: values.description, type: 'video' }
+            const createLesson = { title: values.title, description: values.description, type: 'video', is_preview: values.is_preview }
             try {
                 const res = await axiosClient.post(`lecturer/courses/${course_id}/sections/${section_id}/lessons`, createLesson)
                 const lesson_id = res.data.lesson.id
@@ -54,10 +72,12 @@ const VideoModal = ({
                         "Content-Type": "multipart/form-data",
                     },
                 })
-                console.log(res.data.lesson);
+                const res2 = await axiosClient.get(`lecturer/courses/${course_id}/sections/${section_id}/lessons/${lesson_id}`)
+                console.log(res2.data.lesson);
 
-                setLessons(prevLesson => [...prevLesson, res.data.lesson]);
+                setLessons(prevLesson => [...prevLesson, res2.data.lesson]);
                 formik.resetForm()
+                updateCheckData()
                 setShowLectureForm(false)
                 formik.setFieldValue("description", '');
                 setVideoPreviewUrl(null)
@@ -71,7 +91,7 @@ const VideoModal = ({
         }
     })
     return (
-        <Modal width={1000} open={showModal} onCancel={() => { setShowLectureForm(false); formik.resetForm(); formik.setFieldValue("description", '   '); setVideoPreviewUrl(null) }} footer={null}>
+        <Modal width={1000} open={showModal} onCancel={() => { setShowLectureForm(false); formik.resetForm(); formik.setFieldValue("description", '');formik.setFieldValue("video_url", ''); setVideoPreviewUrl(null) }} footer={null}>
             <h3 className="mb-3">Thêm video bài giảng</h3>
             <form className="row" onSubmit={formik.handleSubmit}>
                 <div className="col-lg-6 col-12 row align-content-start">
