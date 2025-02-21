@@ -7,13 +7,18 @@ import Logout from "../../pages/Auth/Logout";
 export default function Header({ collapsed, setCollapsed }) {
   return (
     <>
-      <div className="header sticky-top" style={{ zIndex: '999' }}>
+      <div className="header sticky-top" style={{ zIndex: "999" }}>
         <nav className="navbar-default navbar navbar-expand-lg flex-nowrap">
-          <a className="me-3 ms-1" id="nav-toggle" href="#" onClick={() => setCollapsed(!collapsed)}>
+          <a
+            className="me-3 ms-1"
+            id="nav-toggle"
+            href="#"
+            onClick={() => setCollapsed(!collapsed)}
+          >
             <i className="fe fe-menu"></i>
           </a>
-          <Link to={'/'} className="">
-            <img src="/logo.png" width={'133px'} height={'31px'} alt="" />
+          <Link to={"/"} className="">
+            <img src="/logo.png" width={"133px"} height={"31px"} alt="" />
           </Link>
           <div className="ms-auto d-flex">
             <ul className="navbar-nav navbar-right-wrap mx-2 flex-row">

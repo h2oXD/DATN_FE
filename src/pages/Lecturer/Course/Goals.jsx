@@ -88,9 +88,7 @@ export default function Goals() {
       </div>
 
       <div className="mb-4">
-        <h2 className="h5 text-dark">
-          Khóa học này dành cho đối tượng nào?
-        </h2>
+        <h2 className="h5 text-dark">Khóa học này dành cho đối tượng nào?</h2>
         <div className="d-flex flex-column gap-2">
           {audience.map((aud, index) => (
             <div className="position-relative" key={index}>
