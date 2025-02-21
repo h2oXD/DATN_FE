@@ -34,8 +34,6 @@ import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import RegisterTeacher from "./components/RegisterTeacher";
 import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
-import Course from "./pages/Student/CoursePage/Course";
-import MyCourse from "./pages/Student/CoursePage/MyCourse";
 
 function App() {
   return (
@@ -52,22 +50,16 @@ function App() {
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
           <Route path="/student/overview" element={<OverView />} />
-          <Route path="/student/course" element={<Course />} />
-          <Route path="/student/MyCourse" element={<MyCourse />} />
-
-          <Route
-            path="/student/overview/coursedetail/:id"
+          <Route path="/student/overview/coursedetail/:id"
             element={<CourseDetail />}
-          />
 
-          <Route
-            path="/student/registerTeacher"
+           <Route path="/student/registerTeacher"
             element={<RegisterTeacher />}
           />
-
+              
           <Route
-            path="/student/formRegisterTeacher"
-            element={<FormRegisterTeacher />}
+            path="/student/payment-callback/:course_id"
+            element={<PaymentCallback />}
           />
         </Route>
 
@@ -110,6 +102,14 @@ function App() {
           />
           <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
         </Route>
+        <Route
+          path="/lecturer/quiz/edit"
+          element={
+            <RequireQuizParams>
+              <EditQuiz />
+            </RequireQuizParams>
+          }
+        />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
