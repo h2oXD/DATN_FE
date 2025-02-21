@@ -276,6 +276,12 @@ export default function Header({ collapsed, setCollapsed }) {
                         Subscription
                       </a>
                     </li>
+                    <li className="tw-ml-4 my-1">
+                      <Link to={"/student/registerTeacher"}>
+                        <i className="fe fe-award me-2"></i>
+                        Đăng ký làm giảng viên
+                      </Link>
+                    </li>
                     <li>
                       <a className="dropdown-item" href="#">
                         <i className="fe fe-settings me-2"></i>
