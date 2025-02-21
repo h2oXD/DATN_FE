@@ -25,16 +25,15 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 // import Coding from "./pages/Lecturer/Course/Coding";
+import RequireQuizParams from "./components/RequireQuizParams";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
-import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import Chat from "./pages/Lecturer/Chat/Chat";
+import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
+import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
-import PaymentCallback from "./pages/Student/BuyCourse/PaymentCallback";
-import RequireQuizParams from "./components/RequireQuizParams";
-import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
 
 function App() {
   return (
@@ -54,10 +53,6 @@ function App() {
           <Route
             path="/student/home/:course_id/coursedetail"
             element={<CourseDetail />}
-          />
-          <Route
-            path="/student/payment-callback/:course_id"
-            element={<PaymentCallback />}
           />
         </Route>
 

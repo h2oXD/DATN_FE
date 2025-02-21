@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import axiosClient from "../../api/axios";
@@ -9,6 +8,7 @@ export default function CourseDetail() {
   const { course_id } = useParams();
   const [course, setCourse] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!course_id) return;
@@ -31,9 +31,16 @@ export default function CourseDetail() {
     setIsModalVisible(false);
   };
 
+  const handleLearn = () => {
+    navigate(`/student/home`);
+  };
+
   if (!course) {
     return <p>Khoá học không tồn tại hoặc đã bị xoá.</p>;
   }
+
+  // Kiểm tra khóa học miễn phí hay trả phí
+  const isFree = !course.price_sale && !course.price_regular;
 
   return (
     <div className="row">
@@ -1241,7 +1248,6 @@ export default function CourseDetail() {
           </div>
         </div>
       </div>
-
       <div className="col-lg-3">
         <div className="card p-2">
           <div className="card">
@@ -1258,21 +1264,44 @@ export default function CourseDetail() {
               {course.rating} ★ ({course.reviews?.length || 0} reviews)
             </div>
           </div>
+
+          {/* Hiển thị giá chính xác */}
           <div className="d-flex mt-2">
-            <h5 className="mb-0">{course.price_sale || "Free"}</h5>
-            {course.price_regular && (
-              <h6
-                className="mb-0 text-muted text-decoration-line-through text-gray-500"
-                style={{ marginLeft: "10px" }}
-              >
-                {course.price_regular}
-              </h6>
+            {isFree ? (
+              <h5 className="mb-0">Miễn phí</h5>
+            ) : (
+              <>
+                <h5 className="mb-0">
+                  {course.price_sale || course.price_regular}
+                </h5>
+                {course.price_sale && course.price_regular && (
+                  <h6
+                    className="mb-0 text-muted text-decoration-line-through text-gray-500"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    {course.price_regular}
+                  </h6>
+                )}
+              </>
             )}
           </div>
+
           <div className="d-flex justify-content-between mt-3">
-            <button className="btn btn-primary flex-grow-1" onClick={showModal}>
-              Mua khóa học
-            </button>
+            {isFree ? (
+              <button
+                className="btn btn-success flex-grow-1"
+                onClick={handleLearn}
+              >
+                Vào học
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary flex-grow-1"
+                onClick={showModal}
+              >
+                Mua khóa học
+              </button>
+            )}
             <Modal
               open={isModalVisible}
               onCancel={handleCancel}
