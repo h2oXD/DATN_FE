@@ -13,6 +13,7 @@ export default function CourseList() {
       .then((response) => {
         if (response.data && response.data.topCourses) {
           setCourses(response.data.topCourses);
+          console.log(response.data.topCourses);
         }
       })
       .catch((error) => {
@@ -21,7 +22,7 @@ export default function CourseList() {
   }, []);
 
   const handleCourseClick = (id) => {
-    nav(`/student/overview/coursedetail/${id}`);
+    nav(`/student/home/${id}/coursedetail`);
   };
 
   const scrollLeft = () => {
@@ -64,7 +65,7 @@ export default function CourseList() {
           courses.map((item) => (
             <div className="col-md-3" key={item.course.id}>
               <div className="card p-2">
-                <a href={`../course/${item.course.id}`}>
+                <a href={`/student/overview/coursedetail/${item.course.id}`}>
                   <img
                     src={item.course.thumbnail || "/default-thumbnail.jpg"}
                     alt={item.course.title}
@@ -129,9 +130,13 @@ export default function CourseList() {
                   </div>
                 </div>
                 <div className="d-flex mt-2">
-                  <h5 className="mb-0">
-                    {item.course.is_free ? "Free" : "$39.00"}
-                  </h5>
+                  <h5 className="mb-0">{item.course.price_sale || "Free"}</h5>
+                  <h6
+                    className="mb-0 text-muted text-decoration-line-through text-gray-500"
+                    style={{ marginLeft: "10px" }}
+                  >
+                    {item.course.price_regular || ""}
+                  </h6>
                 </div>
               </div>
             </div>

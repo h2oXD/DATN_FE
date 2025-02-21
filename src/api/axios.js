@@ -2,24 +2,27 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const axiosClient = axios.create({
-    baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`, // URL API của Laravel
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
-})
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`, // URL API của Laravel
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
 
-axiosClient.interceptors.request.use((config) => {
-    const token = Cookies.get('token');
+axiosClient.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get("token");
 
     if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
 
     return config;
-}, (error) => {
+  },
+  (error) => {
     return Promise.reject(error);
-})
+  }
+);
 
 // axiosClient.interceptors.response.use((response) => {
 //     return response
@@ -33,4 +36,4 @@ axiosClient.interceptors.request.use((config) => {
 //     return Promise.reject(error);
 // })
 
-export default axiosClient
+export default axiosClient;
