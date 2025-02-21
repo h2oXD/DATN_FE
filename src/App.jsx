@@ -48,6 +48,10 @@ function App() {
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
           <Route path="/student/overview" element={<OverView />} />
+          <Route
+            path="/student/overview/coursedetail/:id"
+            element={<CourseDetail />}
+          />
         </Route>
 
         {/* Giảng Viên */}

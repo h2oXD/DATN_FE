@@ -56,13 +56,13 @@ export default function CourseFree() {
           courses.map((course) => (
             <div className="col-md-3" key={course.id}>
               <div className="card p-2">
-                <a href={`../course/${course.id}`}>
+                <span href={`../course/${course.id}`}>
                   <img
                     src={course.thumbnail}
                     alt={course.title}
                     className="card-img-top rounded"
                   />
-                </a>
+                </span>
                 <div className="px-1 py-1">
                   <h4 className="mt-1 mb-1 text-truncate-line-2">
                     <a href={`../course/${course.id}`} className="text-inherit">
