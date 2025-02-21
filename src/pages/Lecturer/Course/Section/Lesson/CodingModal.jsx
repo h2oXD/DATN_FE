@@ -4,8 +4,8 @@ import { Modal } from "antd";
 const CodingModal = ({
   isModalCodingOpen,
   setIsModalCodingOpen,
-  section_id,
-  setLessons,
+  // section_id,
+  // setLessons,
 }) => {
   return (
     <Modal

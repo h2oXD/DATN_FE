@@ -9,7 +9,7 @@ import {
 } from "@dnd-kit/sortable";
 import axiosClient from "../../../../api/axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import SectionEdit from "./SectionEdit";
 import VideoModal from "./Lesson/VideoModal";
@@ -18,6 +18,7 @@ import DocumentModal from "./Lesson/DocumentModal";
 import CodingModal from "./Lesson/CodingModal";
 
 export default function Section({ section, setSections, index }) {
+    const { updateCheckData } = useOutletContext();
     const { course_id } = useParams();
     const [showFrameworkItems, setShowFrameworkItems] = useState(false);
     const [showLectureForm, setShowLectureForm] = useState(false);
@@ -79,6 +80,7 @@ export default function Section({ section, setSections, index }) {
                 await axiosClient.delete(
                     `lecturer/courses/${course_id}/sections/${section_id}`
                 );
+                updateCheckData()
                 // Hiển thị thông báo xóa thành công
                 Swal.fire("Đã xóa!", "Mục đã được xóa thành công.", "success");
                 setSections((prevSections) =>
@@ -90,7 +92,6 @@ export default function Section({ section, setSections, index }) {
             }
         }
     };
-    const [isHovered, setIsHovered] = useState(false);
     return (
         <>
             {/* Chương */}
@@ -147,9 +148,6 @@ export default function Section({ section, setSections, index }) {
                                 setShowFrameworkItems(!showFrameworkItems);
                                 setShowButtonLesson(false);
                             }}
-                            style={{ backgroundColor: isHovered ? "#f5f4f8" : "white", }}
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
                         >
                             + Mục trong khung chương trình
                         </button>

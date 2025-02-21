@@ -32,6 +32,8 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
+import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
+import RequireQuizParams from "./components/RequireQuizParams";
 import RegisterTeacher from "./components/RegisterTeacher";
 import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
 
@@ -51,7 +53,7 @@ function App() {
           <Route index element={<HomeStudent />} />
           <Route path="/student/overview" element={<OverView />} />
           <Route path="/student/overview/coursedetail/:id"
-            element={<CourseDetail />}
+            element={<CourseDetail />} />
 
            <Route path="/student/registerTeacher"
             element={<RegisterTeacher />}
@@ -102,6 +104,9 @@ function App() {
           />
           <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
         </Route>
+        <Route path="/lecturer/quiz/edit" element={<RequireQuizParams>
+                        <EditQuiz />
+                    </RequireQuizParams>} />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>

@@ -5,11 +5,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useLecturerContext } from "../../../contexts/LecturerProvider";
 import axiosClient from "../../../api/axios";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { getImageUrl } from "../../../api/common";
 import { toast } from "react-toastify";
 
 export default function Basic() {
+    const { updateCheckData } = useOutletContext();
     const { course_id } = useParams();
     const formRef = useRef(null);
     const { courseData, loading, error } = useCourseContext(); // Sử dụng custom hook
@@ -47,6 +48,8 @@ export default function Basic() {
     useEffect(() => {
         if (courseData) {
             setCourse(courseData);
+            setIsFreeCourse(courseData.is_free === 1); // Chuyển đổi trực tiếp
+            formik.setFieldValue("is_free", courseData.is_free === 1); // Cập nhật Formik
         }
     }, [courseData]);
 
@@ -59,6 +62,7 @@ export default function Basic() {
             language: course?.language || "",
             level: course?.level || "",
             category_id: course?.category_id || "",
+            is_free: course?.is_free || 0,
             primary_content: course?.primary_content || "", // Nội dung chính của khóa học
             thumbnail: selectedThumbnail, // Hình ảnh khóa học (chú ý xử lý riêng)
             video_preview: selectedVideoPreview, // Video preview (chú ý xử lý riêng)
@@ -100,8 +104,11 @@ export default function Basic() {
                     }
                 );
                 console.log(res);
+                updateCheckData();
                 toast.success("Cập nhật thành công");
             } catch (error) {
+                console.log(error);
+
                 setServerErrors(error.response.data.errors);
             } finally {
                 setIsSubmitting(false); // Kết thúc loading dù thành công hay thất bại
@@ -199,18 +206,22 @@ export default function Basic() {
                                 <input
                                     className="form-check-input"
                                     type="checkbox"
-                                    id="isFreeCourse"
+                                    id="is_free"
+                                    name="is_free"
                                     checked={isFreeCourse}
-                                    onChange={() => setIsFreeCourse(!isFreeCourse)}
+                                    onChange={(e) => {
+                                        setIsFreeCourse(e.target.checked);
+                                        formik.setFieldValue("is_free", e.target.checked ? 1 : 0);
+                                    }}
                                 />
-                                <label className="form-check-label" htmlFor="isFreeCourse">
+                                <label className="form-check-label" htmlFor="is_free">
                                     Khóa học miễn phí
                                 </label>
                             </div>
                         </div>
                         {!isFreeCourse && (
                             <>
-                                <div className="col-6 mb-3">
+                                <div className="col-lg-6 mb-3 col-12">
                                     <label htmlFor="" className="fw-bold">
                                         Mức giá thông thường
                                     </label>
@@ -232,7 +243,7 @@ export default function Basic() {
                                             </div>
                                         )}
                                 </div>
-                                <div className="col-6 mb-3">
+                                <div className="col-lg-6 mb-3 col-12">
                                     <label htmlFor="" className="fw-bold">
                                         Mức giá khuyến mãi
                                     </label>
@@ -260,7 +271,7 @@ export default function Basic() {
                                 Thông tin cơ bản
                             </label>
                             <div className="row">
-                                <div className="col-4 mb-3">
+                                <div className="col-lg-4 mb-3 col-12">
                                     <select
                                         id="language" // <-- ID rất quan trọng cho label và accessibility
                                         name="language" // <-- NAME bắt buộc để Formik quản lý giá trị
@@ -275,7 +286,7 @@ export default function Basic() {
                                         <option value="Tiếng Trung">Tiếng Trung</option>
                                     </select>
                                 </div>
-                                <div className="col-4 mb-3">
+                                <div className="col-lg-4 mb-3 col-12">
                                     <select
                                         className="form-select text-dark"
                                         name="level"
@@ -291,7 +302,7 @@ export default function Basic() {
                                         <option value="Tất cả trình độ">Tất cả trình độ</option>
                                     </select>
                                 </div>
-                                <div className="col-4 mb-3">
+                                <div className="col-lg-4 mb-3 col-12">
                                     <select
                                         className="form-select text-dark"
                                         name="category_id"
@@ -312,7 +323,7 @@ export default function Basic() {
                                         )}
                                     </select>
                                 </div>
-                                <div className="col-6 mb-3">
+                                <div className="col-lg-6 mb-3 col-12">
                                     <label htmlFor="" className="fw-bold">
                                         Khóa học của bạn chủ yếu giảng dạy nội dung nào?
                                     </label>
@@ -329,7 +340,7 @@ export default function Basic() {
                                 </div>
 
                                 <div className="col-12 row mb-3">
-                                    <div className="col-6">
+                                    <div className="col-lg-6 col-12">
                                         <label htmlFor="" className="fw-bold">
                                             Hình ảnh khoá học
                                         </label>
@@ -354,7 +365,7 @@ export default function Basic() {
                                             />
                                         )}
                                     </div>
-                                    <div className="col-6 mt-3">
+                                    <div className="col-lg-6 mt-3 col-12">
                                         <p>
                                             Tải hình ảnh khóa học lên tại đây. Để được chấp nhận, hình
                                             ảnh phải đáp ứng tiêu chuẩn chất lượng hình ảnh khóa học.
@@ -371,7 +382,7 @@ export default function Basic() {
                                     </div>
                                 </div>
                                 <div className="col-12 row mb-3">
-                                    <div className="col-6">
+                                    <div className="col-lg-6">
                                         <label htmlFor="" className="fw-bold">
                                             Video quảng cáo
                                         </label>
@@ -398,12 +409,10 @@ export default function Basic() {
                                         )}
                                     </div>
 
-                                    <div className="col-6 mt-3">
+                                    <div className="col-lg-6 mt-3 col-12">
                                         <p>
-                                            Tải hình ảnh khóa học lên tại đây. Để được chấp nhận, hình
-                                            ảnh phải đáp ứng tiêu chuẩn chất lượng hình ảnh khóa học.
-                                            Hướng dẫn quan trọng: 750x422 pixel; .jpg, .jpeg,. gif,
-                                            hoặc .png. và không có chữ trên hình ảnh.
+                                            Để được chấp nhận,video phải đáp ứng tiêu chuẩn chất lượng video khóa học.
+                                            Hướng dẫn quan trọng: 750x422 pixel; .mp4, .mov,...,
                                         </p>
                                         <input
                                             type="file"
