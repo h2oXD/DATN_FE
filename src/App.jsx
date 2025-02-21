@@ -32,10 +32,9 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
-import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
+import PaymentCallback from "./pages/Student/BuyCourse/PaymentCallback";
 import RequireQuizParams from "./components/RequireQuizParams";
-import RegisterTeacher from "./components/RegisterTeacher";
-import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
+import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
 
 function App() {
   return (
@@ -51,17 +50,14 @@ function App() {
         {/* Học Viên */}
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
-          <Route path="/student/overview" element={<OverView />} />
-          <Route path="/student/overview/coursedetail/:id"
-            element={<CourseDetail />} />
-
-           <Route path="/student/registerTeacher"
-            element={<RegisterTeacher />}
-          />
-              
+          <Route path="/student/home" element={<OverView />} />
           <Route
-            path="/student/formRegisterTeacher"
-            element={<FormRegisterTeacher />}
+            path="/student/home/:course_id/coursedetail"
+            element={<CourseDetail />}
+          />
+          <Route
+            path="/student/payment-callback/:course_id"
+            element={<PaymentCallback />}
           />
         </Route>
 
@@ -104,9 +100,14 @@ function App() {
           />
           <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
         </Route>
-        <Route path="/lecturer/quiz/edit" element={<RequireQuizParams>
-                        <EditQuiz />
-                    </RequireQuizParams>} />
+        <Route
+          path="/lecturer/quiz/edit"
+          element={
+            <RequireQuizParams>
+              <EditQuiz />
+            </RequireQuizParams>
+          }
+        />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
