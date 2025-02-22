@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -106,7 +107,7 @@ export default function SideBar({ collapsed }) {
           <MenuItem
             className="text-dark"
             icon={<ĐKiIcon />}
-            component={<Link to={"/student/registerTeacher"} />}
+            component={<Link to={"/registerTeacher"} />}
           >
             Đăng ký giảng viên
           </MenuItem>
