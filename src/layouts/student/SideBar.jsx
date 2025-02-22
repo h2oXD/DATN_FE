@@ -8,6 +8,7 @@ import {
   LoTrinhIcon,
   TongQuanIcon,
   ViTienIcon,
+  ĐKiIcon,
 } from "./Icon";
 
 export default function SideBar({ collapsed }) {
@@ -101,6 +102,13 @@ export default function SideBar({ collapsed }) {
             component={<Link to={"/student/chatAI"} />}
           >
             Chat AI
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<ĐKiIcon />}
+            component={<Link to={"/student/registerTeacher"} />}
+          >
+            Đăng ký giảng viên
           </MenuItem>
         </Menu>
       </Sidebar>
