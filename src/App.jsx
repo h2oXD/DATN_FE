@@ -34,12 +34,10 @@ import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
-
-
 import RegisterTeacher from "./components/RegisterTeacher";
+import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
 import Course from "./pages/Student/CoursePage/Course";
 import MyCourse from "./pages/Student/CoursePage/MyCourse";
-
 
 
 
@@ -58,9 +56,8 @@ function App() {
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
           <Route path="/student/overview" element={<OverView />} />
-          <Route path="/student/course" element={<Course />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
-
+          <Route path="/student/course" element={<Course />} />
           <Route
             path="/student/overview/coursedetail/:id"
             element={<CourseDetail />}
@@ -68,6 +65,10 @@ function App() {
           <Route
             path="/student/registerTeacher"
             element={<RegisterTeacher />}
+          />
+          <Route
+            path="/student/formRegisterTeacher"
+            element={<FormRegisterTeacher />}
           />
         </Route>
 
