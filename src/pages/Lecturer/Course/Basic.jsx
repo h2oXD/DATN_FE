@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "antd";
-import { useCourseContext } from "../../../contexts/CourseProvider";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useLecturerContext } from "../../../contexts/LecturerProvider";
@@ -13,7 +12,7 @@ export default function Basic() {
     const { updateCheckData } = useOutletContext();
     const { course_id } = useParams();
     const formRef = useRef(null);
-    const { courseData, loading, error } = useCourseContext(); // Sử dụng custom hook
+    const [loading, setLoading] = useState()
     const { categories } = useLecturerContext();
     const [course, setCourse] = useState(null);
     const [selectedThumbnail, setSelectedThumbnail] = useState(null);
@@ -21,7 +20,6 @@ export default function Basic() {
     const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState(null); // Thêm state cho URL preview của thumbnail
     const [videoPreviewUrl, setVideoPreviewUrl] = useState(null); // Thêm state cho URL preview của video
     const [isFreeCourse, setIsFreeCourse] = useState(false);
-    const [serverErrors, setServerErrors] = useState({});
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,16 +44,29 @@ export default function Basic() {
     };
 
     useEffect(() => {
-        if (courseData) {
-            setCourse(courseData);
-            setIsFreeCourse(courseData.is_free === 1); // Chuyển đổi trực tiếp
-            formik.setFieldValue("is_free", courseData.is_free === 1); // Cập nhật Formik
+        const basicShow = async () => {
+            setLoading(true)
+            try {
+                const res = await axiosClient(`lecturer/courses/${course_id}`)
+                console.log(res.data.data);
+
+                if (res.data.data) {
+                    setCourse(res.data.data);
+                    setIsFreeCourse(res.data.data.is_free === 1); // Chuyển đổi trực tiếp
+                    formik.setFieldValue("is_free", res.data.data.is_free === 1); // Cập nhật Formik
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false)
+            }
         }
-    }, [courseData]);
+        basicShow()
+    }, [course_id]);
 
     const formik = useFormik({
         initialValues: {
-            title: course?.title || "", // Khởi tạo giá trị ban đầu từ courseData
+            title: course?.title || "",
             description: course?.description || "",
             price_regular: course?.price_regular || "",
             price_sale: course?.price_sale || "",
@@ -63,9 +74,9 @@ export default function Basic() {
             level: course?.level || "",
             category_id: course?.category_id || "",
             is_free: course?.is_free || 0,
-            primary_content: course?.primary_content || "", // Nội dung chính của khóa học
-            thumbnail: selectedThumbnail, // Hình ảnh khóa học (chú ý xử lý riêng)
-            video_preview: selectedVideoPreview, // Video preview (chú ý xử lý riêng)
+            primary_content: course?.primary_content || "",
+            thumbnail: selectedThumbnail,
+            video_preview: selectedVideoPreview,
         },
         enableReinitialize: true, // Quan trọng: cho phép cập nhật initialValues khi courseData thay đổi
 
@@ -74,13 +85,22 @@ export default function Basic() {
             description: Yup.string().min(2, "Mô tả phải dài ít nhất 200 từ"),
             price_regular: Yup.number()
                 .typeError("Giá phải là số")
-                .positive("Giá phải lớn hơn 0"),
+                .positive("Giá phải lớn hơn 0")
+                .min(10000, "Giá phải lớn hơn 10.000"), // Thêm điều kiện giá tối thiểu
             price_sale: Yup.number()
                 .typeError("Giá khuyến mãi phải là số")
                 .positive("Giá phải lớn hơn 0")
-                .lessThan(
-                    Yup.ref("price_regular"),
-                    "Giá khuyến mãi phải nhỏ hơn giá gốc"
+                .lessThan(Yup.ref("price_regular"), "Giá khuyến mãi phải nhỏ hơn giá gốc")
+                .test(
+                    "max-discount",
+                    "Giá khuyến mãi không được giảm quá 30% giá gốc",
+                    function (value) {
+                        const { price_regular } = this.parent;
+                        if (value && price_regular) {
+                            return value >= price_regular * 0.7; // Kiểm tra giảm giá tối đa 30%
+                        }
+                        return true; // Cho phép nếu giá trị không hợp lệ
+                    }
                 ),
             language: Yup.string(),
             level: Yup.string(),
@@ -92,7 +112,11 @@ export default function Basic() {
             setIsSubmitting(true);
             values._method = "PUT";
             console.log(values);
-
+            if (values.is_free == false) {
+                values.is_free = 0
+            } else {
+                values.is_free = 1
+            }
             try {
                 const res = await axiosClient.post(
                     "/lecturer/courses/" + course_id,
@@ -108,8 +132,6 @@ export default function Basic() {
                 toast.success("Cập nhật thành công");
             } catch (error) {
                 console.log(error);
-
-                setServerErrors(error.response.data.errors);
             } finally {
                 setIsSubmitting(false); // Kết thúc loading dù thành công hay thất bại
             }
@@ -126,11 +148,6 @@ export default function Basic() {
             </div>
         );
     }
-
-    if (error) {
-        return <div>Lỗi: {error.message || "Không thể tải dữ liệu."}</div>; // Hiển thị lỗi
-    }
-
     if (!course) {
         return <div>Không có dữ liệu khóa học.</div>; // Xử lý trường hợp không có dữ liệu
     }
@@ -238,9 +255,9 @@ export default function Basic() {
                                     />
                                     {formik.touched.price_regular &&
                                         formik.errors.price_regular && (
-                                            <div className="invalid-feedback">
+                                            <span className="text-danger">
                                                 {formik.errors.price_regular}
-                                            </div>
+                                            </span>
                                         )}
                                 </div>
                                 <div className="col-lg-6 mb-3 col-12">
@@ -259,9 +276,9 @@ export default function Basic() {
                                         onBlur={formik.handleBlur}
                                     />
                                     {formik.touched.price_sale && formik.errors.price_sale && (
-                                        <div className="invalid-feedback">
+                                        <span className="text-danger">
                                             {formik.errors.price_sale}
-                                        </div>
+                                        </span>
                                     )}
                                 </div>
                             </>
@@ -281,7 +298,7 @@ export default function Basic() {
                                         onBlur={formik.handleBlur}
                                     >
                                         <option value="">--Chọn ngôn ngữ--</option>
-                                        <option value="Tiếng việt">Tiếng việt</option>
+                                        <option value="Tiếng Việt">Tiếng Việt</option>
                                         <option value="Tiếng Anh">Tiếng Anh</option>
                                         <option value="Tiếng Trung">Tiếng Trung</option>
                                     </select>
@@ -421,11 +438,6 @@ export default function Basic() {
                                             id="video_preview"
                                             onChange={handleVideoPreviewChange}
                                         />
-                                        {serverErrors.video_preview && (
-                                            <span className="text-danger">
-                                                {serverErrors.video_preview[0]}
-                                            </span>
-                                        )}
                                     </div>
                                 </div>
                                 <div>

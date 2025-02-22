@@ -187,11 +187,11 @@ export default function EditVideoModal({
                   className="w-100 rounded border"
                   src={videoPreviewUrl}
                 ></video>
-              ) : lesson.videos && lesson.videos[0].video_url ? (
+              ) : lesson.videos && lesson.videos.video_url ? (
                 <video
                   controls
                   className="w-100 rounded border"
-                  src={getImageUrl(lesson.videos[0].video_url)}
+                  src={getImageUrl(lesson.videos.video_url)}
                 ></video>
               ) : (
                 <img

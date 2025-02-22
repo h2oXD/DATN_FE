@@ -146,7 +146,7 @@ export default function EditDocumentModal({ showEditDocumentModal, setShowEditDo
                             <div className="text-danger">{formik.errors.document_url}</div>
                         )}
                     </div>
-                    {document && document.documents && (<>Tài liệu hiện tại <a href={getImageUrl(document.documents[0].document_url)} download="document_name.pdf">Tải xuống</a></>)}
+                    {document && document.documents && (<>Tài liệu hiện tại <a href={getImageUrl(document.documents.document_url)} download="document_name.pdf">Tải xuống</a></>)}
                 </div>
                 <div className="d-flex justify-content-end">
                     {loading ? (<><button className="btn btn-primary" type="button" disabled>
