@@ -1,186 +1,128 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal, Button, Form, ProgressBar, Accordion } from "react-bootstrap";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 
-const Course = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
-  const [activeLesson, setActiveLesson] = useState(null);
-  const videoRef = useRef(null);
-  const currentLesson = "Biến và nhập xuất dữ liệu";
-
-  useEffect(() => {
-    const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-    setNotes(savedNotes);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
-
-  const getCurrentTime = () => "0:00";
-
-  const handleAddOrEditNote = () => {
-    if (newNote.trim() !== "") {
-      if (editIndex !== null) {
-        const updatedNotes = [...notes];
-        updatedNotes[editIndex].content = newNote;
-        setNotes(updatedNotes);
-        setEditIndex(null);
-      } else {
-        setNotes([
-          ...notes,
-          { lesson: currentLesson, time: getCurrentTime(), content: newNote },
-        ]);
-      }
-      setNewNote("");
-    }
-  };
-
+export default function Course() {
   const courseContent = [
     {
-      title: "Bắt đầu",
-      completed: 2,
-      total: 8,
-      duration: "21:39",
+      title: "1. Giới thiệu",
+      progress: 50,
       videos: [
         {
-          title: "1.Bạn sẽ làm được gì sau khóa học?",
-          duration: "03:15",
-          locked: false,
+          title: "1.1. Giới thiệu khóa học",
+          time: "1:03",
+          status: "completed",
         },
-        { title: "2.Tìm hiểu về HTML, CSS", duration: "02:29", locked: true },
-        { title: "3.Làm quen với Dev tools", duration: "03:55", locked: true },
+        { title: "1.2. Tài liệu học tập", time: "2:00", status: "completed" },
+        {
+          title: "1.3. Biến và nhập xuất dữ liệu",
+          time: "7:34",
+          status: "locked",
+        },
+        {
+          title: "1.4. Bài tập về biến và nhập xuất dữ liệu",
+          time: "2:00",
+          status: "locked",
+        },
       ],
     },
     {
-      title: "Làm quen với HTML",
-      completed: 5,
-      total: 13,
-      duration: "55:52",
-      videos: [],
-    },
-    {
-      title: "Làm quen với CSS",
-      completed: 10,
-      total: 29,
-      duration: "2:16:11",
-      videos: [],
+      title: "2. Cấu trúc điều kiện vòng lặp",
+      progress: 30,
+      videos: [
+        { title: "2.1. Cấu trúc điều kiện", time: "5:30", status: "completed" },
+        { title: "2.2. Vòng lặp for", time: "4:15", status: "locked" },
+        { title: "2.3. Vòng lặp while", time: "3:50", status: "locked" },
+      ],
     },
   ];
-
-  const totalCompleted = courseContent.reduce(
-    (sum, sec) => sum + sec.completed,
-    0
-  );
-  const totalLessons = courseContent.reduce((sum, sec) => sum + sec.total, 0);
-  const progress = Math.round((totalCompleted / totalLessons) * 100);
 
   return (
     <div className="container-fluid">
       <div className="row">
-        <main className="col-md-9 p-4">
-          <h3 className="fw-bold mb-3">Lập trình C++ cơ bản, nâng cao</h3>
-          <div className="card shadow-sm">
-            <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-              <h5 className="mb-0">{currentLesson}</h5>
-              <button
-                className="btn btn-light btn-sm"
-                onClick={() => setShowModal(true)}
-              >
-                + Thêm ghi chú tại {getCurrentTime()}
-              </button>
-            </div>
-            <div className="card-body">
-              <iframe
-                ref={videoRef}
-                width="100%"
-                height="400"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
-                title="Giới thiệu khóa học C++"
-                frameBorder="0"
-                allowFullScreen
-                className="rounded"
-              ></iframe>
-              <p className="mt-3 text-muted">Cập nhật tháng 11/30/2024</p>
-            </div>
+        <nav className="navbar navbar-light bg-light">
+          <a className="navbar-brand ms-3" href="#">
+            Lập trình C++ cơ bản, nâng cao
+          </a>
+        </nav>
+      </div>
+      <div className="row">
+        {/* Phần Video */}
+        <div className="col-md-9 p-4">
+          <div
+            className="ratio ratio-16x9"
+            style={{ height: "500px", width: "1000px" }}
+          >
+            <iframe
+              src="https://www.youtube.com/embed/your-video-id"
+              allowFullScreen
+              style={{ width: "100%", height: "100%" }}
+            ></iframe>
           </div>
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            <h3 className="mb-0">Giới thiệu khóa học</h3>
+            <button className="btn btn-primary">+ Thêm ghi chú tại 0:00</button>
+          </div>
+          <p>Cập nhật tháng 11/30/2024</p>
           <div className="d-flex justify-content-between mt-3">
             <button className="btn btn-secondary">Bài Trước</button>
             <button className="btn btn-primary">Bài Tiếp Theo</button>
           </div>
-        </main>
+        </div>
 
-        {/* Sidebar */}
-        <aside
-          className="col-md-3 p-3 border-start custom-scrollbar"
+        {/* Phần Sidebar có thanh cuộn */}
+        <div
+          className="col-md-3 bg-primary-subtle p-3 border rounded"
           style={{
-            height: "80vh",
-            backgroundColor: "#f8f9fa",
+            maxHeight: "80vh",
             overflowY: "scroll",
           }}
         >
-          <h4 className="fw-bold">Nội dung khóa học</h4>
-          <ProgressBar now={progress} label={`${progress}%`} className="mb-3" />
-          <Accordion>
-            {courseContent.map((section, idx) => (
-              <Accordion.Item eventKey={idx.toString()} key={idx}>
-                <Accordion.Header>
-                  <div className="d-flex flex-column w-100">
-                    <span className="fw-bold">{section.title}</span>
-                    <small className="text-muted">
-                      {section.completed}/{section.total} | {section.duration}
-                    </small>
+          <h3 className="text-dark fw-bold">Nội dung khóa học</h3>
+          <ul className="list-group">
+            {courseContent.map((section, sectionIndex) => (
+              <li
+                className="list-group-item bg-transparent border-0"
+                key={sectionIndex}
+              >
+                <strong className="text-dark">{section.title}</strong>
+                <div className="progress mt-2">
+                  <div
+                    className="progress-bar bg-primary"
+                    role="progressbar"
+                    style={{ width: `${section.progress}%` }}
+                    aria-valuenow={section.progress}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  >
+                    {section.progress}%
                   </div>
-                </Accordion.Header>
-                <Accordion.Body>
-                  {section.videos.map((video, vidIdx) => (
-                    <div
-                      key={vidIdx}
-                      className="lesson-item p-2 d-flex justify-content-between align-items-center rounded"
-                      onClick={() => setActiveLesson(vidIdx)}
-                      style={{ cursor: "pointer" }}
+                </div>
+                <ul className="list-unstyled ps-3 mt-2">
+                  {section.videos.map((video, videoIndex) => (
+                    <li
+                      key={videoIndex}
+                      className="video-item list-group-item list-group-item-action d-flex justify-content-between align-items-center text-dark"
+                      style={{
+                        cursor: "pointer",
+                        padding: "8px",
+                        borderRadius: "5px",
+                      }}
                     >
-                      <span>{video.title}</span>
-                      <div className="d-flex align-items-center">
-                        <small className="text-muted me-2">
-                          {video.duration}
-                        </small>
-                        {video.locked && <FaLock className="text-secondary" />}
-                      </div>
-                    </div>
+                      <span>
+                        {video.title} ({video.time})
+                      </span>
+                      {video.status === "completed" ? (
+                        <FaLockOpen className="text-secondary ms-2" />
+                      ) : (
+                        <FaLock className="text-secondary ms-2" />
+                      )}
+                    </li>
                   ))}
-                </Accordion.Body>
-              </Accordion.Item>
+                </ul>
+              </li>
             ))}
-          </Accordion>
-        </aside>
+          </ul>
+        </div>
       </div>
-
-      {/* CSS cho hover và scrollbar */}
-      <style>{`
-        .lesson-item:hover {
-          background-color: #e9ecef;
-          transition: background-color 0.3s ease-in-out;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #007bff;
-          border-radius: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: #0056b3;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #e0e0e0;
-        }
-      `}</style>
     </div>
   );
-};
-
-export default Course;
+}
