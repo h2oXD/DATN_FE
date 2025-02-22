@@ -1,11 +1,12 @@
 import { useFormik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { Skeleton } from "antd";
 import { toast } from "react-toastify";
 
 export default function Goals() {
+  const { updateCheckData } = useOutletContext();
   const { course_id } = useParams()
   const formRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,6 +54,8 @@ export default function Goals() {
     onSubmit: async (values) => {
       setIsSubmitting(true);
       values._method = "PUT";
+      console.log(values);
+
       try {
         const response = await axiosClient.put(
           `/lecturer/courses/${course_id}`,
@@ -63,6 +66,7 @@ export default function Goals() {
             _method: "PUT", // Thêm _method nếu API yêu cầu
           }
         );
+        updateCheckData()
         toast.success('Cập nhật thành công')
         console.log("Response from API:", response); // Kiểm tra response từ API
 
@@ -200,11 +204,11 @@ export default function Goals() {
             </div>
             <div className="col-12 mb-3 mt-4">
               <label htmlFor="" className="fw-bold">
-                Học viên sẽ học được gì trong khóa học của bạn?
+                Yêu cầu hoặc điều kiện tiên quyết để tham gia khóa học của bạn là gì?
               </label>
               <p>
-                Bạn phải nhập ít nhất 1 mục tiêu hoặc kết quả học tập mà học
-                viên có thể mong đợi đạt được sau khi hoàn thành khóa học.
+                Liệt kê các kỹ năng, kinh nghiệm, công cụ hoặc thiết bị mà học viên bắt buộc phải có trước khi tham gia khóa học.
+                Nếu bạn không có yêu cầu nào, hãy tận dụng phần này và coi đây là cơ hội để bạn hạ thấp tiêu chuẩn cho người mới bắt đầu.
               </p>
               {prerequisites.map((prerequisite, index) => (
                 <div key={index} className="d-flex align-items-center mt-2">
