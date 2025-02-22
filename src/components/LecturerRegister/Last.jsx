@@ -4,10 +4,12 @@ import axiosClient from "../../api/axios";
 import { toast } from "react-toastify";
 import { getImageUrl } from "./../../api/common";
 import { BiBook, BiCodeBlock, BiSend, BiUserCheck } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 export default function Last() {
   const { user, setUser } = useContext(StoreContext);
   const [check, setCheck] = useState(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -78,6 +80,7 @@ export default function Last() {
       const response = await axiosClient.post("/register/answers", answers);
       alert(response.data.message);
       toast.success("Gửi yêu cầu thành công, chờ phê duyệt!");
+      navigate("/");
     } catch (error) {
       console.error("Lỗi gửi câu trả lời:", error);
       alert("Có lỗi xảy ra, vui lòng thử lại.");
