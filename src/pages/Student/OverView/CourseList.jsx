@@ -65,7 +65,7 @@ export default function CourseList() {
           courses.map((item) => (
             <div className="col-md-3" key={item.course.id}>
               <div className="card p-2">
-                <a href={`/student/overview/coursedetail/${item.course.id}`}>
+                <a href={`/student/home/${item.course.id}/coursedetail`}>
                   <img
                     src={item.course.thumbnail || "/default-thumbnail.jpg"}
                     alt={item.course.title}
@@ -130,13 +130,23 @@ export default function CourseList() {
                   </div>
                 </div>
                 <div className="d-flex mt-2">
-                  <h5 className="mb-0">{item.course.price_sale || "Free"}</h5>
-                  <h6
-                    className="mb-0 text-muted text-decoration-line-through text-gray-500"
-                    style={{ marginLeft: "10px" }}
-                  >
-                    {item.course.price_regular || ""}
-                  </h6>
+                  {item.course.price_sale || item.course.price_regular ? (
+                    <>
+                      <h5 className="mb-0">
+                        {item.course.price_sale || item.course.price_regular}
+                      </h5>
+                      {item.course.price_sale && item.course.price_regular && (
+                        <h6
+                          className="mb-0 text-decoration-line-through text-gray-500"
+                          style={{ marginLeft: "10px" }}
+                        >
+                          {item.course.price_regular}
+                        </h6>
+                      )}
+                    </>
+                  ) : (
+                    <h5 className="mb-0">Miễn phí</h5>
+                  )}
                 </div>
               </div>
             </div>
