@@ -25,13 +25,16 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 // import Coding from "./pages/Lecturer/Course/Coding";
+import RequireQuizParams from "./components/RequireQuizParams";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
-import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import Chat from "./pages/Lecturer/Chat/Chat";
+import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
+import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
+
 
 import RegisterTeacher from "./components/RegisterTeacher";
 import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
@@ -41,6 +44,7 @@ import MyCourse from "./pages/Student/CoursePage/MyCourse";
 import PaymentCallback from "./pages/Student/BuyCourse/PaymentCallback";
 import RequireQuizParams from "./components/RequireQuizParams";
 import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
+
 
 
 function App() {
@@ -65,7 +69,6 @@ function App() {
             path="/student/overview/coursedetail/:id"
             element={<CourseDetail />}
           />
-
           <Route
             path="/student/registerTeacher"
             element={<RegisterTeacher />}
