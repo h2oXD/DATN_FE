@@ -28,16 +28,12 @@ export default function BuyCourse() {
       return;
     }
 
-    // const bankCode = paymentMethod === "vnpay" ? "NCB" : null;
     const amount = parseInt(course.price_sale, 10);
-
-    // console.log("Dữ liệu gửi lên API:", { amount, bank_code: bankCode });
 
     setIsPaying(true);
     axiosClient
       .post(`/user/courses/${course_id}/create-payment`, {
         amount,
-        // bank_code: bankCode,
       })
       .then((response) => {
         const paymentUrl = response.data?.payment_url;
