@@ -2,7 +2,7 @@
 import { Modal } from 'antd';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
 import axiosClient from '../../../../../api/axios';
@@ -11,7 +11,7 @@ const DocumentModal = ({ showModal, closeModal, section_id, setLessons }) => {
   const { course_id } = useParams();
   const [documentPreviewUrl, setDocumentPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const { updateCheckData } = useOutletContext();
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -45,7 +45,7 @@ const DocumentModal = ({ showModal, closeModal, section_id, setLessons }) => {
             "Content-Type": "multipart/form-data",
           },
         })
-
+        updateCheckData()
         // console.log(response);
         toast.success("Tạo tài liệu thành công");
         setLessons(prevLesson => [...prevLesson, res.data.lesson]);

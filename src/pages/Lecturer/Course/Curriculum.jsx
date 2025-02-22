@@ -5,13 +5,13 @@ import * as Yup from "yup";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { createSection } from "../../../api/apiService";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import Section from "./Section/Section";
 import { useCourseContext } from "../../../contexts/CourseProvider";
 
 export default function Curriculum() {
     const { courseData, loading, error } = useCourseContext();
-
+    const { updateCheckData } = useOutletContext();
     const { course_id } = useParams();
     const [isModalSectionOpen, setIsModalSectionOpen] = useState(false);
     const [sections, setSections] = useState([]);
@@ -31,6 +31,7 @@ export default function Curriculum() {
                 const res = await createSection(course_id, values);
                 setSections((prevSections) => [...prevSections, res.data.section]);
                 formik.resetForm();
+                updateCheckData()
                 setIsModalSectionOpen(false);
             } catch (error) {
                 console.log(error);

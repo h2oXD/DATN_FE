@@ -32,10 +32,16 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
+
 import RegisterTeacher from "./components/RegisterTeacher";
 import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
 import Course from "./pages/Student/CoursePage/Course";
 import MyCourse from "./pages/Student/CoursePage/MyCourse";
+
+import PaymentCallback from "./pages/Student/BuyCourse/PaymentCallback";
+import RequireQuizParams from "./components/RequireQuizParams";
+import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
+
 
 function App() {
   return (
@@ -64,10 +70,9 @@ function App() {
             path="/student/registerTeacher"
             element={<RegisterTeacher />}
           />
-
           <Route
-            path="/student/formRegisterTeacher"
-            element={<FormRegisterTeacher />}
+            path="/student/payment-callback/:course_id"
+            element={<PaymentCallback />}
           />
         </Route>
 
@@ -110,6 +115,14 @@ function App() {
           />
           <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
         </Route>
+        <Route
+          path="/lecturer/quiz/edit"
+          element={
+            <RequireQuizParams>
+              <EditQuiz />
+            </RequireQuizParams>
+          }
+        />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>

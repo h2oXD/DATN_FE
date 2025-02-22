@@ -79,14 +79,12 @@ const QuizModal = ({ showFormQuiz, setShowFormQuiz, setLessons, section_id }) =>
           )}
         </div>
 
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-end align-items-center">
           {loading ? (<><button className="btn btn-primary" type="button" disabled>
             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          </button></>) : (<><button type="submit" className="btn btn-sm btn-warning">
-            Sử dụng bộ câu hỏi có sẵn
-          </button><button type="submit" className="btn btn-primary">
-              Tạo bộ câu hỏi mới
-            </button></>)}
+          </button></>) : (<><button type="submit" className="btn btn-primary">
+            Tạo bộ câu hỏi mới
+          </button></>)}
         </div>
       </form>
     </Modal>

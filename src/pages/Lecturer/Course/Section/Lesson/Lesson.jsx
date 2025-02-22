@@ -8,15 +8,17 @@ import { GoCodeSquare } from "react-icons/go";
 import Skeleton from "react-loading-skeleton";
 import axiosClient from "../../../../../api/axios";
 import Swal from "sweetalert2";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import EditVideoModal from "./Edit/EditVideoModal";
+import EditDocumentModal from "./Edit/EditDocumentModal";
 
 export default function Lesson({ lesson, section_id, setLessons }) {
     const { course_id } = useParams()
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: lesson.id });
     const [showVideoModal, setShowVideoModal] = useState(false);
+    const [showEditDocumentModal, setShowEditDocumentModal] = useState(false);
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -55,29 +57,22 @@ export default function Lesson({ lesson, section_id, setLessons }) {
         return <div className="card p-2 my-2 rounded"><Skeleton /></div>;
     }
     
-    const handleEdit = (type, lesson_id) => {
+    const handleEdit = (type) => {
         switch (type) {
             case 'video':
                 setShowVideoModal(true)
                 break;
 
             case 'document':
-
-                break;
-
-            case 'quiz':
-
-                break;
-
-            case 'coding':
-
+                setShowEditDocumentModal(true)
                 break;
 
             default:
                 break;
         }
     }
-
+    
+    
     return (
         <div
             ref={setNodeRef}
@@ -88,19 +83,21 @@ export default function Lesson({ lesson, section_id, setLessons }) {
         >
             <div className="d-flex align-items-center">
                 <span className="m-0 me-1 tw-font-semibold">
-                    {lesson.type == 'video' && (<MdOutlineOndemandVideo className="tw-size-5 me-2" />)}
-                    {lesson.type == 'document' && (<IoDocumentTextOutline className="tw-size-5 me-2" />)}
-                    {lesson.type == 'quiz' && (<IoIosHelpCircleOutline className="tw-size-5 me-2" />)}
+                    {lesson.type == 'video' && (<><MdOutlineOndemandVideo className="tw-size-5 me-2" />Video: </>)}
+                    {lesson.type == 'document' && (<><IoDocumentTextOutline className="tw-size-5 me-2" />Tài liệu:</>)}
+                    {lesson.type == 'quiz' && (<><IoIosHelpCircleOutline className="tw-size-5 me-2" />Trắc nghiệm:</>)}
                     {lesson.type == 'coding' && (<GoCodeSquare className="tw-size-5 me-2" />)}
                 </span>
                 <p className="m-0">{lesson.title}</p>
             </div>
             <div className="d-flex align-items-center">
-                <i onClick={() => handleEdit(lesson.type, lesson.id)} className="fe fe-edit cursor-pointer mx-2"></i>
+                {lesson.type != 'quiz' && <i onClick={() => handleEdit(lesson.type)} className="fe fe-edit cursor-pointer mx-2"></i>}
+                {lesson.type == 'quiz' && (<Link to={`/lecturer/quiz/edit?lessonId=${lesson.id}&sectionId=${section_id}&courseId=${course_id}`} className="text-dark"><i className="fe fe-edit cursor-pointer mx-2"></i></Link>)}
                 <i onClick={() => handleDelete(lesson.id)} className="fe fe-trash-2 cursor-pointer mx-2"></i>
                 <i {...listeners} className="fe fe-align-justify cursor-pointer ms-2"></i>
             </div>
-            {/* {lesson.type == 'video' && (<EditVideoModal showVideoModal={showVideoModal} setShowVideoModal={setShowVideoModal} lesson={lesson} section_id={section_id} setLessons={setLessons}/>)} */}
+            {lesson.type == 'video' && (<EditVideoModal showVideoModal={showVideoModal} setShowVideoModal={setShowVideoModal} lesson={lesson} section_id={section_id} setLessons={setLessons}/>)}
+            {lesson.type == 'document' && (<EditDocumentModal showEditDocumentModal={showEditDocumentModal} setShowEditDocumentModal={setShowEditDocumentModal} lesson={lesson} section_id={section_id} setLessons={setLessons}/>)}
         </div>
     );
 }
