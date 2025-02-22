@@ -36,18 +36,9 @@ import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import RegisterTeacher from "./components/RegisterTeacher";
 import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
-
-
-import RegisterTeacher from "./components/RegisterTeacher";
-import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
 import Course from "./pages/Student/CoursePage/Course";
 import MyCourse from "./pages/Student/CoursePage/MyCourse";
 
-import PaymentCallback from "./pages/Student/BuyCourse/PaymentCallback";
-import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
-import RequireQuizParams from "./components/RequireQuizParams";
-import MyCourse from "./pages/Student/CoursePage/MyCourse";
-import Course from "./pages/Student/CoursePage/Course";
 
 
 function App() {
@@ -78,11 +69,6 @@ function App() {
           <Route
             path="/student/formRegisterTeacher"
             element={<FormRegisterTeacher />}
-          />
-
-          <Route
-            path="/student/payment-callback/:course_id"
-            element={<PaymentCallback />}
           />
         </Route>
 
