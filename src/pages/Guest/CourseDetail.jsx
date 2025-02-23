@@ -1271,15 +1271,20 @@ export default function CourseDetail() {
               <h5 className="mb-0">Miễn phí</h5>
             ) : (
               <>
-                <h5 className="mb-0">
-                  {course.price_sale || course.price_regular}
+                <h5 className="mb-0 fw-bold">
+                  {parseInt(
+                    course.price_sale || course.price_regular,
+                    10
+                  ).toLocaleString("vi-VN")}{" "}
+                  đ
                 </h5>
                 {course.price_sale && course.price_regular && (
                   <h6
-                    className="mb-0 text-muted text-decoration-line-through text-gray-500"
+                    className="mb-0 text-muted text-decoration-line-through"
                     style={{ marginLeft: "10px" }}
                   >
-                    {course.price_regular}
+                    {parseInt(course.price_regular, 10).toLocaleString("vi-VN")}{" "}
+                    đ
                   </h6>
                 )}
               </>

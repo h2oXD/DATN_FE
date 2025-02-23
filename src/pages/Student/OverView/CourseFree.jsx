@@ -64,7 +64,7 @@ export default function CourseFree() {
               <div className="card p-2">
                 <Link to={`/student/home/${course.id}/coursedetail`}>
                   <img
-                    src={course.thumbnail}
+                    src={course.thumbnail || "/default-thumbnail.jpg"}
                     className="card-img-top rounded"
                   />
                 </Link>

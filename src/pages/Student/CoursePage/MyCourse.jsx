@@ -46,7 +46,7 @@ export default function MyCourse() {
             <div className="col" key={index}>
               <div className="card card-hover h-100">
                 <img
-                  src={item.course.thumbnail}
+                  src={item.course.thumbnail || "/default-thumbnail.jpg"}
                   alt={item.course.title}
                   className="card-img-top"
                 />

@@ -79,7 +79,7 @@ export default function BuyCourse() {
         <h4 className="mb-3">Thông tin khóa học</h4>
         <div className="d-flex align-items-center">
           <img
-            src={course.thumbnail}
+            src={course.thumbnail || "/default-thumbnail.jpg"}
             className="rounded"
             alt="Khóa học"
             style={{ maxWidth: "170px", height: "110px" }}
@@ -122,7 +122,7 @@ export default function BuyCourse() {
               name="paymentMethod"
               value="paypal"
               className="me-2"
-              disabled
+              // disabled
             />
             Ví (Chưa hỗ trợ)
           </label>
@@ -142,21 +142,29 @@ export default function BuyCourse() {
             <button className="btn btn-primary ms-1">Áp dụng</button>
           </div>
         </div>
-
         <p className="d-flex justify-content-between">
           <span>Giá gốc:</span>{" "}
-          <span className="fw-bold">{course.price_regular} VNĐ</span>
+          <span className="fw-bold">
+            {parseInt(course.price_regular, 10).toLocaleString("vi-VN")} đ
+          </span>
         </p>
         {course.price_sale ? (
           <p className="d-flex justify-content-between">
             <span>Giá sale:</span>{" "}
-            <span className="fw-bold">{course.price_sale} VNĐ</span>
+            <span className="fw-bold">
+              {parseInt(course.price_sale, 10).toLocaleString("vi-VN")} đ
+            </span>
           </p>
         ) : null}
         <p className="d-flex justify-content-between">
           <span>Tổng thanh toán:</span>
-          <span className="fw-bold text-danger">
-            {course.price_sale || course.price_regular} VNĐ
+          <span className="fw-bold">
+            {(course.price_sale || course.price_regular) &&
+              parseInt(
+                course.price_sale || course.price_regular,
+                10
+              ).toLocaleString("vi-VN")}{" "}
+            đ
           </span>
         </p>
         <button
