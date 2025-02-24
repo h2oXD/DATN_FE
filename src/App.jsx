@@ -36,12 +36,9 @@ import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import RegisterTeacher from "./components/RegisterTeacher";
 import MyCourse from "./pages/Student/CoursePage/MyCourse";
-import Course from "./pages/Student/CoursePage/Course";
 import Last from "./components/LecturerRegister/Last";
 import First from "./components/LecturerRegister/First";
-import BlogList from "./pages/Student/Blog/List";
-import MyBlog from "./pages/Student/Blog/MyBlog";
-import WriteBlog from "./pages/Student/Blog/WriteBlog";
+import Course from "./pages/Student/Study/Course";
 
 function App() {
   return (
@@ -60,9 +57,6 @@ function App() {
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
           <Route path="/student/course" element={<Course />} />
-          <Route path="/student/blogList" element={<BlogList />} />
-          <Route path="/student/myBlog" element={<MyBlog />} />
-          <Route path="/student/writeBlog" element={<WriteBlog />} />
 
           <Route
             path="/student/home/:course_id/coursedetail/"
@@ -73,6 +67,7 @@ function App() {
           <Route index element={<First />} />
           <Route path="/registerTeacher/Last" element={<Last />} />
         </Route>
+        <Route path="/student/course/:course_id" element={<Course />} />
         {/* Giảng Viên */}
         <Route
           path="/lecturer"

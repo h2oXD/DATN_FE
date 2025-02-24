@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { notification } from "antd";
 import axiosClient from "../../../api/axios";
 import VNpay from "../../../assets/images/png/image.png";
+import { getImageUrl } from "../../../api/common";
 
 export default function BuyCourse() {
   const { course_id } = useParams();
@@ -11,11 +12,14 @@ export default function BuyCourse() {
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState("vnpay");
   const [isPaying, setIsPaying] = useState(false);
+  const [rate, setRate] = useState(null)
 
   useEffect(() => {
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
+        console.log(response.data.data.average_rating);
+        setRate(response.data.data.average_rating)
         setCourse(response.data.data.course);
         setLecturer(response.data.data.lecturer);
       })
@@ -79,21 +83,19 @@ export default function BuyCourse() {
         <h4 className="mb-3">Thông tin khóa học</h4>
         <div className="d-flex align-items-center">
           <img
-            src={course.thumbnail || "/default-thumbnail.jpg"}
+            src={getImageUrl(course.thumbnail)}
             className="rounded"
             alt="Khóa học"
             style={{ maxWidth: "170px", height: "110px" }}
           />
           <div className="ms-2">
             <h5 className="mb-2 fw-bold">{course.title}</h5>
-            <span className="badge bg-secondary mb-2">
-              {course.primary_content}
-            </span>
             <div className="d-flex align-items-center mt-1">
               <span className="text-muted">{lecturer?.name}</span>
             </div>
             <div className="lh-1 mt-2 text-warning">
-              {course.average_rating} ★
+              {/* {rate && rate + ' ★'} */}
+              {rate + ' ★'}
             </div>
           </div>
         </div>
@@ -122,7 +124,7 @@ export default function BuyCourse() {
               name="paymentMethod"
               value="paypal"
               className="me-2"
-              // disabled
+            // disabled
             />
             Ví (Chưa hỗ trợ)
           </label>
