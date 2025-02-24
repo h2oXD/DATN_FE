@@ -113,7 +113,7 @@ export default function SectionEdit({
                         <>
                             <div className="d-flex justify-content-end mt-3">
                                 <button type="submit" className="btn btn-primary">
-                                    Thêm mới
+                                    Cập nhật
                                 </button>
                             </div>
                         </>

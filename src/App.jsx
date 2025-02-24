@@ -55,11 +55,12 @@ function App() {
         {/* Học Viên */}
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
-          <Route path="/student/overview" element={<OverView />} />
-          <Route path="/student/MyCourse" element={<MyCourse />} />
+          <Route path="/student/home" element={<OverView />} />
           <Route path="/student/course" element={<Course />} />
+          <Route path="/student/MyCourse" element={<MyCourse />} />
+
           <Route
-            path="/student/overview/coursedetail/:id"
+            path="/student/home/:course_id/coursedetail"
             element={<CourseDetail />}
           />
           <Route
@@ -70,6 +71,7 @@ function App() {
             path="/student/formRegisterTeacher"
             element={<FormRegisterTeacher />}
           />
+
         </Route>
 
         {/* Giảng Viên */}

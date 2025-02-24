@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../../api/axios";
+import { getImageUrl } from "../../../api/common";
 
 export default function MyCourse() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,7 +47,7 @@ export default function MyCourse() {
             <div className="col" key={index}>
               <div className="card card-hover h-100">
                 <img
-                  src={item.course.thumbnail}
+                  src={getImageUrl(item.course.thumbnail)}
                   alt={item.course.title}
                   className="card-img-top"
                 />

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import axiosClient from "../../api/axios";
+import { getImageUrl } from "../../api/common";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
@@ -1252,7 +1253,7 @@ export default function CourseDetail() {
         <div className="card p-2">
           <div className="card">
             <img
-              src={course.thumbnail || "/default-thumbnail.jpg"}
+              src={getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"}
               alt={course.title}
               className="card-img-top rounded"
             />

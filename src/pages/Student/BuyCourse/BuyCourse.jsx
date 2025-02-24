@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { notification } from "antd";
 import axiosClient from "../../../api/axios";
 import VNpay from "../../../assets/images/png/image.png";
+import { getImageUrl } from "../../../api/common";
 
 export default function BuyCourse() {
   const { course_id } = useParams();
@@ -10,11 +12,14 @@ export default function BuyCourse() {
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState("vnpay");
   const [isPaying, setIsPaying] = useState(false);
+  const [rate, setRate] = useState(null)
 
   useEffect(() => {
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
+        console.log(response.data.data.average_rating);
+        setRate(response.data.data.average_rating)
         setCourse(response.data.data.course);
         setLecturer(response.data.data.lecturer);
       })
@@ -23,30 +28,43 @@ export default function BuyCourse() {
   }, [course_id]);
 
   const handlePayment = () => {
-    if (!course?.price_sale) {
-      alert("Lỗi: Giá không hợp lệ!");
+    const amount = course.price_sale
+      ? parseInt(course.price_sale, 10)
+      : parseInt(course.price_regular, 10);
+
+    if (!amount || amount <= 0) {
+      notification.error({
+        message: "Lỗi thanh toán",
+        description: "Giá không hợp lệ!",
+        duration: 1,
+      });
       return;
     }
 
-    const amount = parseInt(course.price_sale, 10);
-
     setIsPaying(true);
     axiosClient
-      .post(`/user/courses/${course_id}/create-payment`, {
-        amount,
-      })
+      .post(`/user/courses/${course_id}/create-payment`, { amount })
       .then((response) => {
         const paymentUrl = response.data?.payment_url;
         if (!paymentUrl || typeof paymentUrl !== "string") {
-          alert("Lỗi: Không nhận được đường dẫn thanh toán hợp lệ!");
+          notification.error({
+            message: "Lỗi thanh toán",
+            description: "Không nhận được đường dẫn thanh toán hợp lệ!",
+            duration: 1,
+          });
           return;
         }
         window.location.href = paymentUrl;
       })
       .catch((error) => {
         console.error("Lỗi khi thanh toán:", error);
-        console.log("Chi tiết lỗi từ server:", error.response?.data);
-        alert(error.response?.data.error);
+        notification.error({
+          message: "Lỗi thanh toán",
+          description:
+            error.response?.data?.error ||
+            "Có lỗi xảy ra khi xử lý thanh toán!",
+          duration: 1,
+        });
       })
       .finally(() => setIsPaying(false));
   };
@@ -65,7 +83,7 @@ export default function BuyCourse() {
         <h4 className="mb-3">Thông tin khóa học</h4>
         <div className="d-flex align-items-center">
           <img
-            src={course.thumbnail}
+            src={getImageUrl(course.thumbnail)}
             className="rounded"
             alt="Khóa học"
             style={{ maxWidth: "170px", height: "110px" }}
@@ -79,7 +97,7 @@ export default function BuyCourse() {
               <span className="text-muted">{lecturer?.name}</span>
             </div>
             <div className="lh-1 mt-2 text-warning">
-              {course.average_rating} ★
+              {rate && rate+' ★'}
             </div>
           </div>
         </div>
@@ -133,13 +151,17 @@ export default function BuyCourse() {
           <span>Giá gốc:</span>{" "}
           <span className="fw-bold">{course.price_regular} VNĐ</span>
         </p>
-        <p className="d-flex justify-content-between">
-          <span>Giá sale:</span>{" "}
-          <span className="fw-bold">{course.price_sale} VNĐ</span>
-        </p>
+        {course.price_sale ? (
+          <p className="d-flex justify-content-between">
+            <span>Giá sale:</span>{" "}
+            <span className="fw-bold">{course.price_sale} VNĐ</span>
+          </p>
+        ) : null}
         <p className="d-flex justify-content-between">
           <span>Tổng thanh toán:</span>
-          <span className="fw-bold text-danger">{course.price_sale} VNĐ</span>
+          <span className="fw-bold text-danger">
+            {course.price_sale || course.price_regular} VNĐ
+          </span>
         </p>
         <button
           className="btn btn-primary w-100 mb-2"

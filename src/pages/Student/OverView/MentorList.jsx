@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
+import { getImageUrl } from "../../../api/common";
 
 export default function MentorList() {
   const listRef = useRef(null);
@@ -65,7 +66,7 @@ export default function MentorList() {
                   >
                     <div className="p-3">
                       <img
-                        src={mentor.lecturer.profile_picture}
+                        src={getImageUrl(mentor.lecturer.profile_picture)}
                         alt={mentor.lecturer.name}
                         className="avatar avatar-xl rounded-circle"
                       />

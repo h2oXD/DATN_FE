@@ -5,6 +5,7 @@ import { Modal, Skeleton } from "antd";
 import { useCourseContext } from "../../../contexts/CourseProvider";
 import axiosClient from "../../../api/axios";
 import { FaCheckCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 
 
@@ -16,6 +17,7 @@ export default function Edit() {
     const navigate = useNavigate()
     const [modalCheck, setModalCheck] = useState(false)
     const [checkDataMessage, setCheckDataMessage] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         if (courseData) {
             setCourse(course)
@@ -54,10 +56,12 @@ export default function Edit() {
 
     const handleRequestCensor = async (course_id) => {
         try {
+            setIsLoading(true)
             const courseShow = await axiosClient.get(`/lecturer/courses/${course_id}/pending`)
 
             console.log(courseShow.data);
             if (courseShow.data.status == 'success') {
+                toast.success('Gửi yêu cầu phê duyệt thành công')
                 navigate('/lecturer/course')
             }
         } catch (error) {
@@ -66,6 +70,8 @@ export default function Edit() {
             setCheckDataMessage(error.response.data)
             // }
             console.log(error.response.data);
+        } finally {
+            setIsLoading(false)
         }
 
     }
@@ -124,7 +130,14 @@ export default function Edit() {
                         </ul>
                     </div>
                     <div className="mt-2">
-                        <button onClick={() => { handleRequestCensor(course_id) }} className="btn btn-primary w-100">Gửi đi để xem xét</button>
+                        {isLoading ? (<><button className="btn btn-primary w-100" type="button" disabled>
+                            <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                        </button></>) : (<><button onClick={() => { handleRequestCensor(course_id) }} className="btn btn-primary w-100">Gửi đi để xem xét</button></>)}
+
                         <Modal
                             width={600}
                             open={modalCheck}
