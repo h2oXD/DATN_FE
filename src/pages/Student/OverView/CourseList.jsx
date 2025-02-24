@@ -130,18 +130,27 @@ export default function CourseList() {
                     reviews)
                   </div>
                 </div>
+
                 <div className="d-flex mt-2">
                   {item.course.price_sale || item.course.price_regular ? (
                     <>
-                      <h5 className="mb-0">
-                        {item.course.price_sale || item.course.price_regular}
+                      <h5 className="mb-0 fw-bold">
+                        {parseInt(
+                          item.course.price_sale || item.course.price_regular,
+                          10
+                        ).toLocaleString("vi-VN")}{" "}
+                        đ
                       </h5>
                       {item.course.price_sale && item.course.price_regular && (
                         <h6
                           className="mb-0 text-decoration-line-through text-gray-500"
                           style={{ marginLeft: "10px" }}
                         >
-                          {item.course.price_regular}
+                          {parseInt(
+                            item.course.price_regular,
+                            10
+                          ).toLocaleString("vi-VN")}{" "}
+                          đ
                         </h6>
                       )}
                     </>

@@ -4,7 +4,7 @@ import SideBar from "./student/SideBar";
 import { Outlet } from "react-router-dom";
 
 export default function StudentLayout() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   return (
     <>
       <div id="">

@@ -1,6 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal, Button, Form, ProgressBar, Accordion } from "react-bootstrap";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 
 export default function Course() {
   const courseContent = [
