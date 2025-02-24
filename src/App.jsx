@@ -35,11 +35,10 @@ import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import RegisterTeacher from "./components/RegisterTeacher";
-import FormRegisterTeacher from "./pages/Auth/FormRegisterTeacher";
-import Course from "./pages/Student/CoursePage/Course";
 import MyCourse from "./pages/Student/CoursePage/MyCourse";
-
-
+import Last from "./components/LecturerRegister/Last";
+import First from "./components/LecturerRegister/First";
+import Course from "./pages/Student/Study/Course";
 
 function App() {
   return (
@@ -56,24 +55,19 @@ function App() {
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<HomeStudent />} />
           <Route path="/student/home" element={<OverView />} />
-          <Route path="/student/course" element={<Course />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
 
+
           <Route
-            path="/student/home/:course_id/coursedetail"
+            path="/student/home/:course_id/coursedetail/"
             element={<CourseDetail />}
           />
-          <Route
-            path="/student/registerTeacher"
-            element={<RegisterTeacher />}
-          />
-          <Route
-            path="/student/formRegisterTeacher"
-            element={<FormRegisterTeacher />}
-          />
-
         </Route>
-
+        <Route path="/registerTeacher" element={<RegisterTeacher />}>
+          <Route index element={<First />} />
+          <Route path="/registerTeacher/Last" element={<Last />} />
+        </Route>
+        <Route path="/student/course/:course_id" element={<Course />} />
         {/* Giảng Viên */}
         <Route
           path="/lecturer"

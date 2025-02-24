@@ -160,7 +160,7 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                                 </div>
                             )}
                         </div>
-                        <div className="col-12 mt-2">
+                        <div className="col-12 mt-2 d-flex justify-content-between align-items-center">
                             <Segmented
                                 options={[
                                     { label: 'Câu trả lời đúng duy nhất', value: '0' },
@@ -169,7 +169,7 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                                 value={questionType}
                                 onChange={handleQuestionTypeChange}
                             />
-                            <button className="btn btn-primary" type="submit">Lưu</button>
+                            <button className="btn btn-sm btn-primary" type="submit">Lưu</button>
                         </div>
                     </div>
                 </form>

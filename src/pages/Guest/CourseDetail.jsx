@@ -1,18 +1,21 @@
-import { Modal } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axiosClient from "../../api/axios";
+import { useParams, useNavigate } from "react-router-dom";
+import { Modal, Skeleton } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
-import { getImageUrl } from "./../../api/common";
+import axiosClient from "../../api/axios";
+import { getImageUrl } from "../../api/common";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
   const [course, setCourse] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!course_id) return;
+    console.log("course_id của khóa học:", course_id);
+    setLoading(true);
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
@@ -26,6 +29,9 @@ export default function CourseDetail() {
       })
       .catch((error) => {
         console.error("Lỗi khi lấy chi tiết khoá học:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [course_id]);
 
@@ -40,6 +46,16 @@ export default function CourseDetail() {
   const handleLearn = () => {
     navigate(`/student/home`);
   };
+
+  if (loading) {
+    return (
+      <>
+        <div className="card p-5">
+          <Skeleton />
+        </div>
+      </>
+    );
+  }
 
   if (!course) {
     return <p>Khoá học không tồn tại hoặc đã bị xoá.</p>;
@@ -1193,15 +1209,13 @@ export default function CourseDetail() {
       </div>
       <div className="col-lg-3">
         <div className="card p-2">
-          <img
-            src={
-              course.thumbnail
-                ? getImageUrl(course.thumbnail)
-                : "/default-thumbnail.jpg"
-            }
-            alt={course.title}
-            className="card-img-top rounded"
-          />
+          <div className="card">
+            <img
+              src={getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"}
+              alt={course.title}
+              className="card-img-top rounded"
+            />
+          </div>
           <div className="px-1 py-1">
             <h4 className="mt-1 mb-1 text-truncate-line-2">{course.title}</h4>
             <div className="d-flex justify-content-between align-items-center">

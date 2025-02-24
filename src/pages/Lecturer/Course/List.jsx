@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import axiosClient from "../../../api/axios";
 import { useLecturerContext } from "../../../contexts/LecturerProvider";
 import { getImageUrl } from "../../../api/common";
+import { format } from 'date-fns';
 
 export default function List() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -264,7 +265,7 @@ export default function List() {
                     </h4>
                     <ul className="list-inline fs-6 mb-0 d-flex justify-content-between align-items-center pb-2">
                       <li className="list-inline-item d-flex flex-column">
-                        <span>Ngày tạo: 12/2/2025</span>
+                        <span>Ngày tạo: {format(new Date(course.created_at), 'dd/MM/yyyy')}</span>
                         <span>Danh mục: {course.category.name}</span>
                       </li>
                       <li className="list-inline-item">
