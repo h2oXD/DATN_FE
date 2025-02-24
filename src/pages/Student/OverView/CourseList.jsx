@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
+import { getImageUrl } from "../../../api/common";
 
 export default function CourseList() {
   const listRef = useRef(null);
@@ -67,7 +68,11 @@ export default function CourseList() {
               <div className="card p-2">
                 <a href={`/student/home/${item.course.id}/coursedetail`}>
                   <img
-                    src={item.course.thumbnail || "/default-thumbnail.jpg"}
+                    src={
+                      item.course.thumbnail
+                        ? getImageUrl(item.course.thumbnail)
+                        : "/default-thumbnail.jpg"
+                    }
                     alt={item.course.title}
                     className="card-img-top rounded"
                   />

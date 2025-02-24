@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { notification } from "antd";
 import axiosClient from "../../../api/axios";
 import VNpay from "../../../assets/images/png/image.png";
+import { getImageUrl } from "../../../api/common";
 
 export default function BuyCourse() {
   const { course_id } = useParams();
@@ -16,8 +17,15 @@ export default function BuyCourse() {
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
-        setCourse(response.data.data.course);
-        setLecturer(response.data.data.lecturer);
+        // setCourse(response.data.data.course);
+        // setLecturer(response.data.data.lecturer);
+        console.log("Dữ liệu API nhận được:", response.data.data);
+        const { course, instructor, average_rating } = response.data.data;
+        setCourse({
+          ...course,
+          lecturer: instructor || {},
+          average_rating,
+        });
       })
       .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error))
       .finally(() => setLoading(false));
@@ -79,16 +87,20 @@ export default function BuyCourse() {
         <h4 className="mb-3">Thông tin khóa học</h4>
         <div className="d-flex align-items-center">
           <img
-            src={course.thumbnail || "/default-thumbnail.jpg"}
+            src={
+              course.thumbnail
+                ? getImageUrl(course.thumbnail)
+                : "/default-thumbnail.jpg"
+            }
             className="rounded"
             alt="Khóa học"
-            style={{ maxWidth: "170px", height: "110px" }}
+            style={{ maxWidth: "190px", height: "120px" }}
           />
           <div className="ms-2">
-            <h5 className="mb-2 fw-bold">{course.title}</h5>
-            <span className="badge bg-secondary mb-2">
-              {course.primary_content}
-            </span>
+            <h4 className="mb-1">{course.title}</h4>
+            <small className="fs-18">
+              By: {course.lecturer?.name || "Chưa cập nhật giảng viên"}
+            </small>
             <div className="d-flex align-items-center mt-1">
               <span className="text-muted">{lecturer?.name}</span>
             </div>

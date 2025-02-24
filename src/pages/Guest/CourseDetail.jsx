@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { Modal } from "antd";
-import BuyCourse from "../Student/BuyCourse/BuyCourse";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../api/axios";
+import BuyCourse from "../Student/BuyCourse/BuyCourse";
+import { getImageUrl } from "./../../api/common";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
@@ -12,11 +13,16 @@ export default function CourseDetail() {
 
   useEffect(() => {
     if (!course_id) return;
-    console.log("course_id của khóa học:", course_id);
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
-        setCourse(response.data.data.course);
+        console.log("Dữ liệu API nhận được:", response.data.data);
+        const { course, instructor, average_rating } = response.data.data;
+        setCourse({
+          ...course,
+          lecturer: instructor || {},
+          average_rating,
+        });
       })
       .catch((error) => {
         console.error("Lỗi khi lấy chi tiết khoá học:", error);
@@ -39,14 +45,15 @@ export default function CourseDetail() {
     return <p>Khoá học không tồn tại hoặc đã bị xoá.</p>;
   }
 
-  // Kiểm tra khóa học miễn phí hay trả phí
   const isFree = !course.price_sale && !course.price_regular;
 
+  // const videoSrc = course.video_preview
+  //   ? getImageUrl(course.video_preview)
+  //   : null;
   return (
     <div className="row">
       <div className="col-lg-9 col-md-12 col-12 mb-4 mb-lg-0">
         <div className="card rounded-3">
-          {/* <!-- Card header --> */}
           <div className="card-header border-bottom-0 p-0">
             <div className="p-2">
               <video
@@ -54,9 +61,18 @@ export default function CourseDetail() {
                 controls
                 src="https://www.youtube.com/watch?v=4tn5YLcDR4E"
               ></video>
+              {/* {videoSrc && (
+                <div className="p-2">
+                  <video
+                    className="w-100 rounded-2"
+                    controls
+                    src={videoSrc}
+                  ></video>
+                </div>
+              )} */}
             </div>
             <div className="px-3">
-              <h2>Khoá học</h2>
+              <h2>{course.title}</h2>
             </div>
             <div>
               {/* <!-- Nav --> */}
@@ -106,13 +122,13 @@ export default function CourseDetail() {
           {/* <!-- Card Body --> */}
           <div className="card-body">
             <div className="tab-content" id="tabContent">
+              {/* Nội dung */}
               <div
                 className="tab-pane fade show active"
                 id="table"
                 role="tabpanel"
                 aria-labelledby="table-tab"
               >
-                {/* <!-- Card --> */}
                 <div className="accordion" id="courseAccordion">
                   <div>
                     {/* <!-- List group --> */}
@@ -163,75 +179,6 @@ export default function CourseDetail() {
                               </div>
                               <div className="text-truncate">
                                 <span>1m 7s</span>
-                              </div>
-                            </a>
-                            <a
-                              href="course-resume.html"
-                              className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                            >
-                              <div className="text-truncate">
-                                <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="12"
-                                    height="12"
-                                    fill="currentColor"
-                                    className="bi bi-play-fill"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                  </svg>
-                                </span>
-                                <span>Installing Development Software</span>
-                              </div>
-                              <div className="text-truncate">
-                                <span>3m 11s</span>
-                              </div>
-                            </a>
-                            <a
-                              href="course-resume.html"
-                              className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                            >
-                              <div className="text-truncate">
-                                <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="12"
-                                    height="12"
-                                    fill="currentColor"
-                                    className="bi bi-play-fill"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                  </svg>
-                                </span>
-                                <span>Hello World Project from GitHub</span>
-                              </div>
-                              <div className="text-truncate">
-                                <span>2m 33s</span>
-                              </div>
-                            </a>
-                            <a
-                              href="course-resume.html"
-                              className="d-flex justify-content-between align-items-center text-inherit"
-                            >
-                              <div className="text-truncate">
-                                <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="12"
-                                    height="12"
-                                    fill="currentColor"
-                                    className="bi bi-play-fill"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                  </svg>
-                                </span>
-                                <span>Our Sample Website</span>
-                              </div>
-                              <div className="text-truncate">
-                                <span>2m 15s</span>
                               </div>
                             </a>
                           </div>
@@ -457,20 +404,16 @@ export default function CourseDetail() {
                   </div>
                 </div>
               </div>
+              {/* Thông tin */}
               <div
                 className="tab-pane fade"
                 id="description"
                 role="tabpanel"
                 aria-labelledby="description-tab"
               >
-                {/* <!-- Description --> */}
                 <div className="mb-4">
-                  <h3 className="mb-2">Course Descriptions</h3>
-                  <p>
-                    If you’re learning to program for the first time, or if
-                    you’re coming from a different language, this course,
-                    JavaScript
-                  </p>
+                  <h3 className="mb-2">{course.description}</h3>
+                  <p>{course.description}</p>
                 </div>
               </div>
               <div
@@ -479,7 +422,7 @@ export default function CourseDetail() {
                 role="tabpanel"
                 aria-labelledby="review-tab"
               >
-                {/* <!-- Reviews --> */}
+                {/* Đánh giá  */}
                 <div className="mb-3">
                   <h3 className="mb-4">How students rated this courses</h3>
                   <div className="row align-items-center">
@@ -1250,28 +1193,31 @@ export default function CourseDetail() {
       </div>
       <div className="col-lg-3">
         <div className="card p-2">
-          <div className="card">
-            <img
-              src={course.thumbnail || "/default-thumbnail.jpg"}
-              alt={course.title}
-              className="card-img-top rounded"
-            />
-          </div>
+          <img
+            src={
+              course.thumbnail
+                ? getImageUrl(course.thumbnail)
+                : "/default-thumbnail.jpg"
+            }
+            alt={course.title}
+            className="card-img-top rounded"
+          />
           <div className="px-1 py-1">
             <h4 className="mt-1 mb-1 text-truncate-line-2">{course.title}</h4>
-            <small>By: {course.instructor?.name || "Unknown"}</small>
-            <div className="lh-1 mt-2 text-warning">
-              {course.rating} ★ ({course.reviews?.length || 0} reviews)
+            <div className="d-flex justify-content-between align-items-center">
+              <small className="fs-12">
+                By: {course.lecturer?.name || "Chưa cập nhật giảng viên"}
+              </small>
+              <div className="text-warning">{course.average_rating} ★</div>
             </div>
           </div>
 
-          {/* Hiển thị giá chính xác */}
           <div className="d-flex mt-2">
             {isFree ? (
               <h5 className="mb-0">Miễn phí</h5>
             ) : (
               <>
-                <h5 className="mb-0 fw-bold">
+                <h5 className="mb-0">
                   {parseInt(
                     course.price_sale || course.price_regular,
                     10
