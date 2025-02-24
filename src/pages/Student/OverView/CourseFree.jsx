@@ -2,13 +2,17 @@ import { useRef, useState, useEffect } from "react";
 import axiosClient from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../../../api/common";
+import { isEmptyArray } from "formik";
+import Skeleton from "react-loading-skeleton";
 
 export default function CourseFree() {
   const listRef = useRef(null);
   const [courses, setCourses] = useState([]);
   const nav = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     axiosClient
       .get("/student/home")
       .then((response) => {
@@ -17,6 +21,9 @@ export default function CourseFree() {
       })
       .catch((error) => {
         console.error("Lỗi khi tải danh sách khóa học miễn phí:", error);
+      })
+      .finally(() => {
+        setLoading(false)
       });
   }, []);
 
@@ -35,6 +42,13 @@ export default function CourseFree() {
       listRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
+  if (loading) {
+    return <><div className="p-5"><Skeleton /></div></>
+  }
+
+  if (isEmptyArray(courses)) {
+    return <><h4 className="p-5">Không có dữ liệu khoá học miễn phí</h4></>
+  }
 
   return (
     <div className="mt-1 p-3 position-relative">
@@ -59,7 +73,7 @@ export default function CourseFree() {
           scrollBehavior: "smooth",
         }}
       >
-        {courses.length > 0 ? (
+        {(
           courses.map((course) => (
             <div className="col-md-3" key={course.id}>
               <div className="card p-2">
@@ -124,11 +138,11 @@ export default function CourseFree() {
                   <div className="lh-1 mt-2 text-warning">
                     {course.reviews.length > 0
                       ? `${(
-                          course.reviews.reduce(
-                            (sum, review) => sum + review.rating,
-                            0
-                          ) / course.reviews.length
-                        ).toFixed(1)} ★ (${course.reviews.length})`
+                        course.reviews.reduce(
+                          (sum, review) => sum + review.rating,
+                          0
+                        ) / course.reviews.length
+                      ).toFixed(1)} ★ (${course.reviews.length})`
                       : "Chưa có đánh giá"}
                   </div>
                 </div>
@@ -138,8 +152,6 @@ export default function CourseFree() {
               </div>
             </div>
           ))
-        ) : (
-          <p>Không có khóa học miễn phí nào.</p>
         )}
       </div>
 

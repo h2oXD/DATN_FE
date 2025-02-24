@@ -51,7 +51,7 @@ export default function MyCourse() {
                   alt={item.course.title}
                   className="card-img-top"
                 />
-                <div className="card-body">
+                <div className="card-body p-3">
                   <h5 className="mt-2 text-truncate">{item.course.title}</h5>
                   <p className="text-muted small mb-1">
                     Khoá học đang hoạt động

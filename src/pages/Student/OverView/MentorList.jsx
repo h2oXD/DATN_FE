@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
 import { getImageUrl } from "../../../api/common";
+import { isEmptyArray } from "formik";
+import Skeleton from "react-loading-skeleton";
 
 export default function MentorList() {
   const listRef = useRef(null);
   const [mentors, setMentors] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     axiosClient
       .get("/student/home")
       .then((response) => {
@@ -15,6 +19,9 @@ export default function MentorList() {
       })
       .catch((error) => {
         console.error("Lỗi khi tải dữ liệu giảng viên:", error);
+      })
+      .finally(() => {
+        setLoading(false)
       });
   }, []);
 
@@ -29,6 +36,15 @@ export default function MentorList() {
       listRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
+
+  if (loading) {
+    return <><div className="p-5"><Skeleton /></div></>
+  }
+
+
+  if (isEmptyArray(mentors)) {
+    return <><h4 className="p-5">Không có dữ liệu giảng viên</h4></>
+  }
 
   return (
     <>

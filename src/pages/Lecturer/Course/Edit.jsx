@@ -7,8 +7,6 @@ import axiosClient from "../../../api/axios";
 import { FaCheckCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-
-
 export default function Edit() {
     const { courseData, loading, error } = useCourseContext()
     const { course_id } = useParams();

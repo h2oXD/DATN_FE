@@ -90,14 +90,12 @@ export default function BuyCourse() {
           />
           <div className="ms-2">
             <h5 className="mb-2 fw-bold">{course.title}</h5>
-            <span className="badge bg-secondary mb-2">
-              {course.primary_content}
-            </span>
             <div className="d-flex align-items-center mt-1">
               <span className="text-muted">{lecturer?.name}</span>
             </div>
             <div className="lh-1 mt-2 text-warning">
-              {rate && rate+' ★'}
+              {/* {rate && rate + ' ★'} */}
+              {rate + ' ★'}
             </div>
           </div>
         </div>
@@ -126,7 +124,7 @@ export default function BuyCourse() {
               name="paymentMethod"
               value="paypal"
               className="me-2"
-              // disabled
+            // disabled
             />
             Ví (Chưa hỗ trợ)
           </label>
