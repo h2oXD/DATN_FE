@@ -3,8 +3,18 @@
 
 import { Link } from "react-router-dom";
 import Logout from "../../pages/Auth/Logout";
+import { useContext, useEffect, useState } from "react";
+import { StoreContext } from "../../contexts/StoreProvider";
+import Skeleton from "react-loading-skeleton";
 
 export default function Header({ collapsed, setCollapsed }) {
+  const { user } = useContext(StoreContext);
+  const [userInfo, setUserInfo] = useState(null)
+  useEffect(() => {
+    if (user) {
+      setUserInfo(user)
+    }
+  }, [user])
   return (
     <>
       <div className="header sticky-top" style={{ zIndex: "999" }}>
@@ -254,21 +264,24 @@ export default function Header({ collapsed, setCollapsed }) {
                         />
                       </div>
                       <div className="ms-3 lh-1">
-                        <h5 className="mb-1">Annette Black</h5>
-                        <p className="mb-0">annette@geeksui.com</p>
+                        {userInfo ? <h5 className="mb-1">{userInfo.name}</h5> : <Skeleton />}
+                        {userInfo ? <p className="mb-0">{userInfo.email}</p> : <Skeleton />}
+
                       </div>
                     </div>
                   </div>
                   <div className="dropdown-divider"></div>
                   <ul className="list-unstyled">
                     <li>
-                      <a
+                      {userInfo ? (<><Link
                         className="dropdown-item"
-                        href="../pages/profile-edit.html"
+                        to={''}
                       >
+
                         <i className="fe fe-user me-2"></i>
                         Thông tin cá nhân
-                      </a>
+                      </Link></>) : <Skeleton />}
+
                     </li>
                     <li>
                       <a

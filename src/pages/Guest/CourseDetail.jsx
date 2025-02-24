@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Modal } from "antd";
+import { Modal, Skeleton } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import axiosClient from "../../api/axios";
+import { getImageUrl } from "../../api/common";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
   const [course, setCourse] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!course_id) return;
     console.log("course_id của khóa học:", course_id);
+    setLoading(true)
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
@@ -20,6 +23,9 @@ export default function CourseDetail() {
       })
       .catch((error) => {
         console.error("Lỗi khi lấy chi tiết khoá học:", error);
+      })
+      .finally(() => {
+        setLoading(false)
       });
   }, [course_id]);
 
@@ -34,6 +40,14 @@ export default function CourseDetail() {
   const handleLearn = () => {
     navigate(`/student/home`);
   };
+
+  if (loading) {
+    return <>
+      <div className="card p-5">
+        <Skeleton />
+      </div>
+    </>
+  }
 
   if (!course) {
     return <p>Khoá học không tồn tại hoặc đã bị xoá.</p>;
@@ -1252,7 +1266,7 @@ export default function CourseDetail() {
         <div className="card p-2">
           <div className="card">
             <img
-              src={course.thumbnail || "/default-thumbnail.jpg"}
+              src={getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"}
               alt={course.title}
               className="card-img-top rounded"
             />
