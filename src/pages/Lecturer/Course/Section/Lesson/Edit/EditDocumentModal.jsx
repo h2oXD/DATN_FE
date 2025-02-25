@@ -45,7 +45,6 @@ export default function EditDocumentModal({ showEditDocumentModal, setShowEditDo
         onSubmit: async (values) => {
             setLoading(true);
             try {
-                console.log(lesson.documents[0].id);
                 const updateLesson = { title: values.title, description: values.description, type: 'document', _method: 'PUT' }
                 await axiosClient.post(`lecturer/courses/${course_id}/sections/${section_id}/lessons/${lesson.id}`, updateLesson)
                 const lesson_id = lesson.id

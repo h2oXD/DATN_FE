@@ -67,7 +67,9 @@ function App() {
           <Route index element={<First />} />
           <Route path="/registerTeacher/Last" element={<Last />} />
         </Route>
-        <Route path="/student/course/:course_id" element={<Course />} />
+        <Route path="/student/course/:course_id" element={<Course />}>
+          <Route index element={<Content />} />
+        </Route>
         {/* Giảng Viên */}
         <Route
           path="/lecturer"
