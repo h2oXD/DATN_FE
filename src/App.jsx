@@ -39,6 +39,7 @@ import MyCourse from "./pages/Student/CoursePage/MyCourse";
 import Last from "./components/LecturerRegister/Last";
 import First from "./components/LecturerRegister/First";
 import Course from "./pages/Student/Study/Course";
+import WalletStudent from "./pages/Student/Wallet/WalletStudent";
 
 function App() {
   return (
@@ -56,12 +57,11 @@ function App() {
           <Route index element={<HomeStudent />} />
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
-
-
           <Route
             path="/student/home/:course_id/coursedetail/"
             element={<CourseDetail />}
           />
+          <Route path="/student/walletStudent" element={<WalletStudent />} />
         </Route>
         <Route path="/registerTeacher" element={<RegisterTeacher />}>
           <Route index element={<First />} />
