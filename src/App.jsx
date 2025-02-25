@@ -57,7 +57,7 @@ function App() {
           <Route index element={<HomeStudent />} />
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
-
+          <Route path="/student/course" element={<Course />} />
 
           <Route
             path="/student/home/:course_id/coursedetail/"
