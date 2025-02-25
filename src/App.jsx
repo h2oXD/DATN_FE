@@ -40,6 +40,7 @@ import Last from "./components/LecturerRegister/Last";
 import First from "./components/LecturerRegister/First";
 import Course from "./pages/Student/Study/Course";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
+import { Content } from "antd/es/layout/layout";
 
 function App() {
   return (
