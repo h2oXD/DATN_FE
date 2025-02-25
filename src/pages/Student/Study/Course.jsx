@@ -1,16 +1,21 @@
-import { Link, useParams } from "react-router-dom";
+import { Outlet, useParams, useSearchParams } from "react-router-dom";
+import ListLesson from "./Paritals/ListLesson";
+import Header from "./Paritals/Header";
 
 export default function Course() {
     const { course_id } = useParams();
-    console.log(course_id);
-    
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('lesson');
     return (
         <>
-            <nav className="navbar navbar-expand-lg sticky-top" style={{ zIndex: 999 }}>
-                <div className="container-fluid px-0">
-                    <Link to={``} className="text-dark py-1"><button className="btn btn-sm btn-primary text-light">Quay lại</button></Link>
-                </div>
-            </nav>
+            {/* Header */}
+            <Header />
+            <div className="d-flex mt-2 justify-content-center">
+                <Outlet context={{ lesson_id: id, course_id: course_id }} />
+
+                {/* ListLesson */}
+                <ListLesson lesson_id={id} />
+            </div >
         </>
     )
 }

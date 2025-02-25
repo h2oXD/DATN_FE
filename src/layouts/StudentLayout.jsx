@@ -7,13 +7,13 @@ import { StoreContext } from "../contexts/StoreProvider";
 export default function StudentLayout() {
   const [collapsed, setCollapsed] = useState(true);
   const { user } = useContext(StoreContext)
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     navigate("/");
+  //   }
+  // }, [user, navigate]);
 
   if (!user) {
     return null; // Hoặc hiển thị loading indicator
