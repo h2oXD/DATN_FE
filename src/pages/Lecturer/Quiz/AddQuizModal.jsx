@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Modal } from "antd";
 import { Segmented } from 'antd';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UploadImage from "./UploadImage";
 import { useFormik } from "formik";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 
 
 export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, lesson_id, section_id, course_id }) {
@@ -14,6 +14,22 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
             is_multiple_choice: "0",
             answers: [{}, {}, {}, {}],
         },
+        validationSchema: Yup.object({
+            question_text: Yup.string().required("Câu hỏi không được để trống"),
+            answers: Yup.array()
+                .test("atLeastTwoAnswers", "Phải có ít nhất 2 câu trả lời có dữ liệu", function (value) {
+                    if (!value) return false;
+                    const nonEmptyAnswers = value.filter((answer) => {
+                        if (typeof answer === 'string') {
+                            return answer.trim() !== "";
+                        } else if (typeof answer === 'object' && answer !== null) {
+                            return Object.values(answer).some(val => typeof val === 'string' && val.trim() !== "");
+                        }
+                        return false;
+                    });
+                    return nonEmptyAnswers.length >= 2;
+                })
+        }),
         onSubmit: (values) => {
             console.log(values);
 
@@ -24,6 +40,10 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
     const [showButton, setShowButton] = useState(true);
     const maxInputs = 5;
     // console.log(lesson_id, section_id, course_id);
+    useEffect(() => {
+        // Validate lại form mỗi khi formik.values thay đổi
+        formik.validateForm();
+    }, [formik.values]);
 
     const handleAddInput = () => {
         if (inputs.length < maxInputs) {
@@ -60,7 +80,7 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
 
         // Cập nhật answer tương ứng trong Formik
         const newAnswers = [...formik.values.answers];
-        newAnswers[index].image = URL.createObjectURL(image);
+        newAnswers[index].image = image;
         formik.setFieldValue("answers", newAnswers);
     };
 
@@ -87,6 +107,8 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                 ></i>
                 {isMulti ? (
                     <input
+                        disabled={!formik.values.answers[index].text && !formik.values.answers[index].image}
+
                         value={1}
                         type="checkbox"
                         name={`answers[${index}].is_correct`} // Sử dụng name theo format của Formik
@@ -96,7 +118,9 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                     />
                 ) : (
                     <input
-                        value={1}
+                        disabled={!formik.values.answers[index].text && !formik.values.answers[index].image}
+
+                        value={index}
                         type="radio"
                         name={`is_correct`} // Sử dụng name theo format của Formik
                         className="tw-size-5"
@@ -121,6 +145,17 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
         setIsMulti(value === '1');
         formik.setFieldValue("is_multiple_choice", value);
     };
+
+    // State cho question_text
+    const [questionImage, setQuestionImage] = useState(null);
+    const [showQuestionUpload, setShowQuestionUpload] = useState(true);
+
+    // Hàm xử lý upload ảnh cho question_text
+    const handleQuestionImageUpload = (file) => {
+        setQuestionImage(URL.createObjectURL(file));
+        setShowQuestionUpload(false);
+        formik.setFieldValue("question_text", file); // Lưu trữ file
+    };
     return (
         <>
             <Modal
@@ -136,18 +171,24 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                     <div className="row">
                         <div className="col-12">
                             <div className="card shadow-none">
-                                <input
-                                    type="text"
-                                    name="question_text" // Sử dụng name theo format của Formik
-                                    id="question_text"
-                                    value={formik.values.question_text}
-                                    onChange={formik.handleChange}
-                                    placeholder="Nhập câu hỏi vào đây"
-                                    className="form-control d-flex fs-4 text-center p-5"
-                                    style={{ height: "200px" }}
-                                >
-
-                                </input>
+                                {questionImage ? (
+                                    <img src={questionImage} alt="Question" className="p-5 border rounded" style={{ maxWidth: '400px', maxHeight: '400px', margin: '0 auto', display: 'block' }} />
+                                ) : (
+                                    <input
+                                        type="text"
+                                        name="question_text"
+                                        id="question_text"
+                                        value={formik.values.question_text}
+                                        onChange={formik.handleChange}
+                                        placeholder="Nhập câu hỏi vào đây"
+                                        className="form-control d-flex fs-4 text-center p-5"
+                                        style={{ height: "200px" }}
+                                    />
+                                )}
+                                <UploadImage
+                                    onUpload={handleQuestionImageUpload}
+                                    showUpload={showQuestionUpload}
+                                />
                             </div>
                         </div>
                         <div className="col-12 d-flex gap-3 mt-3 align-items-center">
@@ -169,7 +210,13 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                                 value={questionType}
                                 onChange={handleQuestionTypeChange}
                             />
-                            <button className="btn btn-sm btn-primary" type="submit">Lưu</button>
+                            <button
+                                className="btn btn-sm btn-primary"
+                                type="submit"
+                                disabled={!formik.isValid} // Vô hiệu hóa nút nếu formik.isValid là false
+                            >
+                                Lưu
+                            </button>
                         </div>
                     </div>
                 </form>
