@@ -43,6 +43,7 @@ import BlogList from "./pages/Student/Blog/List";
 import MyBlog from "./pages/Student/Blog/MyBlog";
 import WriteBlog from "./pages/Student/Blog/WriteBlog";
 import Certificate from "./pages/Student/Study/Certificate";
+import Content from "./pages/Student/Study/Components/Content";
 
 function App() {
   return (
@@ -75,7 +76,9 @@ function App() {
           <Route index element={<First />} />
           <Route path="/registerTeacher/Last" element={<Last />} />
         </Route>
-        <Route path="/student/course/:course_id" element={<Course />} />
+        <Route path="/student/course/:course_id" element={<Course />}>
+          <Route index element={<Content />} />
+        </Route>
         {/* Giảng Viên */}
         <Route
           path="/lecturer"
