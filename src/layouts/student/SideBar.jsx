@@ -3,6 +3,7 @@ import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
 import {
   BaiVietIcon,
+  CertificateIcon,
   ChatIcon,
   CourseIcon,
   LecturerIcon,
@@ -110,6 +111,13 @@ export default function SideBar({ collapsed }) {
             component={<Link to={"/registerTeacher"} />}
           >
             Đăng ký giảng viên
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<CertificateIcon />}
+            component={<Link to={"/student/certificate"} />}
+          >
+            Chứng chỉ
           </MenuItem>
         </Menu>
       </Sidebar>

@@ -39,6 +39,10 @@ import MyCourse from "./pages/Student/CoursePage/MyCourse";
 import Last from "./components/LecturerRegister/Last";
 import First from "./components/LecturerRegister/First";
 import Course from "./pages/Student/Study/Course";
+import BlogList from "./pages/Student/Blog/List";
+import MyBlog from "./pages/Student/Blog/MyBlog";
+import WriteBlog from "./pages/Student/Blog/WriteBlog";
+import Certificate from "./pages/Student/Study/Certificate";
 
 function App() {
   return (
@@ -57,6 +61,10 @@ function App() {
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
           <Route path="/student/course" element={<Course />} />
+          <Route path="/student/blogList" element={<BlogList />} />
+          <Route path="/student/myBlog" element={<MyBlog />} />
+          <Route path="/student/writeBlog" element={<WriteBlog />} />
+          <Route path="/student/certificate" element={<Certificate />} />
 
           <Route
             path="/student/home/:course_id/coursedetail/"
