@@ -25,6 +25,10 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 // import Coding from "./pages/Lecturer/Course/Coding";
+import { Content } from "antd/es/layout/layout";
+import First from "./components/LecturerRegister/First";
+import Last from "./components/LecturerRegister/Last";
+import RegisterTeacher from "./components/RegisterTeacher";
 import RequireQuizParams from "./components/RequireQuizParams";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
@@ -32,15 +36,11 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
 import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
+import MyCourse from "./pages/Student/CoursePage/MyCourse";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
-import RegisterTeacher from "./components/RegisterTeacher";
-import MyCourse from "./pages/Student/CoursePage/MyCourse";
-import Last from "./components/LecturerRegister/Last";
-import First from "./components/LecturerRegister/First";
 import Course from "./pages/Student/Study/Course";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
-import { Content } from "antd/es/layout/layout";
 
 function App() {
   return (
