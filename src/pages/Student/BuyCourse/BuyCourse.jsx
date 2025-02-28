@@ -1,35 +1,49 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { notification } from "antd";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../../api/axios";
-import VNpay from "../../../assets/images/png/image.png";
 import { getImageUrl } from "../../../api/common";
+import VNpay from "../../../assets/images/png/image.png";
 
 export default function BuyCourse() {
   const { course_id } = useParams();
   const [course, setCourse] = useState(null);
-  const [lecturer, setLecturer] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState("vnpay");
   const [isPaying, setIsPaying] = useState(false);
-  const [rate, setRate] = useState(null);
+  const nav = useNavigate();
 
   useEffect(() => {
     axiosClient
       .get(`/courses/${course_id}/public`)
       .then((response) => {
-        setCourse(response.data.data.course);
-        setLecturer(response.data.data.lecturer);
+        const { course, instructor, average_rating } = response.data.data;
+        setCourse({
+          ...course,
+          lecturer: instructor || {},
+          average_rating,
+        });
       })
       .catch((error) => console.error("Lỗi khi lấy dữ liệu:", error))
       .finally(() => setLoading(false));
   }, [course_id]);
 
+  useEffect(() => {
+    if (paymentMethod === "wallet") {
+      axiosClient
+        .get("/user/wallets")
+        .then((response) => {
+          setWalletBalance(response.data.wallet.balance);
+        })
+        .catch((error) => console.error("Lỗi khi lấy số dư ví:", error));
+    }
+  }, [paymentMethod]);
+
   const handlePayment = () => {
     const amount = course.price_sale
       ? parseInt(course.price_sale, 10)
       : parseInt(course.price_regular, 10);
-
     if (!amount || amount <= 0) {
       notification.error({
         message: "Lỗi thanh toán",
@@ -39,23 +53,39 @@ export default function BuyCourse() {
       return;
     }
 
+    if (paymentMethod === "wallet" && walletBalance < amount) {
+      notification.error({
+        message: "Lỗi thanh toán",
+        description: "Số dư ví không đủ. Vui lòng nạp thêm tiền!",
+        duration: 1,
+      });
+      return;
+    }
+
     setIsPaying(true);
+    const paymentEndpoint =
+      paymentMethod === "wallet"
+        ? `/user/courses/${course_id}/wallet-payment`
+        : `/user/courses/${course_id}/create-payment`;
     axiosClient
-      .post(`/user/courses/${course_id}/create-payment`, { amount })
+      .post(paymentEndpoint, { amount })
       .then((response) => {
-        const paymentUrl = response.data?.payment_url;
-        if (!paymentUrl || typeof paymentUrl !== "string") {
-          notification.error({
-            message: "Lỗi thanh toán",
-            description: "Không nhận được đường dẫn thanh toán hợp lệ!",
-            duration: 1,
+        if (paymentMethod === "wallet") {
+          notification.success({
+            message: "Thanh toán thành công",
+            description: response.data.message,
+            duration: 1.5,
           });
-          return;
+          setWalletBalance(walletBalance - amount);
+          nav("/student/MyCourse");
+        } else {
+          const paymentUrl = response.data?.payment_url;
+          if (paymentUrl) {
+            window.location.href = paymentUrl;
+          }
         }
-        window.location.href = paymentUrl;
       })
       .catch((error) => {
-        console.error("Lỗi khi thanh toán:", error);
         notification.error({
           message: "Lỗi thanh toán",
           description:
@@ -67,13 +97,12 @@ export default function BuyCourse() {
       .finally(() => setIsPaying(false));
   };
 
-  if (loading) {
-    return <p>Đang tải...</p>;
-  }
+  if (loading) return <p>Đang tải...</p>;
+  if (!course) return <p>Không tìm thấy khóa học.</p>;
 
-  if (!course) {
-    return <p>Không tìm thấy khóa học.</p>;
-  }
+  const handleAddFunds = () => {
+    nav("/student/walletStudent");
+  };
 
   return (
     <div className="row bg-white p-2 shadow rounded">
@@ -81,22 +110,18 @@ export default function BuyCourse() {
         <h4 className="mb-3">Thông tin khóa học</h4>
         <div className="d-flex align-items-center">
           <img
-            src={course.thumbnail || "/default-thumbnail.jpg"}
+            src={getImageUrl(course.thumbnail) ?? "/default-thumbnail.jpg"}
+            alt={course.title}
             className="rounded"
-            alt="Khóa học"
             style={{ maxWidth: "190px", height: "120px" }}
           />
-          <div className="ms-2">
-            <h5 className="mb-2 fw-bold">{course.title}</h5>
-            <span className="badge bg-secondary mb-2">
-              {course.primary_content}
-            </span>
-            <div className="d-flex align-items-center mt-1">
-              <span className="text-muted">{lecturer?.name}</span>
-            </div>
+          <div className="px-1 py-1">
+            <h4 className="mt-1 mb-1 text-truncate-line-2">{course.title}</h4>
+            <small>
+              By: {course.lecturer?.name || "Chưa cập nhật giảng viên"}
+            </small>
             <div className="lh-1 mt-2 text-warning">
-              {/* {rate && rate + ' ★'} */}
-              {rate + " ★"}
+              {course.average_rating} ★
             </div>
           </div>
         </div>
@@ -116,18 +141,19 @@ export default function BuyCourse() {
               src={VNpay}
               className="me-2"
               style={{ maxWidth: "50px", height: "30px" }}
-            />
+            />{" "}
             VNPay
           </label>
           <label className="list-group-item d-flex align-items-center">
             <input
               type="radio"
               name="paymentMethod"
-              value="paypal"
+              value="wallet"
               className="me-2"
-              // disabled
+              checked={paymentMethod === "wallet"}
+              onChange={() => setPaymentMethod("wallet")}
             />
-            Ví (Chưa hỗ trợ)
+            Ví
           </label>
         </div>
       </div>
@@ -145,28 +171,35 @@ export default function BuyCourse() {
             <button className="btn btn-primary ms-1">Áp dụng</button>
           </div>
         </div>
+        {paymentMethod === "wallet" && (
+          <p className="d-flex justify-content-between">
+            <span>Số dư hiện tại:</span>{" "}
+            <span className="fw-bold">
+              {walletBalance?.toLocaleString("vi-VN") || "-"} đ
+            </span>
+          </p>
+        )}
         <p className="d-flex justify-content-between">
           <span>Giá gốc:</span>{" "}
           <span className="fw-bold">
             {parseInt(course.price_regular, 10).toLocaleString("vi-VN")} đ
           </span>
         </p>
-        {course.price_sale ? (
+        {course.price_sale && (
           <p className="d-flex justify-content-between">
             <span>Giá sale:</span>{" "}
             <span className="fw-bold">
               {parseInt(course.price_sale, 10).toLocaleString("vi-VN")} đ
             </span>
           </p>
-        ) : null}
+        )}
         <p className="d-flex justify-content-between">
           <span>Tổng thanh toán:</span>
           <span className="fw-bold">
-            {(course.price_sale || course.price_regular) &&
-              parseInt(
-                course.price_sale || course.price_regular,
-                10
-              ).toLocaleString("vi-VN")}{" "}
+            {parseInt(
+              course.price_sale || course.price_regular,
+              10
+            ).toLocaleString("vi-VN")}{" "}
             đ
           </span>
         </p>
@@ -177,7 +210,14 @@ export default function BuyCourse() {
         >
           {isPaying ? "Đang xử lý..." : "Thanh toán"}
         </button>
-        <button className="btn btn-outline-warning w-100">Nạp thêm tiền</button>
+        {paymentMethod === "wallet" && (
+          <button
+            className="btn btn-outline-warning w-100"
+            onClick={handleAddFunds}
+          >
+            Nạp thêm tiền
+          </button>
+        )}
       </div>
     </div>
   );
