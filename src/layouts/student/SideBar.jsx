@@ -10,6 +10,7 @@ import {
   LoTrinhIcon,
   TongQuanIcon,
   ViTienIcon,
+  VoucherIcon,
   ĐKiIcon,
 } from "./Icon";
 
@@ -118,6 +119,13 @@ export default function SideBar({ collapsed }) {
             component={<Link to={"/student/certificate"} />}
           >
             Chứng chỉ
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<VoucherIcon />}
+            component={<Link to={"/student/course/voucher"} />}
+          >
+            Voucher
           </MenuItem>
         </Menu>
       </Sidebar>

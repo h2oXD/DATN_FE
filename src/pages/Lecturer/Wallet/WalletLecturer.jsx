@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaUserCircle,
   FaCoins,
@@ -8,17 +8,41 @@ import {
   FaExclamationTriangle,
 } from "react-icons/fa";
 import axiosClient from "../../../api/axios";
+import { toast } from "react-toastify";
 
 export default function WalletLecturer() {
   const [amount, setAmount] = useState(500000);
   const [loading, setLoading] = useState(false);
-  const [history, setHistory] = useState([
-    { id: 1, amount: 5000000, date: "14:30:00 01/12/2024", status: "success" },
-    { id: 2, amount: 1000000, date: "10:15:00 15/11/2024", status: "failed" },
-  ]);
+  const [balance, setBalance] = useState(0);
+  const [history, setHistory] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchWallet = async () => {
+      try {
+        const response = await axiosClient.get("/user/wallets");
+        console.log("API Response:", response.data);
+
+        if (response.data.status === "success") {
+          setBalance(response.data.wallet.balance);
+          const transactions = response.data.wallet.transaction_history;
+          setHistory(Array.isArray(transactions) ? transactions : []);
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setError("Không tìm thấy ví của người dùng này.");
+        } else {
+          console.error("Lỗi khi lấy dữ liệu ví:", error);
+        }
+      }
+    };
+
+    fetchWallet();
+  }, []);
 
   const handleWithdraw = async () => {
     setLoading(true);
+    setError("");
     try {
       const response = await axiosClient.post("/user/wallets/withdraw", {
         amount,
@@ -26,13 +50,22 @@ export default function WalletLecturer() {
         bank_nameUser: "Nguyen Van A",
         bank_number: 123456789,
       });
-      alert("Yêu cầu rút tiền thành công!");
+      toast("Chúc mừng bạn đã rút tiền thành công!");
+      setBalance(balance - amount);
       setHistory([
         ...history,
         { id: history.length + 1, amount, date: "Vừa xong", status: "success" },
       ]);
     } catch (error) {
-      console.error(error.response?.data || error.message);
+      if (error.response) {
+        if (error.response.status === 400) {
+          setError(error.response.data.message);
+        } else if (error.response.status === 403) {
+          setError("Chỉ tài khoản giảng viên mới có thể rút tiền.");
+        } else {
+          console.error(error.response?.data || error.message);
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -49,7 +82,8 @@ export default function WalletLecturer() {
               <h5 className="fw-bold mb-0">Giảng Viên: Nguyễn Ngọc Khánh</h5>
             </div>
             <p className="mt-0 mx-6 fw-bold text-primary">
-              <FaCoins className="text-warning me-1" /> 10.000.000 VNĐ
+              <FaCoins className="text-warning me-1" />{" "}
+              {balance.toLocaleString()} VNĐ
             </p>
             <hr />
             <h6 className="fw-bold">Thống kê doanh thu</h6>
@@ -69,7 +103,7 @@ export default function WalletLecturer() {
             </ul>
             <p className="text-danger small text-center d-flex align-items-center justify-content-center">
               <FaExclamationTriangle className="me-1" /> Lưu ý: Tiền chỉ có thể
-              rút khi số dư trên 500.000 VNĐ.
+              rút khi số dư trên 50.000 VNĐ.
             </p>
           </div>
         </div>
@@ -98,6 +132,7 @@ export default function WalletLecturer() {
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
             />
+            {error && <p className="text-danger text-center mt-2">{error}</p>}
             <button
               className="btn btn-primary w-100 mt-3 rounded-pill fw-bold shadow-sm"
               onClick={handleWithdraw}

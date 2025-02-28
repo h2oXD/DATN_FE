@@ -44,6 +44,9 @@ import MyBlog from "./pages/Student/Blog/MyBlog";
 import WriteBlog from "./pages/Student/Blog/WriteBlog";
 import Certificate from "./pages/Student/Study/Certificate";
 import Content from "./pages/Student/Study/Components/Content";
+import VoucherPage from "./pages/Student/Vouchers/List";
+import VoucherDetail from "./pages/Student/Vouchers/Detail";
+import VoucherHistory from "./pages/Student/Vouchers/History";
 
 function App() {
   return (
@@ -66,6 +69,15 @@ function App() {
           <Route path="/student/myBlog" element={<MyBlog />} />
           <Route path="/student/writeBlog" element={<WriteBlog />} />
           <Route path="/student/certificate" element={<Certificate />} />
+          <Route path="/student/course/voucher" element={<VoucherPage />} />
+          <Route
+            path="/student/course/voucher/history"
+            element={<VoucherHistory />}
+          />
+          <Route
+            path="/student/course/voucher/detail/:voucher_id"
+            element={<VoucherDetail />}
+          />
 
           <Route
             path="/student/home/:course_id/coursedetail/"
