@@ -3,12 +3,14 @@ import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
 import {
   BaiVietIcon,
+  CertificateIcon,
   ChatIcon,
   CourseIcon,
   LecturerIcon,
   LoTrinhIcon,
   TongQuanIcon,
   ViTienIcon,
+  VoucherIcon,
   ĐKiIcon,
 } from "./Icon";
 
@@ -79,7 +81,7 @@ export default function SideBar({ collapsed }) {
           <MenuItem
             className="text-dark"
             icon={<BaiVietIcon />}
-            component={<Link to={"/student/baiViet"} />}
+            component={<Link to={"/student/blogList"} />}
           >
             Bài viết
           </MenuItem>
@@ -110,6 +112,20 @@ export default function SideBar({ collapsed }) {
             component={<Link to={"/registerTeacher"} />}
           >
             Đăng ký giảng viên
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<CertificateIcon />}
+            component={<Link to={"/student/certificate"} />}
+          >
+            Chứng chỉ
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<VoucherIcon />}
+            component={<Link to={"/student/course/voucher"} />}
+          >
+            Voucher
           </MenuItem>
         </Menu>
       </Sidebar>
