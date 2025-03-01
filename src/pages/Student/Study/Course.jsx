@@ -9,8 +9,8 @@ export default function Course() {
     return (
         <>
             {/* Header */}
-            <Header />
-            <div className="d-flex mt-2 justify-content-center">
+            <Header course_id={course_id} />
+            <div className="d-flex justify-content-center container-fluid p-0 mt-2">
                 <Outlet context={{ lesson_id: id, course_id: course_id }} />
 
                 {/* ListLesson */}

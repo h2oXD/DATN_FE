@@ -1,14 +1,17 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { RiPlayCircleFill } from "react-icons/ri";
 import { IoMdDocument } from "react-icons/io";
-
+import { FaRegCircle } from "react-icons/fa";
+import { IoIosHelpCircle } from "react-icons/io";
+import { FaRegCheckCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import axiosClient from "../../../../api/axios";
-import { Checkbox } from "antd";
 
 export default function ListLesson({ lesson_id }) {
     const { course_id } = useParams();
     const [courseData, setCourseData] = useState(null);
+    const [lessonStatus, setLessonStatus] = useState(null);
 
     useEffect(() => {
         const showCourse = async () => {
@@ -19,6 +22,17 @@ export default function ListLesson({ lesson_id }) {
                 console.error(error); // Use console.error for errors
             }
         };
+        const getStatusLesson = async () => {
+            try {
+                const res = await axiosClient.get(`course/${course_id}/lesson`);
+                setLessonStatus(res.data.data)
+                console.log(res.data.data);
+
+            } catch (error) {
+                console.error(error); // Use console.error for errors
+            }
+        };
+        getStatusLesson()
         showCourse();
     }, [course_id]); // Add course_id to the dependency array
 
@@ -28,14 +42,14 @@ export default function ListLesson({ lesson_id }) {
 
     return (
         <div
-            className="card shadow-none"
+            className="card"
             style={{
                 width: "400px",
-                height: "80vh",
+                height: "100vh",
                 overflowY: "auto",
-                position: "sticky",
-                top: "70px",
-                right: 0,
+                // position: "sticky",
+                // top: "70px",
+                // right: 0,
             }}
         >
             <ul className="list-group list-group-flush">
@@ -75,7 +89,7 @@ export default function ListLesson({ lesson_id }) {
                                     <Link
                                         key={lesson.id}
                                         style={{
-                                            backgroundColor: lesson_id == lesson.id ? '#e9ecef' : '#f7f8fa' // Conditional background color
+                                            backgroundColor: lesson_id == lesson.id ? '#e9ecef' : '#fff' // Conditional background color
                                         }}
                                         className="d-flex justify-content-between border-bottom align-items-center px-3 py-2 shadow-sm text-dark"
                                         to={`?lesson=${lesson.id}`} // You'll likely want to link to the actual lesson content here
@@ -83,8 +97,19 @@ export default function ListLesson({ lesson_id }) {
                                     >
                                         <div className="text-truncate d-flex">
                                             <div className="me-3">
-                                                <Checkbox defaultChecked={false} disabled />
-                                                {/* <Checkbox defaultChecked disabled /> */}
+                                                {lessonStatus && lessonStatus.map(status => {
+                                                    if (status.lesson_id == lesson.id) {
+                                                        return (
+                                                            <div key={status.id}> {/* Thêm key ở đây */}
+                                                                {status.status == 'completed' ? (
+                                                                    <FaRegCheckCircle key="completed" className="text-success tw-size-4" />
+                                                                ) : (
+                                                                    <FaRegCircle key="in_progress" className="tw-size-4" />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    }
+                                                })}
                                             </div>
                                             <div>
                                                 <span className="fs-5">{`${sectionIndex + 1}.${lessonIndex + 1
@@ -92,6 +117,7 @@ export default function ListLesson({ lesson_id }) {
                                                 <div className="d-flex align-items-center">
                                                     {lesson.type == 'video' && <RiPlayCircleFill className="text-primary" />}
                                                     {lesson.type == 'document' && <IoMdDocument className="text-primary" />}
+                                                    {lesson.type == 'quiz' && <IoIosHelpCircle className="text-primary" />}
                                                     <span className="fs-6 ms-2">
                                                         {lesson.videos && lesson.videos.duration
                                                             ? `${Math.floor(lesson.videos.duration / 60)}:${lesson.videos.duration % 60
