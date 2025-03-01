@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import UploadImage from "./UploadImage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axiosClient from "../../../api/axios";
+import { toast } from "react-toastify";
 
 
-export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, lesson_id, section_id, course_id }) {
+export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, lesson_id, section_id, course_id, setQuestionAdded }) {
     const formik = useFormik({
         initialValues: {
             question_text: "",
@@ -30,9 +32,18 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                     return nonEmptyAnswers.length >= 2;
                 })
         }),
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             console.log(values);
-
+            try {
+                const res = await axiosClient.post(`/lecturer/quizzes/${lesson_id}/questions`, values)
+                setShowAddQuizModal(false)
+                toast.success('Thêm mới thành công')
+                formik.resetForm();
+                console.log(res);
+                setQuestionAdded(1)
+            } catch (error) {
+                console.log(error);
+            }
         }
     })
 
