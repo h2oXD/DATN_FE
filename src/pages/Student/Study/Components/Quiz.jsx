@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 
 import { useState } from "react";
+import axiosClient from "../../../../api/axios";
 
-export default function Quiz({ lesson }) {
+export default function Quiz({ lesson, course_id, setRefresh }) {
     const [userAnswers, setUserAnswers] = useState({});
     const [score, setScore] = useState(0);
     const [results, setResults] = useState([]);
@@ -10,7 +11,7 @@ export default function Quiz({ lesson }) {
     if (lesson.type === 'quiz' && lesson.quizzes && lesson.quizzes.length > 0) {
         const quiz = lesson.quizzes[0];
 
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
             e.preventDefault();
             let newScore = 0;
             const newResults = quiz.questions.map(question => {
@@ -32,6 +33,20 @@ export default function Quiz({ lesson }) {
 
             setScore(newScore);
             setResults(newResults);
+
+            // Tính phần trăm số câu đúng
+            const percentage = (newScore / quiz.questions.length) * 100;
+
+            // Nếu đạt từ 80% trở lên, gửi API cập nhật trạng thái lesson
+            if (percentage >= 80) {
+                try {
+                    const res = await axiosClient.post(`student/courses/${course_id}/lessons/${lesson.id}/completes`)
+                    setRefresh(prev => !prev);
+                    console.log(res);
+                } catch (error) {
+                    console.error("Error updating lesson status", error);
+                }
+            }
         };
 
         const arraysAreEqual = (a, b) => {
@@ -47,7 +62,7 @@ export default function Quiz({ lesson }) {
                 <form onSubmit={handleSubmit} className="px-5">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h2>{lesson.title}</h2>
-                        <button className="btn btn-primary" type="submit">Nộp bài</button>
+                        <button className="btn btn-primary btn-sm" type="submit">Nộp bài</button>
                     </div>
                     {lesson.description && <p className="mb-3">{lesson.description}</p>}
 
@@ -103,11 +118,11 @@ export default function Quiz({ lesson }) {
                             ))}
                         </div>
                     ))}
-                    <button className="btn btn-primary" type="submit">Nộp bài</button>
+                    <button className="btn btn-primary btn-sm" type="submit">Nộp bài</button>
                 </form>
                 {results.length > 0 && (
                     <div className="mt-4">
-                        <h3>Kết quả: {score}/{quiz.questions.length}</h3>
+                        <h3>Kết quả: {score}/{quiz.questions.length} ({((score / quiz.questions.length) * 100).toFixed(2)}%)</h3>
                     </div>
                 )}
             </div>

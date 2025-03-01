@@ -3,11 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 import { getImageUrl } from '../../../../api/common';
 import axiosClient from '../../../../api/axios';
 
-export default function Video({ lesson, course_id }) {
+export default function Video({ lesson, course_id, setRefresh }) {
     const [watchedPercentage, setWatchedPercentage] = useState(0);
     const videoRef = useRef(null);
     const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
-    console.log(watchedPercentage);
 
     // Hàm call API để cập nhật trạng thái lesson đã hoàn thành
     const markLessonAsComplete = async () => {
@@ -15,7 +14,7 @@ export default function Video({ lesson, course_id }) {
             // Gọi API của bạn ở đây, ví dụ:
             const res = await axiosClient.post(`student/courses/${course_id}/lessons/${lesson.id}/completes`)
             console.log(res);
-
+            setRefresh(prev => !prev);
             // await api.markLessonComplete(lesson.id);
             console.log("Lesson completed:", lesson.id);
         } catch (error) {

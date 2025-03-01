@@ -7,7 +7,7 @@ import Quiz from "./Quiz";
 import Coding from "./Coding";
 
 export default function Content() {
-    const { lesson_id, course_id } = useOutletContext()
+    const { lesson_id, course_id, setRefresh } = useOutletContext()
     const [lesson, setLessons] = useState(null)
     const [loading, setLoading] = useState(false)
     useEffect(() => {
@@ -44,28 +44,28 @@ export default function Content() {
     if (lesson.type == 'video') {
         return (
             <>
-                <Video lesson={lesson} course_id={course_id} />
+                <Video lesson={lesson} course_id={course_id} setRefresh={setRefresh} />
             </>
         )
     }
     if (lesson.type == 'document') {
         return (
             <>
-                <Document lesson={lesson} course_id={course_id} />
+                <Document lesson={lesson} course_id={course_id} setRefresh={setRefresh} />
             </>
         )
     }
     if (lesson.type == 'quiz') {
         return (
             <>
-                <Quiz lesson={lesson} course_id={course_id} />
+                <Quiz lesson={lesson} course_id={course_id} setRefresh={setRefresh} />
             </>
         )
     }
     if (lesson.type == 'coding') {
         return (
             <>
-                <Coding lesson={lesson} course_id={course_id} />
+                <Coding lesson={lesson} course_id={course_id} setRefresh={setRefresh} />
             </>
         )
     }

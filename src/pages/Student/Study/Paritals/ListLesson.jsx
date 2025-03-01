@@ -8,7 +8,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import axiosClient from "../../../../api/axios";
 
-export default function ListLesson({ lesson_id }) {
+export default function ListLesson({ lesson_id, refresh }) {
     const { course_id } = useParams();
     const [courseData, setCourseData] = useState(null);
     const [lessonStatus, setLessonStatus] = useState(null);
@@ -34,7 +34,7 @@ export default function ListLesson({ lesson_id }) {
         };
         getStatusLesson()
         showCourse();
-    }, [course_id]); // Add course_id to the dependency array
+    }, [course_id, refresh]); // Add course_id to the dependency array
 
     if (!courseData) {
         return <div>Loading...</div>; // Display a loading message
