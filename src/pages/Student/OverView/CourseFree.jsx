@@ -9,10 +9,10 @@ export default function CourseFree() {
   const listRef = useRef(null);
   const [courses, setCourses] = useState([]);
   const nav = useNavigate();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     axiosClient
       .get("/student/home")
       .then((response) => {
@@ -23,7 +23,7 @@ export default function CourseFree() {
         console.error("Lỗi khi tải danh sách khóa học miễn phí:", error);
       })
       .finally(() => {
-        setLoading(false)
+        setLoading(false);
       });
   }, []);
 
@@ -43,11 +43,21 @@ export default function CourseFree() {
     }
   };
   if (loading) {
-    return <><div className="p-5"><Skeleton /></div></>
+    return (
+      <>
+        <div className="p-5">
+          <Skeleton />
+        </div>
+      </>
+    );
   }
 
   if (isEmptyArray(courses)) {
-    return <><h4 className="p-5">Không có dữ liệu khoá học miễn phí</h4></>
+    return (
+      <>
+        <h4 className="p-5">Không có dữ liệu khoá học miễn phí</h4>
+      </>
+    );
   }
 
   return (
@@ -73,86 +83,84 @@ export default function CourseFree() {
           scrollBehavior: "smooth",
         }}
       >
-        {(
-          courses.map((course) => (
-            <div className="col-md-3" key={course.id}>
-              <div className="card p-2">
-                <Link to={`/student/home/${course.id}/coursedetail`}>
-                  <img
-                    src={getImageUrl(course.thumbnail)}
-                    className="card-img-top rounded"
-                  />
-                </Link>
-                <div className="px-1 py-1">
-                  <h4 className="mt-1 mb-1 text-truncate-line-2">
-                    <span
-                      className="text-inherit cursor-pointer"
-                      onClick={() => handleCourseClick(course.id)}
-                      style={{
-                        cursor: "pointer",
-                        color: "black",
-                      }}
+        {courses.map((course) => (
+          <div className="col-md-3" key={course.id}>
+            <div className="card p-2">
+              <Link to={`/student/home/${course.id}/coursedetail`}>
+                <img
+                  src={getImageUrl(course.thumbnail)}
+                  className="card-img-top rounded"
+                />
+              </Link>
+              <div className="px-1 py-1">
+                <h4 className="mt-1 mb-1 text-truncate-line-2">
+                  <span
+                    className="text-inherit cursor-pointer"
+                    onClick={() => handleCourseClick(course.id)}
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                    }}
+                  >
+                    {course.title}
+                  </span>
+                </h4>
+                <ul className="mb-1 list-inline">
+                  <li className="list-inline-item">
+                    <svg
+                      className="me-1 mt-n1"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      {course.title}
-                    </span>
-                  </h4>
-                  <ul className="mb-1 list-inline">
-                    <li className="list-inline-item">
-                      <svg
-                        className="me-1 mt-n1"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect
-                          x="3"
-                          y="8"
-                          width="2"
-                          height="6"
-                          rx="1"
-                          fill="#754FFE"
-                        />
-                        <rect
-                          x="7"
-                          y="5"
-                          width="2"
-                          height="9"
-                          rx="1"
-                          fill="#754FFE"
-                        />
-                        <rect
-                          x="11"
-                          y="2"
-                          width="2"
-                          height="12"
-                          rx="1"
-                          fill="#754FFE"
-                        />
-                      </svg>
-                      Level : {course.level || "N/A"}
-                    </li>
-                  </ul>
-                  <small>By: {course.user.name}</small>
-                  <div className="lh-1 mt-2 text-warning">
-                    {course.reviews.length > 0
-                      ? `${(
+                      <rect
+                        x="3"
+                        y="8"
+                        width="2"
+                        height="6"
+                        rx="1"
+                        fill="#754FFE"
+                      />
+                      <rect
+                        x="7"
+                        y="5"
+                        width="2"
+                        height="9"
+                        rx="1"
+                        fill="#754FFE"
+                      />
+                      <rect
+                        x="11"
+                        y="2"
+                        width="2"
+                        height="12"
+                        rx="1"
+                        fill="#754FFE"
+                      />
+                    </svg>
+                    Level : {course.level || "N/A"}
+                  </li>
+                </ul>
+                <small>By: {course.user.name}</small>
+                <div className="lh-1 mt-2 text-warning">
+                  {course.reviews.length > 0
+                    ? `${(
                         course.reviews.reduce(
                           (sum, review) => sum + review.rating,
                           0
                         ) / course.reviews.length
                       ).toFixed(1)} ★ (${course.reviews.length})`
-                      : "Chưa có đánh giá"}
-                  </div>
-                </div>
-                <div className="d-flex mt-2">
-                  <h5 className="mb-0">Miễn phí</h5>
+                    : "Chưa có đánh giá"}
                 </div>
               </div>
+              <div className="d-flex mt-2">
+                <h5 className="mb-0">Miễn phí</h5>
+              </div>
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
 
       <style>{`

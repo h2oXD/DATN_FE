@@ -93,7 +93,7 @@ export default function SideBar({ collapsed }) {
           <MenuItem
             className="text-dark"
             icon={<ViTienIcon />}
-            component={<Link to={"/student/viTien"} />}
+            component={<Link to={"/student/walletStudent"} />}
           >
             Ví
           </MenuItem>

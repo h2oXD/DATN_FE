@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
-import { getImageUrl } from "../../../api/common";
 import { isEmptyArray } from "formik";
-import Skeleton from "react-loading-skeleton";
+import { Skeleton } from "antd";
 
 export default function MentorList() {
   const listRef = useRef(null);
   const [mentors, setMentors] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     axiosClient
       .get("/student/home")
       .then((response) => {
@@ -21,7 +20,7 @@ export default function MentorList() {
         console.error("Lỗi khi tải dữ liệu giảng viên:", error);
       })
       .finally(() => {
-        setLoading(false)
+        setLoading(false);
       });
   }, []);
 
@@ -38,12 +37,21 @@ export default function MentorList() {
   };
 
   if (loading) {
-    return <><div className="p-5"><Skeleton /></div></>
+    return (
+      <>
+        <div className="p-5">
+          <Skeleton />
+        </div>
+      </>
+    );
   }
 
-
   if (isEmptyArray(mentors)) {
-    return <><h4 className="p-5">Không có dữ liệu giảng viên</h4></>
+    return (
+      <>
+        <h4 className="p-5">Không có dữ liệu giảng viên</h4>
+      </>
+    );
   }
 
   return (
@@ -82,11 +90,10 @@ export default function MentorList() {
                   >
                     <div className="p-3">
                       <img
-                        src={getImageUrl(mentor.lecturer.profile_picture)}
+                        src={mentor.lecturer.profile_picture}
                         alt={mentor.lecturer.name}
                         className="avatar avatar-xl rounded-circle"
                       />
-
                       <div className="mt-3">
                         <h3 className="mb-0 h4">{mentor.lecturer.name}</h3>
                         <div className="mt-0 text-dark">
