@@ -56,27 +56,34 @@ export default function Video({ lesson, course_id, setRefresh }) {
     return (
         <>
             {/* Content */}
-            <div className="px-5" style={{ width: '1000px' }}>
-                <div style={{ height: '500px' }} className="d-flex tw-bg-black rounded">
+            <div className="" style={{ width: '1150px' }}>
+                <div style={{ height: '500px' }} className="d-flex tw-bg-black justify-content-center">
                     <video
                         ref={videoRef}
                         src={getImageUrl(lesson.videos.video_url)}
                         controls
-                        className="w-100 tw-rounded-xl"
                     ></video>
                 </div>
-                <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center justify-content-between tw-px-20">
                     <div>
-                        <h3 className="mt-2">{lesson.title}</h3>
+                        <h2 className="mt-2">{lesson.title}</h2>
                     </div>
                     <div>
-                        <button className="btn btn-sm btn-outline-primary">+ Thêm ghi chú tại: 0:00</button>
+                        <button className="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">+ Thêm ghi chú tại: 0:00</button>
+
+                        <div className="offcanvas offcanvas-bottom" tabIndex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+                            <div className="offcanvas-header">
+                                <h5 className="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
+                                <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div className="offcanvas-body small">
+                                ...
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="card rounded px-3 py-2 mt-2 shadow-none mb-3" style={{ backgroundColor: '#F2F2F2' }}>
+                <div className="px-3 py-2 mt-2 shadow-none mb-3 tw-px-20">
                     <span className="">Cập nhật ngày: 25/02/2025</span>
-                    <label htmlFor="" className="fw-bold">Mô tả</label>
-                    <p>Mô tả gì đó</p>
                 </div>
             </div>
         </>

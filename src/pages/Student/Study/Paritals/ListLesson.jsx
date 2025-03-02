@@ -26,7 +26,7 @@ export default function ListLesson({ lesson_id, refresh }) {
             try {
                 const res = await axiosClient.get(`course/${course_id}/lesson`);
                 setLessonStatus(res.data.data)
-                console.log(res.data.data);
+                // console.log(res.data.data);
 
             } catch (error) {
                 console.error(error); // Use console.error for errors
@@ -42,14 +42,11 @@ export default function ListLesson({ lesson_id, refresh }) {
 
     return (
         <div
-            className="card"
+            className="card tw-rounded-none tw-fixed tw-top-0 tw-right-0 h-full "
             style={{
                 width: "400px",
                 height: "100vh",
                 overflowY: "auto",
-                // position: "sticky",
-                // top: "70px",
-                // right: 0,
             }}
         >
             <ul className="list-group list-group-flush">

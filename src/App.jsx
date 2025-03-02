@@ -25,7 +25,7 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 
 // import Edit from "./pages/Lecturer/Course/Edit";
 // import Coding from "./pages/Lecturer/Course/Coding";
-import { Content } from "antd/es/layout/layout";
+// import { Content } from "antd/es/layout/layout";
 import First from "./components/LecturerRegister/First";
 import Last from "./components/LecturerRegister/Last";
 import RegisterTeacher from "./components/RegisterTeacher";

@@ -16,7 +16,7 @@ export default function Content() {
             try {
                 const res = await axiosClient.get(`lesson/${lesson_id}`)
                 setLessons(res.data.data)
-                // console.log(res.data.data);
+                console.log(res.data.data);
                 console.log(loading);
             } catch (error) {
                 console.log(error);
@@ -35,7 +35,7 @@ export default function Content() {
     //         </div>
     //     </div></>
     // }
-
+    
     if (!lesson) {
         return <><div className="px-5" style={{ width: '1000px' }}>
             <h1>Bắt đầu học nào</h1>

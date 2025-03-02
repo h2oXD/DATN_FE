@@ -18,7 +18,7 @@ export default function Header({ course_id, refresh }) {
                 // Nếu hoàn thành 100%, gọi API cấp chứng chỉ
                 if (progressPercent == 100) {
                     const res2 = await axiosClient.post(`/certificates/student/courses/${course_id}`);
-                    console.log(res2);
+                    // console.log(res2);
                     setCertificate(res2.data.data)
                 }
             } catch (error) {
@@ -29,7 +29,7 @@ export default function Header({ course_id, refresh }) {
             try {
                 const res = await axiosClient.get(`show/certificates/${course_id}`)
                 setCertificate(res.data.data)
-                console.log(res.data.data);
+                // console.log(res.data.data);
 
             } catch (error) {
                 console.log(error);
@@ -42,7 +42,7 @@ export default function Header({ course_id, refresh }) {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg sticky-top shadow" style={{ zIndex: 999, backgroundColor: '#1d1e27' }}>
+            <nav className="navbar navbar-expand-lg sticky-top shadow tw-px-5 tw-z-[999] tw-bg-[#29303b]">
                 <div className="container-fluid px-0 d-flex justify-content-between">
                     <div className="d-flex align-items-center">
                         <Link to={`/student/MyCourse`} className="text-dark py-1">
@@ -55,11 +55,21 @@ export default function Header({ course_id, refresh }) {
                         <div className="border rounded p-1">
                             <span className='text-light'>{parseInt(progress)}%</span>
                         </div>
-                        <p className="m-0 ms-2 tw-font-semibold fs-5 text-light">0/12 bài học</p>
-                        <button className="btn btn-sm btn-outline-light ms-2">Ghi chú</button>
+                        <p className="m-0 ms-2 tw-font-semibold fs-5 text-light">0/4 bài học</p>
+                        <button className="btn btn-sm btn-outline-light ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Ghi chú</button>
+
                     </div>
                 </div>
             </nav>
+            <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                <div className="offcanvas-header">
+                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+                    <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div className="offcanvas-body">
+                    ...
+                </div>
+            </div>
         </>
     )
 }

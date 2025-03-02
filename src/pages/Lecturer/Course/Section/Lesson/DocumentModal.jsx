@@ -72,7 +72,6 @@ const DocumentModal = ({ showModal, closeModal, section_id, setLessons }) => {
       setDocumentPreviewUrl(url);
     } else {
       setDocumentPreviewUrl(null);
-      toast.warning("Chỉ hỗ trợ xem trước file PDF");
     }
   };
   return (

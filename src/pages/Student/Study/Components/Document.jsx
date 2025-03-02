@@ -9,7 +9,7 @@ export default function Document({ lesson, course_id, setRefresh }) {
 
         try {
             console.log("Gọi API để xử lý tải tài liệu...");
-            const res = await axiosClient.post(`student/courses/${course_id}/lessons/${lesson.id}/completes`)
+            await axiosClient.post(`student/courses/${course_id}/lessons/${lesson.id}/completes`)
             // Gọi API ở đây, ví dụ:
             // await api.downloadDocument(lesson.id);
             setRefresh(prev => !prev);
