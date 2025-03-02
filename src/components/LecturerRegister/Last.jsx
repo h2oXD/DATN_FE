@@ -76,6 +76,12 @@ export default function Last() {
 
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
+
+    if (user.role === "lecturer") {
+      alert("Bạn đã là giảng viên, không thể đăng ký lại.");
+      return;
+    }
+
     try {
       const response = await axiosClient.post("/register/answers", answers);
       alert(response.data.message);
@@ -83,7 +89,15 @@ export default function Last() {
       navigate("/");
     } catch (error) {
       console.error("Lỗi gửi câu trả lời:", error);
-      alert("Có lỗi xảy ra, vui lòng thử lại.");
+      if (error.response?.status === 403) {
+        alert(
+          error.response.data.message ||
+            "Bạn đã là giảng viên hoặc không đủ thông tin."
+        );
+        navigate("/");
+      } else {
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+      }
     }
   };
 

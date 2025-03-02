@@ -47,6 +47,7 @@ import Content from "./pages/Student/Study/Components/Content";
 import VoucherPage from "./pages/Student/Vouchers/List";
 import VoucherDetail from "./pages/Student/Vouchers/Detail";
 import VoucherHistory from "./pages/Student/Vouchers/History";
+import Wishlist from "./pages/Student/CoursePage/Wishlist";
 
 function App() {
   return (
@@ -64,11 +65,16 @@ function App() {
           <Route index element={<HomeStudent />} />
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
+          <Route path="/student/wishList" element={<Wishlist />} />
           <Route path="/student/course" element={<Course />} />
           <Route path="/student/blogList" element={<BlogList />} />
           <Route path="/student/myBlog" element={<MyBlog />} />
           <Route path="/student/writeBlog" element={<WriteBlog />} />
-          <Route path="/student/certificate" element={<Certificate />} />
+          <Route
+            path="/student/certificate/:user_id/:course_id"
+            element={<Certificate />}
+          />
+
           <Route path="/student/course/voucher" element={<VoucherPage />} />
           <Route
             path="/student/course/voucher/history"
