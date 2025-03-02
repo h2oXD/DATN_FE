@@ -11,6 +11,7 @@ export default function CourseDetail() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     if (!course_id) return;
@@ -32,6 +33,20 @@ export default function CourseDetail() {
       })
       .finally(() => {
         setLoading(false);
+      });
+  }, [course_id]);
+
+  useEffect(() => {
+    if (!course_id) return;
+    axiosClient
+      .get(`/courses/${course_id}/reviews`, {
+        params: { sort_by: "latest", per_page: 10 },
+      })
+      .then((response) => {
+        setReviews(response.data.reviews.data);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách đánh giá:", error);
       });
   }, [course_id]);
 
@@ -427,7 +442,6 @@ export default function CourseDetail() {
               >
                 <div className="mb-3">
                   <div className="d-lg-flex align-items-center justify-content-between mb-5">
-                    {/* <!-- Reviews --> */}
                     <div className="mb-3 mb-lg-0">
                       <h3 className="mb-0">Reviews</h3>
                     </div>
@@ -454,91 +468,69 @@ export default function CourseDetail() {
                       </form>
                     </div>
                   </div>
-                  {/* <!-- Rating --> */}
-                  <div className="d-flex align-items-start border-bottom pb-4 mb-4">
-                    <img
-                      src="../assets/images/avatar/avatar-2.jpg"
-                      alt=""
-                      className="rounded-circle avatar-lg"
-                    />
-                    <div className="ms-3">
-                      <h4 className="mb-1">
-                        Max Hawkins
-                        <span className="ms-1 fs-6">2 Days ago</span>
-                      </h4>
-                      <div className="mb-2">
-                        <span className="fs-6">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="12"
-                            height="12"
-                            fill="currentColor"
-                            className="bi bi-star-fill text-warning"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
-                          </svg>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="12"
-                            height="12"
-                            fill="currentColor"
-                            className="bi bi-star-fill text-warning"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
-                          </svg>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="12"
-                            height="12"
-                            fill="currentColor"
-                            className="bi bi-star-fill text-warning"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
-                          </svg>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="12"
-                            height="12"
-                            fill="currentColor"
-                            className="bi bi-star-fill text-warning"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
-                          </svg>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="12"
-                            height="12"
-                            fill="currentColor"
-                            className="bi bi-star-fill text-warning"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
-                          </svg>
-                        </span>
+
+                  {loading ? (
+                    <p>Đang tải đánh giá...</p>
+                  ) : reviews.length === 0 ? (
+                    <p>
+                      Chưa có đánh giá nào cho khóa học này. Hãy là người đầu
+                      tiên đánh giá!
+                    </p>
+                  ) : (
+                    reviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className="d-flex align-items-start border-bottom pb-4 mb-4"
+                      >
+                        <img
+                          src="../assets/images/avatar/avatar-1.jpg"
+                          alt=""
+                          className="rounded-circle avatar-lg"
+                        />
+                        <div className="ms-3">
+                          <h4 className="mb-1">
+                            {review.user?.name || "Người dùng ẩn danh"}
+                            {/* <span className="ms-1 fs-6">
+                              {new Date(review.created_at).toLocaleDateString()}
+                            </span> */}
+                          </h4>
+                          <div className="mb-2">
+                            <span className="fs-6">
+                              {[...Array(review.rating)].map((_, index) => (
+                                <svg
+                                  key={index}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="12"
+                                  height="12"
+                                  fill="currentColor"
+                                  className="bi bi-star-fill text-warning"
+                                  viewBox="0 0 16 16"
+                                >
+                                  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                </svg>
+                              ))}
+                            </span>
+                          </div>
+                          <p>{review.review_text}</p>
+                          <div className="d-lg-flex">
+                            <p className="mb-0">Was this review helpful?</p>
+                            <a
+                              href="#"
+                              className="btn btn-xs btn-primary ms-lg-3"
+                            >
+                              Yes
+                            </a>
+                            <a
+                              href="#"
+                              className="btn btn-xs btn-outline-secondary ms-1"
+                            >
+                              No
+                            </a>
+                          </div>
+                        </div>
                       </div>
-                      <p>
-                        Lectures were at a really good pace and I never felt
-                        lost. The instructor was well informed and allowed me to
-                        learn and navigate Figma easily.
-                      </p>
-                      <div className="d-lg-flex">
-                        <p className="mb-0">Was this review helpful?</p>
-                        <a href="#" className="btn btn-xs btn-primary ms-lg-3">
-                          Yes
-                        </a>
-                        <a
-                          href="#"
-                          className="btn btn-xs btn-outline-secondary ms-1"
-                        >
-                          No
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

@@ -41,6 +41,7 @@ import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import Course from "./pages/Student/Study/Course";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
+import Review from "./pages/Student/ReviewCourse/Review";
 
 function App() {
   return (
@@ -63,6 +64,10 @@ function App() {
             element={<CourseDetail />}
           />
           <Route path="/student/walletStudent" element={<WalletStudent />} />
+          <Route
+            path="/student/course/:course_id/review"
+            element={<Review />}
+          />
         </Route>
         <Route path="/registerTeacher" element={<RegisterTeacher />}>
           <Route index element={<First />} />
