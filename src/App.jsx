@@ -41,7 +41,6 @@ import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import Course from "./pages/Student/Study/Course";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
-import Review from "./pages/Student/ReviewCourse/Review";
 
 function App() {
   return (
@@ -59,6 +58,10 @@ function App() {
           <Route index element={<HomeStudent />} />
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
+          <Route
+            path="/student/certificate/:id"
+            element={<ShowCertificate />}
+          />
           <Route
             path="/student/home/:course_id/coursedetail/"
             element={<CourseDetail />}
