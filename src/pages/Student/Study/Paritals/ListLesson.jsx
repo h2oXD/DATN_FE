@@ -37,7 +37,7 @@ export default function ListLesson({ lesson_id, refresh }) {
     }, [course_id, refresh]); // Add course_id to the dependency array
 
     if (!courseData) {
-        return <div>Loading...</div>; // Display a loading message
+        return null; // Display a loading message
     }
 
     return (
@@ -109,13 +109,13 @@ export default function ListLesson({ lesson_id, refresh }) {
                                                 })}
                                             </div>
                                             <div>
-                                                <span className="fs-5">{`${sectionIndex + 1}.${lessonIndex + 1
-                                                    } ${lesson.title}`}</span>
+                                                <span className="fs-5"><span className="tw-font-semibold me-2">{`${sectionIndex + 1}.${lessonIndex + 1
+                                                    }`}</span>{`${lesson.title}`}</span>
                                                 <div className="d-flex align-items-center">
-                                                    {lesson.type == 'video' && <RiPlayCircleFill className="text-primary" />}
-                                                    {lesson.type == 'document' && <IoMdDocument className="text-primary" />}
-                                                    {lesson.type == 'quiz' && <IoIosHelpCircle className="text-primary" />}
-                                                    <span className="fs-6 ms-2">
+                                                    {lesson.type == 'video' && <RiPlayCircleFill className="text-dark" />}
+                                                    {lesson.type == 'document' && <IoMdDocument className="text-dark" />}
+                                                    {lesson.type == 'quiz' && <IoIosHelpCircle className="text-dark" />}
+                                                    <span className="fs-6 ms-1">
                                                         {lesson.videos && lesson.videos.duration
                                                             ? `${Math.floor(lesson.videos.duration / 60)}:${lesson.videos.duration % 60
                                                             }`

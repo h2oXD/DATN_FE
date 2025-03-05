@@ -1,23 +1,26 @@
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 import axiosClient from "../../../../api/axios";
 import Video from "./Video";
 import Document from "./Document";
 import Quiz from "./Quiz";
 import Coding from "./Coding";
+import { Modal } from "antd";
 
 export default function Content() {
-    const { lesson_id, course_id, setRefresh } = useOutletContext()
+    const { lesson_id, course_id, setRefresh, setCurrentTime, currentTime } = useOutletContext()
     const [lesson, setLessons] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [first, setFirst] = useState(false)
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchLesson = async () => {
             setLoading(true)
             try {
                 const res = await axiosClient.get(`lesson/${lesson_id}`)
                 setLessons(res.data.data)
-                console.log(res.data.data);
-                console.log(loading);
+                // console.log(res.data.data);
+                // console.log(loading);
             } catch (error) {
                 console.log(error);
             } finally {
@@ -28,23 +31,39 @@ export default function Content() {
         fetchLesson()
     }, [lesson_id])
 
+
+    useEffect(() => {
+        const lessonF = async () => {
+            try {
+                const res = await axiosClient.get(`course/${course_id}/lesson`)
+                console.log(res.data.data[0].lesson_id);
+                setFirst(res.data.data[0].lesson_id)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        lessonF()
+    }, [])
     // if (loading) {
-    //     return <><div className="px-5 d-flex justify-content-center align-items-center" style={{ width: '1000px' }}>
-    //         <div className="spinner-border" role="status">
-    //             <span className="visually-hidden">Loading...</span>
+    //     return <>
+    //         <div className="container tw-mt-[200px]">
+    //             <div className="p-5 d-flex justify-content-center align-items-center" style={{ width: '1000px' }}>
+    //                 <div className="spinner-border" role="status">
+    //                 </div>
+    //             </div>
     //         </div>
-    //     </div></>
+    //     </>
     // }
-    
     if (!lesson) {
-        return <><div className="px-5" style={{ width: '1000px' }}>
-            <h1>Bắt đầu học nào</h1>
-        </div></>
+        if (first) {
+            navigate(`?lesson=${first}`)
+        }
+        return null
     }
     if (lesson.type == 'video') {
         return (
             <>
-                <Video lesson={lesson} course_id={course_id} setRefresh={setRefresh} />
+                <Video lesson={lesson} course_id={course_id} setRefresh={setRefresh} setCurrentTime={setCurrentTime} currentTime={currentTime} />
             </>
         )
     }
