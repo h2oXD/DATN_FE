@@ -26,7 +26,7 @@ export default function ListLesson({ lesson_id, refresh }) {
             try {
                 const res = await axiosClient.get(`course/${course_id}/lesson`);
                 setLessonStatus(res.data.data)
-                console.log(res.data.data);
+                // console.log(res.data.data);
 
             } catch (error) {
                 console.error(error); // Use console.error for errors
@@ -37,19 +37,16 @@ export default function ListLesson({ lesson_id, refresh }) {
     }, [course_id, refresh]); // Add course_id to the dependency array
 
     if (!courseData) {
-        return <div>Loading...</div>; // Display a loading message
+        return null; // Display a loading message
     }
 
     return (
         <div
-            className="card"
+            className="card tw-rounded-none tw-fixed tw-top-0 tw-right-0 h-full "
             style={{
                 width: "400px",
                 height: "100vh",
                 overflowY: "auto",
-                // position: "sticky",
-                // top: "70px",
-                // right: 0,
             }}
         >
             <ul className="list-group list-group-flush">
@@ -112,13 +109,13 @@ export default function ListLesson({ lesson_id, refresh }) {
                                                 })}
                                             </div>
                                             <div>
-                                                <span className="fs-5">{`${sectionIndex + 1}.${lessonIndex + 1
-                                                    } ${lesson.title}`}</span>
+                                                <span className="fs-5"><span className="tw-font-semibold me-2">{`${sectionIndex + 1}.${lessonIndex + 1
+                                                    }`}</span>{`${lesson.title}`}</span>
                                                 <div className="d-flex align-items-center">
-                                                    {lesson.type == 'video' && <RiPlayCircleFill className="text-primary" />}
-                                                    {lesson.type == 'document' && <IoMdDocument className="text-primary" />}
-                                                    {lesson.type == 'quiz' && <IoIosHelpCircle className="text-primary" />}
-                                                    <span className="fs-6 ms-2">
+                                                    {lesson.type == 'video' && <RiPlayCircleFill className="text-dark" />}
+                                                    {lesson.type == 'document' && <IoMdDocument className="text-dark" />}
+                                                    {lesson.type == 'quiz' && <IoIosHelpCircle className="text-dark" />}
+                                                    <span className="fs-6 ms-1">
                                                         {lesson.videos && lesson.videos.duration
                                                             ? `${Math.floor(lesson.videos.duration / 60)}:${lesson.videos.duration % 60
                                                             }`

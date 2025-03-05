@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axiosClient from '../../../api/axios';
 import { useParams } from 'react-router-dom';
 import { getImageUrl } from '../../../api/common';

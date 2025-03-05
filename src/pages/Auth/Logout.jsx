@@ -1,6 +1,5 @@
 // import React from "react";
 import axiosClient from "../../api/axios";
-import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
 export default function Logout() {
@@ -10,7 +9,6 @@ export default function Logout() {
       .post("/logout")
       .then((res) => {
         Cookies.remove("token");
-        toast.success(res.data.message);
         window.location.href = "/";
         console.log(res);
         

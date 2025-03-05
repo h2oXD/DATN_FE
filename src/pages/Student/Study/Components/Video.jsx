@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { getImageUrl } from '../../../../api/common';
 import axiosClient from '../../../../api/axios';
 
-export default function Video({ lesson, course_id, setRefresh }) {
+export default function Video({ lesson, course_id, setRefresh, setCurrentTime, currentTime }) {
     const [watchedPercentage, setWatchedPercentage] = useState(0);
     const videoRef = useRef(null);
     const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
@@ -27,6 +27,7 @@ export default function Video({ lesson, course_id, setRefresh }) {
         if (videoRef.current) {
             const currentTime = videoRef.current.currentTime;
             const duration = videoRef.current.duration;
+            setCurrentTime(currentTime); // Cập nhật thời gian hiện tại
             const percentage = (currentTime / duration) * 100;
             setWatchedPercentage(percentage);
 
@@ -36,6 +37,12 @@ export default function Video({ lesson, course_id, setRefresh }) {
                 markLessonAsComplete(); // Call API khi hoàn thành 80% video
             }
         }
+    };
+    // Format thời gian thành mm:ss
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
     useEffect(() => {
@@ -53,30 +60,32 @@ export default function Video({ lesson, course_id, setRefresh }) {
         };
     }, [hasCompleted]);
 
+
     return (
         <>
             {/* Content */}
-            <div className="px-5" style={{ width: '1000px' }}>
-                <div style={{ height: '500px' }} className="d-flex tw-bg-black rounded">
+            <div className="" style={{ width: '1150px' }}>
+                <div style={{ height: '470px' }} className="d-flex tw-bg-black justify-content-center">
                     <video
                         ref={videoRef}
                         src={getImageUrl(lesson.videos.video_url)}
                         controls
-                        className="w-100 tw-rounded-xl"
                     ></video>
                 </div>
-                <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center justify-content-between tw-px-20">
                     <div>
-                        <h3 className="mt-2">{lesson.title}</h3>
+                        <h2 className="mt-3">{lesson.title}</h2>
                     </div>
                     <div>
-                        <button className="btn btn-sm btn-outline-primary">+ Thêm ghi chú tại: 0:00</button>
+                        <button className="btn btn-sm tw-bg-[#ebebeb]" onClick={() => {
+                            if (videoRef.current) {
+                                videoRef.current.pause(); // Dừng video khi nhấn nút
+                            }
+                        }} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">+ Thêm ghi chú tại: {formatTime(currentTime)}</button>
                     </div>
                 </div>
-                <div className="card rounded px-3 py-2 mt-2 shadow-none mb-3" style={{ backgroundColor: '#F2F2F2' }}>
+                <div className="px-3 shadow-none mb-3 tw-px-20">
                     <span className="">Cập nhật ngày: 25/02/2025</span>
-                    <label htmlFor="" className="fw-bold">Mô tả</label>
-                    <p>Mô tả gì đó</p>
                 </div>
             </div>
         </>
