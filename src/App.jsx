@@ -43,7 +43,6 @@ import Course from "./pages/Student/Study/Course";
 import BlogList from "./pages/Student/Blog/List";
 import MyBlog from "./pages/Student/Blog/MyBlog";
 import WriteBlog from "./pages/Student/Blog/WriteBlog";
-import Certificate from "./pages/Student/Study/Certificate";
 import VoucherPage from "./pages/Student/Vouchers/List";
 import VoucherDetail from "./pages/Student/Vouchers/Detail";
 import VoucherHistory from "./pages/Student/Vouchers/History";
@@ -72,10 +71,6 @@ function App() {
           <Route path="/student/blogList" element={<BlogList />} />
           <Route path="/student/myBlog" element={<MyBlog />} />
           <Route path="/student/writeBlog" element={<WriteBlog />} />
-          <Route
-            path="/student/certificate/:user_id/:course_id"
-            element={<Certificate />}
-          />
 
           <Route path="/student/course/voucher" element={<VoucherPage />} />
           <Route
