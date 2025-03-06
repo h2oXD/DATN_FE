@@ -36,11 +36,15 @@ import Chat from "./pages/Lecturer/Chat/Chat";
 import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
 import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
+import ShowCertificate from "./pages/Student/Certificates/ShowCertificate";
 import MyCourse from "./pages/Student/CoursePage/MyCourse";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
+import Review from "./pages/Student/ReviewCourse/Review";
 import Course from "./pages/Student/Study/Course";
+import Voucher from "./pages/Student/Voucher/Voucher";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
+import { Content } from "antd/es/layout/layout";
 
 function App() {
   return (
@@ -79,6 +83,7 @@ function App() {
         <Route path="/student/course/:course_id" element={<Course />}>
           <Route index element={<Content />} />
         </Route>
+        <Route path="/voucher" element={<Voucher />} />
         {/* Giảng Viên */}
         <Route
           path="/lecturer"

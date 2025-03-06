@@ -1,6 +1,6 @@
 import { notification } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import { getImageUrl } from "../../../api/common";
 import VNpay from "../../../assets/images/png/image.png";
@@ -13,9 +13,6 @@ export default function BuyCourse() {
   const [paymentMethod, setPaymentMethod] = useState("vnpay");
   const [isPaying, setIsPaying] = useState(false);
   const nav = useNavigate();
-  const [voucher_id, setVoucherId] = useState("");
-  const [voucherApplied, setVoucherApplied] = useState(false);
-  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     axiosClient
@@ -42,74 +39,11 @@ export default function BuyCourse() {
         .catch((error) => console.error("Lỗi khi lấy số dư ví:", error));
     }
   }, [paymentMethod]);
-  const applyVoucher = () => {
-    if (!voucher_id) {
-      notification.error({
-        message: "Lỗi áp dụng voucher",
-        description: "Vui lòng nhập mã voucher!",
-        duration: 1,
-      });
-      return;
-    }
-
-    // Kiểm tra voucher có hợp lệ hay không
-    axiosClient
-      .get(`/user/voucher/${voucher_id}`)
-      .then((response) => {
-        const voucher = response.data.voucher;
-        if (!voucher || !voucher.is_active) {
-          throw new Error("Voucher không khả dụng hoặc đã hết hạn.");
-        }
-
-        // Nếu hợp lệ, tiếp tục gửi request để sử dụng voucher
-        return axiosClient.post(
-          `/user/course/${course_id}/voucher/${voucher_id}/uses`
-        );
-      })
-      .then((response) => {
-        notification.success({
-          message: "Áp dụng voucher thành công",
-          description: response.data.message,
-          duration: 1.5,
-        });
-
-        // Cập nhật giảm giá dựa trên loại voucher
-        axiosClient.get(`/user/voucher/${voucher_id}`).then((res) => {
-          const voucherDetail = res.data.voucher;
-          let discountValue = 0;
-
-          if (voucherDetail.type === "percent") {
-            discountValue =
-              (course?.price_sale || course?.price_regular) *
-              (voucherDetail.discount_price / 100);
-          } else {
-            discountValue = voucherDetail.discount_price;
-          }
-
-          setDiscount(discountValue);
-          console.log(discountValue);
-          setVoucherApplied(true);
-        });
-      })
-      .catch((error) => {
-        notification.error({
-          message: "Lỗi áp dụng voucher",
-          description:
-            error.response?.data?.message ||
-            error.message ||
-            "Có lỗi xảy ra khi áp dụng voucher!",
-          duration: 1,
-        });
-      });
-  };
-
-  const getTotalPrice = () => {
-    const basePrice = course?.price_sale || course?.price_regular || 0;
-    return Math.max(0, basePrice - discount);
-  };
 
   const handlePayment = () => {
-    const amount = getTotalPrice();
+    const amount = course.price_sale
+      ? parseInt(course.price_sale, 10)
+      : parseInt(course.price_regular, 10);
     if (!amount || amount <= 0) {
       notification.error({
         message: "Lỗi thanh toán",
@@ -232,24 +166,28 @@ export default function BuyCourse() {
               type="text"
               className="form-control"
               placeholder="Nhập mã giảm giá"
-              value={voucher_id}
-              onChange={(e) => setVoucherId(e.target.value)}
               style={{ flex: "3", height: "40px" }}
             />
-            <button className="btn btn-primary ms-1" onClick={applyVoucher}>
-              Áp dụng
-            </button>
+            <button className="btn btn-primary ms-1">Áp dụng</button>
           </div>
         </div>
+        <div className="mt-3">
+          <span role="img" aria-label="pointer">
+            👉
+          </span>{" "}
+          <Link to="/voucher" className="text-primary text-decoration-none">
+            Xem danh sách mã giảm giá
+          </Link>
+        </div>
         {paymentMethod === "wallet" && (
-          <p className="d-flex justify-content-between">
+          <p className="d-flex justify-content-between mt-3">
             <span>Số dư hiện tại:</span>{" "}
             <span className="fw-bold">
               {walletBalance?.toLocaleString("vi-VN") || "-"} đ
             </span>
           </p>
         )}
-        <p className="d-flex justify-content-between">
+        <p className="d-flex justify-content-between mt-3">
           <span>Giá gốc:</span>{" "}
           <span className="fw-bold">
             {parseInt(course.price_regular, 10).toLocaleString("vi-VN")} đ
@@ -266,7 +204,11 @@ export default function BuyCourse() {
         <p className="d-flex justify-content-between">
           <span>Tổng thanh toán:</span>
           <span className="fw-bold">
-            {getTotalPrice().toLocaleString("vi-VN")}đ
+            {parseInt(
+              course.price_sale || course.price_regular,
+              10
+            ).toLocaleString("vi-VN")}{" "}
+            đ
           </span>
         </p>
         <button
