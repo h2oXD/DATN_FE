@@ -61,7 +61,12 @@ export default function Quiz({ lesson, course_id, setRefresh }) {
             <div className=" mt-4 px-5" style={{ width: '1000px' }}>
                 <form onSubmit={handleSubmit} className="px-5">
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h2>{lesson.title}</h2>
+                        <div>
+                            <h2>{lesson.title}</h2>
+                            <div className="shadow-none mb-3">
+                                <span className="">Cập nhật ngày: 25/02/2025</span>
+                            </div>
+                        </div>
                         <button className="btn btn-primary btn-sm" type="submit">Nộp bài</button>
                     </div>
                     {lesson.description && <p className="mb-3">{lesson.description}</p>}

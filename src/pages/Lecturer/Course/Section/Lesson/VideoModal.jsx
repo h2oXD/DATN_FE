@@ -57,8 +57,8 @@ const VideoModal = ({
             )
                 .test(
                     "fileSize",
-                    "Dung lượng video không được vượt quá 2GB",
-                    (value) => !value || value.size <= 2 * 1024 * 1024 * 1024 // 2GB
+                    "Dung lượng video không được vượt quá 500MB",
+                    (value) => !value || value.size <= 500 * 1024 * 1024 // 2GB
                 ),
         }),
         onSubmit: async (values) => {
@@ -91,7 +91,7 @@ const VideoModal = ({
         }
     })
     return (
-        <Modal width={1000} open={showModal} onCancel={() => { setShowLectureForm(false); formik.resetForm(); formik.setFieldValue("description", '');formik.setFieldValue("video_url", ''); setVideoPreviewUrl(null) }} footer={null}>
+        <Modal width={1000} open={showModal} onCancel={() => { setShowLectureForm(false); formik.resetForm(); formik.setFieldValue("description", ''); formik.setFieldValue("video_url", ''); setVideoPreviewUrl(null) }} footer={null}>
             <h3 className="mb-3">Thêm video bài giảng</h3>
             <form className="row" onSubmit={formik.handleSubmit}>
                 <div className="col-lg-6 col-12 row align-content-start">
