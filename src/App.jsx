@@ -40,8 +40,14 @@ import MyCourse from "./pages/Student/CoursePage/MyCourse";
 import HomeStudent from "./pages/Student/HomeStudent";
 import OverView from "./pages/Student/OverView/OverView";
 import Course from "./pages/Student/Study/Course";
+import BlogList from "./pages/Student/Blog/List";
+import MyBlog from "./pages/Student/Blog/MyBlog";
+import WriteBlog from "./pages/Student/Blog/WriteBlog";
+import VoucherPage from "./pages/Student/Vouchers/List";
+import VoucherDetail from "./pages/Student/Vouchers/Detail";
+import VoucherHistory from "./pages/Student/Vouchers/History";
+import Wishlist from "./pages/Student/CoursePage/Wishlist";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
-import Content from "./pages/Student/Study/Components/Content";
 import ShowCertificate from "./pages/Student/Certificates/ShowCertificate";
 
 function App() {
@@ -60,7 +66,26 @@ function App() {
           <Route index element={<HomeStudent />} />
           <Route path="/student/home" element={<OverView />} />
           <Route path="/student/MyCourse" element={<MyCourse />} />
-          <Route path="/student/certificate/:id" element={<ShowCertificate />} />
+          <Route path="/student/wishList" element={<Wishlist />} />
+          <Route path="/student/course" element={<Course />} />
+          <Route path="/student/blogList" element={<BlogList />} />
+          <Route path="/student/myBlog" element={<MyBlog />} />
+          <Route path="/student/writeBlog" element={<WriteBlog />} />
+
+          <Route path="/student/course/voucher" element={<VoucherPage />} />
+          <Route
+            path="/student/course/voucher/history"
+            element={<VoucherHistory />}
+          />
+          <Route
+            path="/student/course/voucher/detail/:voucher_id"
+            element={<VoucherDetail />}
+          />
+
+          <Route
+            path="/student/certificate/:id"
+            element={<ShowCertificate />}
+          />
           <Route
             path="/student/home/:course_id/coursedetail/"
             element={<CourseDetail />}
