@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import axiosClient from '../../../../api/axios'
 import { Popconfirm } from 'antd'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
@@ -14,6 +14,9 @@ export default function Header({ course_id, refresh, setRefresh }) {
     const [notes, setNotes] = useState(null)
     const [isEditing, setIsEditing] = useState(false); // Kiểm soát hiển thị CKEditor
     const [content, setContent] = useState(''); // Lưu nội dung
+    const [openNote, setOpenNote] = useState('all');
+    const [searchParams] = useSearchParams();
+    const lesson_id = searchParams.get("lesson");
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -51,17 +54,28 @@ export default function Header({ course_id, refresh, setRefresh }) {
 
     useEffect(() => {
         const notes = async () => {
-            try {
-                const res = await axiosClient.get(`/learning/notes`)
-                console.log(res.data);
-                setNotes(res.data)
-            } catch (error) {
-                console.log(error);
-                setNotes(null)
+            if (openNote == 'all') {
+                try {
+                    const res = await axiosClient.get(`/learning/notes/${course_id}`)
+                    console.log(res.data);
+                    setNotes(res.data)
+                } catch (error) {
+                    console.log(error);
+                    setNotes(null)
+                }
+            } else {
+                try {
+                    const res = await axiosClient.get(`/learning/notes/${course_id}/${lesson_id}`)
+                    console.log(res.data);
+                    setNotes(res.data)
+                } catch (error) {
+                    console.log(error);
+                    setNotes(null)
+                }
             }
         }
         notes()
-    }, [refresh])
+    }, [refresh, openNote])
     const handleDeleteNote = async (note_id) => {
         try {
             await axiosClient.delete(`/learning/notes/${note_id}`)
@@ -113,7 +127,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                 </div>
             </nav>
             <div className="offcanvas offcanvas-end tw-w-[600px] tw-bg-white" tabIndex="-1" id="offcanvasGhiChuRight" aria-labelledby="offcanvasGhiChuRightLabel">
-                <div className="offcanvas-header">
+                <div className="offcanvas-header pb-1">
                     <div className='d-flex flex-column'>
                         <h3 id="offcanvasGhiChuRightLabel m-0">Ghi chú của tôi</h3>
                         <small className=''>Danh sách ghi chú trong khoá học của bạn</small>
@@ -121,6 +135,14 @@ export default function Header({ course_id, refresh, setRefresh }) {
                     <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
+                    <div className='row justify-content-end mb-2'>
+                        <div className='col-5'>
+                            <select className='form-select text-dark' name="" id="" onChange={(e) => setOpenNote(e.target.value === "all")}>
+                                <option value="all">Tất cả các chương</option>
+                                <option value="current">Chương hiện tại</option>
+                            </select>
+                        </div>
+                    </div>
                     {notes &&
                         notes.map((note, index) => (
                             <div className='d-flex flex-column' key={index}>
