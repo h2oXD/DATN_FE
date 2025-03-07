@@ -2,11 +2,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { getImageUrl } from '../../../../api/common';
 import axiosClient from '../../../../api/axios';
+import { Button, Modal } from 'antd';
 
 export default function Video({ lesson, course_id, setRefresh, setCurrentTime, currentTime }) {
     const [watchedPercentage, setWatchedPercentage] = useState(0);
     const videoRef = useRef(null);
     const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
+    const lastTimeRef = useRef(0); // Lưu thời điểm trước khi tua
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Hàm call API để cập nhật trạng thái lesson đã hoàn thành
     const markLessonAsComplete = async () => {
@@ -45,17 +48,37 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
+    // Kiểm tra nếu người dùng tua quá 30 giây
+    const handleSeeking = () => {
+        if (videoRef.current) {
+            const newTime = videoRef.current.currentTime;
+            if (newTime > lastTimeRef.current + 60) {
+                setIsModalOpen(true);
+                videoRef.current.currentTime = lastTimeRef.current; // Trả video về thời điểm trước đó
+            }
+        }
+    };
+
+    // Cập nhật lastTimeRef khi seek hoàn thành
+    const handleSeeked = () => {
+        if (videoRef.current) {
+            lastTimeRef.current = videoRef.current.currentTime;
+        }
+    };
+
     useEffect(() => {
-        // Đảm bảo là hàm được gọi khi video đã sẵn sàng
         const videoElement = videoRef.current;
         if (videoElement) {
             videoElement.addEventListener('timeupdate', handleTimeUpdate);
+            videoElement.addEventListener('seeking', handleSeeking);
+            videoElement.addEventListener('seeked', handleSeeked);
         }
 
-        // Cleanup
         return () => {
             if (videoElement) {
                 videoElement.removeEventListener('timeupdate', handleTimeUpdate);
+                videoElement.removeEventListener('seeking', handleSeeking);
+                videoElement.removeEventListener('seeked', handleSeeked);
             }
         };
     }, [hasCompleted]);
@@ -63,6 +86,7 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
 
     return (
         <>
+
             {/* Content */}
             <div className="" style={{ width: '1150px' }}>
                 <div style={{ height: '470px' }} className="d-flex tw-bg-black justify-content-center">
@@ -88,6 +112,19 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
                     <span className="">Cập nhật ngày: 25/02/2025</span>
                 </div>
             </div>
+            <Modal
+                title="Thông báo"
+                open={isModalOpen}
+                onOk={() => setIsModalOpen(false)}
+                onCancel={() => setIsModalOpen(false)}
+                footer={[
+                    <Button key="ok" type="primary" onClick={() => setIsModalOpen(false)}>
+                        OK
+                    </Button>
+                ]}
+            >
+                <p>Bạn đang học quá nhanh!</p>
+            </Modal>
         </>
     );
 }
