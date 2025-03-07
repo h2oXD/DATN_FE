@@ -4,6 +4,7 @@ import { Modal, Skeleton } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import axiosClient from "../../api/axios";
 import { getImageUrl } from "../../api/common";
+import { useVoucher } from "../../contexts/VoucherContext";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
@@ -12,6 +13,8 @@ export default function CourseDetail() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { selectedVoucher } = useVoucher();
 
   useEffect(() => {
     if (!course_id) return;
@@ -49,6 +52,13 @@ export default function CourseDetail() {
         console.error("Lỗi khi lấy danh sách đánh giá:", error);
       });
   }, [course_id]);
+
+  // Khi voucher được áp dụng, mở modal BuyCourse
+  useEffect(() => {
+    if (selectedVoucher) {
+      setIsModalOpen(true);
+    }
+  }, [selectedVoucher]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -603,7 +613,10 @@ export default function CourseDetail() {
               width={700}
               footer={null}
             >
-              <BuyCourse />
+              <BuyCourse
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+              />
             </Modal>
           </div>
         </div>

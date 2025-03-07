@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../api/axios";
-import { useNavigate } from "react-router-dom";
 import { notification } from "antd";
+import { useVoucher } from "../../../contexts/VoucherContext";
 
 export default function Voucher() {
   const [vouchers, setVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const { applyVoucher } = useVoucher(); // Lấy hàm applyVoucher từ Context
 
   useEffect(() => {
     const fetchVouchers = async () => {
@@ -24,14 +24,12 @@ export default function Voucher() {
   }, []);
 
   const handleUseVoucher = (voucher) => {
+    applyVoucher(voucher); // Lưu voucher vào Context
     notification.success({
       message: "Áp dụng voucher thành công",
       description: `Mã giảm giá "${voucher.code}" đã được chọn.`,
       duration: 1.5,
     });
-
-    // Chuyển hướng và truyền dữ liệu voucher qua state của router
-    navigate(`/buycourse/${voucher.course_id}`, { state: { voucher } });
   };
 
   return (
@@ -97,33 +95,32 @@ export default function Voucher() {
           <div className="voucher-cut right"></div>
         </div>
       ))}
-
       <style>
         {`
-          .voucher-card {
-            border-radius: 16px;
-            position: relative;
-            overflow: visible;
-            background-color: white;
-            z-index: 1;
-          }
-          .voucher-cut {
-            z-index: 0;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 45px;
-            background-color: #F1F5F9;
-            border-radius: 50%;
-          }
-          .voucher-cut.left {
-            left: -15px;
-          }
-          .voucher-cut.right {
-            right: -15px;
-          }
-        `}
+           .voucher-card {
+             border-radius: 16px;
+             position: relative;
+             overflow: visible;
+             background-color: white;
+             z-index: 1;
+           }
+           .voucher-cut {
+             z-index: 0;
+             position: absolute;
+             top: 50%;
+             transform: translateY(-50%);
+             width: 40px;
+             height: 45px;
+             background-color: #F1F5F9;
+             border-radius: 50%;
+           }
+           .voucher-cut.left {
+             left: -15px;
+           }
+           .voucher-cut.right {
+             right: -15px;
+           }
+         `}
       </style>
     </div>
   );
