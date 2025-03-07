@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import { getImageUrl } from "../../../api/common";
+import Skeleton from "react-loading-skeleton";
+import { isEmptyArray } from "formik";
 
 export default function MyCourse() {
   const [searchTerm, setSearchTerm] = useState("");
   const [courses, setCourses] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     axiosClient
       .get("/user/courses")
       .then((response) => {
@@ -19,12 +22,32 @@ export default function MyCourse() {
       })
       .catch((error) => {
         console.error("Error fetching courses:", error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
   const filteredCourses = courses.filter((item) =>
     item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  if (loading) {
+    return (
+      <>
+        <div className="p-5">
+          <Skeleton />
+        </div>
+      </>
+    );
+  }
+
+  if (isEmptyArray(courses)) {
+    return (
+      <>
+        <h4 className="p-5">Không có dữ liệu khoá học của tôi</h4>
+      </>
+    );
+  }
 
   return (
     <div className="card">
