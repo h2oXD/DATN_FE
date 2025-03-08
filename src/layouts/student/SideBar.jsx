@@ -1,20 +1,26 @@
-/* eslint-disable react/prop-types */
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
 import {
   BaiVietIcon,
+  CertificateIcon,
   ChatIcon,
   CourseIcon,
   LecturerIcon,
   LoTrinhIcon,
   TongQuanIcon,
   ViTienIcon,
+  VoucherIcon,
   ĐKiIcon,
 } from "./Icon";
 
 export default function SideBar({ collapsed }) {
   const location = useLocation();
   const currentPath = location.pathname;
+
+  // 🛠 Lấy userId và courseId từ localStorage (hoặc context nếu có)
+  const userId = localStorage.getItem("user_id") || "defaultUserId";
+  const courseId = localStorage.getItem("course_id") || "defaultCourseId";
+
   return (
     <>
       <Sidebar
@@ -55,8 +61,8 @@ export default function SideBar({ collapsed }) {
             </MenuItem>
             <MenuItem
               className="text-dark"
-              active={currentPath === "/student/KHYeuThich"}
-              component={<Link to={"/student/KHYeuThich"} />}
+              active={currentPath === "/student/wishList"}
+              component={<Link to={"/student/wishList"} />}
             >
               Khóa học yêu thích
             </MenuItem>
@@ -79,7 +85,7 @@ export default function SideBar({ collapsed }) {
           <MenuItem
             className="text-dark"
             icon={<BaiVietIcon />}
-            component={<Link to={"/student/baiViet"} />}
+            component={<Link to={"/student/blogList"} />}
           >
             Bài viết
           </MenuItem>
@@ -110,6 +116,22 @@ export default function SideBar({ collapsed }) {
             component={<Link to={"/registerTeacher"} />}
           >
             Đăng ký giảng viên
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<CertificateIcon />}
+            component={
+              <Link to={`/student/certificate/${userId}/${courseId}`} />
+            }
+          >
+            Chứng chỉ
+          </MenuItem>
+          <MenuItem
+            className="text-dark"
+            icon={<VoucherIcon />}
+            component={<Link to={"/student/course/voucher"} />}
+          >
+            Voucher
           </MenuItem>
         </Menu>
       </Sidebar>

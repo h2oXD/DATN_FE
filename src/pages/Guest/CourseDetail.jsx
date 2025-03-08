@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Skeleton } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import axiosClient from "../../api/axios";
@@ -15,6 +15,7 @@ export default function CourseDetail() {
   const [reviews, setReviews] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedVoucher } = useVoucher();
+  const location = useLocation();
 
   useEffect(() => {
     if (!course_id) return;
@@ -55,10 +56,14 @@ export default function CourseDetail() {
 
   // Khi voucher được áp dụng, mở modal BuyCourse
   useEffect(() => {
-    if (selectedVoucher) {
+    if (
+      selectedVoucher ||
+      new URLSearchParams(location.search).get("voucher_applied")
+    ) {
       setIsModalOpen(true);
+      setIsModalVisible(true);
     }
-  }, [selectedVoucher]);
+  }, [selectedVoucher, location.search]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -615,7 +620,7 @@ export default function CourseDetail() {
             >
               <BuyCourse
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => setIsModalOpen(true)}
               />
             </Modal>
           </div>

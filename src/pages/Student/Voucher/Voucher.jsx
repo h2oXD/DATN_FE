@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../../api/axios";
 import { notification } from "antd";
 import { useVoucher } from "../../../contexts/VoucherContext";
-
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 export default function Voucher() {
+  const { course_id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [vouchers, setVouchers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { applyVoucher } = useVoucher(); // Lấy hàm applyVoucher từ Context
+  const { selectVoucher } = useVoucher();
 
   useEffect(() => {
     const fetchVouchers = async () => {
@@ -24,12 +27,25 @@ export default function Voucher() {
   }, []);
 
   const handleUseVoucher = (voucher) => {
-    applyVoucher(voucher); // Lưu voucher vào Context
+    const courseId = new URLSearchParams(location.search).get("course_id");
+    if (!courseId) {
+      notification.error({
+        message: "Lỗi áp dụng voucher",
+        description: "Không tìm thấy ID khóa học!",
+        duration: 1.5,
+      });
+      return;
+    }
+
+    selectVoucher(courseId, voucher);
+
     notification.success({
       message: "Áp dụng voucher thành công",
       description: `Mã giảm giá "${voucher.code}" đã được chọn.`,
-      duration: 1.5,
+      duration: 1,
     });
+
+    navigate(`/student/home/${courseId}/coursedetail?voucher_applied=true`);
   };
 
   return (

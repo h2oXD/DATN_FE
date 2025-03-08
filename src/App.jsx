@@ -46,6 +46,13 @@ import Voucher from "./pages/Student/Voucher/Voucher";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
 import { Content } from "antd/es/layout/layout";
 import { VoucherProvider } from "./contexts/VoucherContext";
+import BlogList from "./pages/Student/Blog/List";
+import MyBlog from "./pages/Student/Blog/MyBlog";
+import WriteBlog from "./pages/Student/Blog/WriteBlog";
+import VoucherPage from "./pages/Student/Vouchers/List";
+import VoucherDetail from "./pages/Student/Vouchers/Detail";
+import VoucherHistory from "./pages/Student/Vouchers/History";
+import Wishlist from "./pages/Student/CoursePage/Wishlist";
 
 function App() {
   return (
@@ -64,6 +71,22 @@ function App() {
             <Route index element={<HomeStudent />} />
             <Route path="/student/home" element={<OverView />} />
             <Route path="/student/MyCourse" element={<MyCourse />} />
+            <Route path="/student/wishList" element={<Wishlist />} />
+            <Route path="/student/course" element={<Course />} />
+            <Route path="/student/blogList" element={<BlogList />} />
+            <Route path="/student/myBlog" element={<MyBlog />} />
+            <Route path="/student/writeBlog" element={<WriteBlog />} />
+
+            <Route path="/student/course/voucher" element={<VoucherPage />} />
+            <Route
+              path="/student/course/voucher/history"
+              element={<VoucherHistory />}
+            />
+            <Route
+              path="/student/course/voucher/detail/:voucher_id"
+              element={<VoucherDetail />}
+            />
+
             <Route
               path="/student/certificate/:id"
               element={<ShowCertificate />}
@@ -86,6 +109,10 @@ function App() {
             <Route index element={<Content />} />
           </Route>
           <Route path="/voucher" element={<Voucher />} />
+          <Route
+            path="/student/certificate/:id"
+            element={<ShowCertificate />}
+          />
           {/* Giảng Viên */}
           <Route
             path="/lecturer"

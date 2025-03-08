@@ -1,4 +1,4 @@
-import { notification } from "antd";
+import { Modal, notification } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../../api/axios";
@@ -14,7 +14,8 @@ export default function BuyCourse() {
   const [paymentMethod, setPaymentMethod] = useState("vnpay");
   const [isPaying, setIsPaying] = useState(false);
   const nav = useNavigate();
-  const { selectedVoucher } = useVoucher(); // Lấy voucher từ Context
+  const { selectedVouchers, clearSelectedVoucher } = useVoucher();
+  const selectedVoucher = selectedVouchers[course_id];
 
   useEffect(() => {
     axiosClient
@@ -42,7 +43,6 @@ export default function BuyCourse() {
     }
   }, [paymentMethod]);
 
-  // Tính toán giá sau khi áp dụng voucher
   const originalPrice = course?.price_sale
     ? parseInt(course.price_sale, 10)
     : parseInt(course?.price_regular, 10);
@@ -76,15 +76,26 @@ export default function BuyCourse() {
     }
 
     setIsPaying(true);
-    const paymentEndpoint =
-      paymentMethod === "wallet"
-        ? `/user/courses/${course_id}/wallet-payment`
-        : `/user/courses/${course_id}/create-payment`;
 
-    axiosClient
-      .post(paymentEndpoint, {
-        amount: finalPrice,
-        voucher_id: selectedVoucher?.id,
+    const applyVoucherPromise = selectedVoucher
+      ? axiosClient.post(
+          `/user/course/${course_id}/voucher/${selectedVoucher.id}/uses`
+        )
+      : Promise.resolve();
+
+    applyVoucherPromise
+      .then(() => {
+        const paymentEndpoint =
+          paymentMethod === "wallet"
+            ? `/user/courses/${course_id}/wallet-payment`
+            : `/user/courses/${course_id}/create-payment`;
+
+        const requestData = { amount: finalPrice };
+        if (selectedVoucher) {
+          requestData.voucher_id = selectedVoucher.id;
+        }
+
+        return axiosClient.post(paymentEndpoint, requestData);
       })
       .then((response) => {
         if (paymentMethod === "wallet") {
@@ -113,14 +124,25 @@ export default function BuyCourse() {
       })
       .finally(() => setIsPaying(false));
   };
-
+  const confirmPayment = () => {
+    if (paymentMethod === "wallet") {
+      Modal.confirm({
+        title: "Xác nhận thanh toán",
+        content: `Bạn có chắc muốn thanh toán ${finalPrice.toLocaleString(
+          "vi-VN"
+        )} đ bằng ví không?`,
+        onOk: handlePayment,
+      });
+    } else {
+      handlePayment();
+    }
+  };
   if (loading) return <p>Đang tải...</p>;
   if (!course) return <p>Không tìm thấy khóa học.</p>;
 
   const handleAddFunds = () => {
     nav("/student/walletStudent");
   };
-
   return (
     <div className="row bg-white p-2 shadow rounded">
       <div className="col-md-7 p-3 border-end">
@@ -174,37 +196,34 @@ export default function BuyCourse() {
           </label>
         </div>
       </div>
-
       <div className="col-md-5 p-3">
         <h4 className="mb-3">Chi tiết thanh toán</h4>
-
-        {selectedVoucher && (
-          <p className="alert alert-success">
-            Đã áp dụng mã giảm giá: <strong>{selectedVoucher.code}</strong> -{" "}
-            {selectedVoucher.type === "percent"
-              ? `${selectedVoucher.discount_price}%`
-              : `${selectedVoucher.discount_price.toLocaleString("vi-VN")} đ`}
-          </p>
+        {!selectedVoucher && (
+          <>
+            <div className="mb-3">
+              <div className="d-flex">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Nhập mã giảm giá"
+                  style={{ flex: "3", height: "40px" }}
+                />
+                <button className="btn btn-primary ms-1">Áp dụng</button>
+              </div>
+            </div>
+            <div className="mt-3">
+              <span role="img" aria-label="pointer">
+                👉
+              </span>{" "}
+              <Link
+                to={`/voucher?course_id=${course_id}`}
+                className="text-primary text-decoration-none"
+              >
+                Xem danh sách mã giảm giá
+              </Link>
+            </div>
+          </>
         )}
-        <div className="mb-3">
-          <div className="d-flex">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Nhập mã giảm giá"
-              style={{ flex: "3", height: "40px" }}
-            />
-            <button className="btn btn-primary ms-1">Áp dụng</button>
-          </div>
-        </div>
-        <div className="mt-3">
-          <span role="img" aria-label="pointer">
-            👉
-          </span>{" "}
-          <Link to="/voucher" className="text-primary text-decoration-none">
-            Xem danh sách mã giảm giá
-          </Link>
-        </div>
 
         {paymentMethod === "wallet" && (
           <p className="d-flex justify-content-between mt-3">
@@ -217,10 +236,47 @@ export default function BuyCourse() {
 
         <p className="d-flex justify-content-between mt-3">
           <span>Giá gốc:</span>
-          <span className="fw-bold">
-            {originalPrice.toLocaleString("vi-VN")} đ
+          <span
+            className="fw-bold"
+            style={{
+              textDecoration: course?.price_sale ? "line-through" : "none",
+              color: course?.price_sale ? "gray" : "black",
+            }}
+          >
+            {course?.price_regular.toLocaleString("vi-VN")} đ
           </span>
         </p>
+
+        {course?.price_sale && (
+          <p className="d-flex justify-content-between mt-3">
+            <span>Giá sale:</span>
+            <span className="fw-bold">
+              {course.price_sale.toLocaleString("vi-VN")} đ
+            </span>
+          </p>
+        )}
+
+        {selectedVoucher && (
+          <p className="d-flex justify-content-between mt-3 text-danger">
+            <span>
+              Mã giảm giá -{" "}
+              <span
+                className="text-decoration-underline"
+                style={{ cursor: "pointer" }}
+                onClick={() => clearSelectedVoucher(course_id)}
+              >
+                Hủy bỏ
+              </span>
+            </span>
+            <span>
+              {selectedVoucher.type === "percent"
+                ? `-${selectedVoucher.discount_price}%`
+                : `-${selectedVoucher.discount_price.toLocaleString(
+                    "vi-VN"
+                  )} đ`}
+            </span>
+          </p>
+        )}
 
         <p className="d-flex justify-content-between">
           <span>Tổng thanh toán:</span>
@@ -231,7 +287,7 @@ export default function BuyCourse() {
 
         <button
           className="btn btn-primary w-100 mb-2"
-          onClick={handlePayment}
+          onClick={confirmPayment}
           disabled={isPaying}
         >
           {isPaying ? "Đang xử lý..." : "Thanh toán"}
