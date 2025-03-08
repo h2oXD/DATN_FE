@@ -1,8 +1,8 @@
+import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../../api/axios";
-import { Skeleton } from "antd";
 
 export default function WalletStudent() {
   const [wallet, setWallet] = useState(null);
@@ -25,6 +25,7 @@ export default function WalletStudent() {
   const handleAmountClick = (amount) => {
     setSelectedAmount(amount);
     setError("");
+    document.getElementById("customAmount").value = "";
   };
 
   const handleCustomAmountChange = (event) => {

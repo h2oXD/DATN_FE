@@ -104,6 +104,12 @@ export default function MyCourse() {
                   >
                     <i className="fe fe-arrow-right text-primary align-middle"></i>
                   </Link>
+                  {/* <Link
+                    to={`/student/course/${item.course.id}/review`}
+                    className="text-inherit"
+                  >
+                    <i className="fe fe-arrow-right text-primary align-middle"></i>
+                  </Link> */}
                 </div>
               </div>
             </div>
