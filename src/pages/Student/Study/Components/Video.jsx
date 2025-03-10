@@ -2,11 +2,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { getImageUrl } from '../../../../api/common';
 import axiosClient from '../../../../api/axios';
+import { Button, Modal } from 'antd';
 
-export default function Video({ lesson, course_id, setRefresh }) {
+export default function Video({ lesson, course_id, setRefresh, setCurrentTime, currentTime }) {
     const [watchedPercentage, setWatchedPercentage] = useState(0);
     const videoRef = useRef(null);
     const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
+    const lastTimeRef = useRef(0); // Lưu thời điểm trước khi tua
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Hàm call API để cập nhật trạng thái lesson đã hoàn thành
     const markLessonAsComplete = async () => {
@@ -27,6 +30,7 @@ export default function Video({ lesson, course_id, setRefresh }) {
         if (videoRef.current) {
             const currentTime = videoRef.current.currentTime;
             const duration = videoRef.current.duration;
+            setCurrentTime(currentTime); // Cập nhật thời gian hiện tại
             const percentage = (currentTime / duration) * 100;
             setWatchedPercentage(percentage);
 
@@ -37,48 +41,90 @@ export default function Video({ lesson, course_id, setRefresh }) {
             }
         }
     };
+    // Format thời gian thành mm:ss
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    };
+
+    // Kiểm tra nếu người dùng tua quá 30 giây
+    const handleSeeking = () => {
+        if (videoRef.current) {
+            const newTime = videoRef.current.currentTime;
+            if (newTime > lastTimeRef.current + 60) {
+                setIsModalOpen(true);
+                videoRef.current.currentTime = lastTimeRef.current; // Trả video về thời điểm trước đó
+            }
+        }
+    };
+
+    // Cập nhật lastTimeRef khi seek hoàn thành
+    const handleSeeked = () => {
+        if (videoRef.current) {
+            lastTimeRef.current = videoRef.current.currentTime;
+        }
+    };
 
     useEffect(() => {
-        // Đảm bảo là hàm được gọi khi video đã sẵn sàng
         const videoElement = videoRef.current;
         if (videoElement) {
             videoElement.addEventListener('timeupdate', handleTimeUpdate);
+            videoElement.addEventListener('seeking', handleSeeking);
+            videoElement.addEventListener('seeked', handleSeeked);
         }
 
-        // Cleanup
         return () => {
             if (videoElement) {
                 videoElement.removeEventListener('timeupdate', handleTimeUpdate);
+                videoElement.removeEventListener('seeking', handleSeeking);
+                videoElement.removeEventListener('seeked', handleSeeked);
             }
         };
     }, [hasCompleted]);
 
+
     return (
         <>
+
             {/* Content */}
-            <div className="px-5" style={{ width: '1000px' }}>
-                <div style={{ height: '500px' }} className="d-flex tw-bg-black rounded">
+            <div className="" style={{ width: '1150px' }}>
+                <div style={{ height: '470px' }} className="d-flex tw-bg-black justify-content-center">
                     <video
                         ref={videoRef}
                         src={getImageUrl(lesson.videos.video_url)}
                         controls
-                        className="w-100 tw-rounded-xl"
                     ></video>
                 </div>
-                <div className="d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center justify-content-between tw-px-20">
                     <div>
-                        <h3 className="mt-2">{lesson.title}</h3>
+                        <h2 className="mt-3">{lesson.title}</h2>
                     </div>
                     <div>
-                        <button className="btn btn-sm btn-outline-primary">+ Thêm ghi chú tại: 0:00</button>
+                        <button className="btn btn-sm tw-bg-[#ebebeb]" onClick={() => {
+                            if (videoRef.current) {
+                                videoRef.current.pause(); // Dừng video khi nhấn nút
+                            }
+                        }} type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">+ Thêm ghi chú tại: {formatTime(currentTime)}</button>
                     </div>
                 </div>
-                <div className="card rounded px-3 py-2 mt-2 shadow-none mb-3" style={{ backgroundColor: '#F2F2F2' }}>
+                <div className="px-3 shadow-none mb-3 tw-px-20">
                     <span className="">Cập nhật ngày: 25/02/2025</span>
-                    <label htmlFor="" className="fw-bold">Mô tả</label>
-                    <p>Mô tả gì đó</p>
                 </div>
             </div>
+            <Modal
+                title="Thông báo"
+                open={isModalOpen}
+                onOk={() => setIsModalOpen(false)}
+                onCancel={() => setIsModalOpen(false)}
+                footer={[
+                    <Button key="ok" type="primary" onClick={() => setIsModalOpen(false)}>
+                        OK
+                    </Button>
+                ]}
+            >
+                <p>Bạn đang học quá nhanh!</p>
+            </Modal>
         </>
     );
 }

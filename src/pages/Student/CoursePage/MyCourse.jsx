@@ -15,6 +15,8 @@ export default function MyCourse() {
       .get("/user/courses")
       .then((response) => {
         if (response.data.status === "success") {
+          console.log(response.data.data);
+          
           setCourses(response.data.data);
         }
       })
@@ -75,19 +77,19 @@ export default function MyCourse() {
                   className="card-img-top"
                 />
                 <div className="card-body p-3">
-                  <h5 className="mt-2 text-truncate">{item.course.title}</h5>
+                  <h4 className="text-truncate">{item.course.title}</h4>
                   <p className="text-muted small mb-1">
-                    Khoá học đang hoạt động
+                    Tiến trình học
                   </p>
                   <div className="progress mb-2" style={{ height: "6px" }}>
                     <div
                       className="progress-bar bg-success"
                       role="progressbar"
-                      style={{ width: `${item.progress.progress_percentage}%` }}
+                      style={{ width: `${item.progress.progress_percent}%` }}
                     ></div>
                   </div>
                   <p className="small text-muted">
-                    {item.progress.progress_percentage}% hoàn thành
+                    {parseInt(item.progress.progress_percent)}% hoàn thành
                   </p>
                 </div>
                 <div className="card-footer d-flex justify-content-between small">
@@ -102,6 +104,12 @@ export default function MyCourse() {
                   >
                     <i className="fe fe-arrow-right text-primary align-middle"></i>
                   </Link>
+                  {/* <Link
+                    to={`/student/course/${item.course.id}/review`}
+                    className="text-inherit"
+                  >
+                    <i className="fe fe-arrow-right text-primary align-middle"></i>
+                  </Link> */}
                 </div>
               </div>
             </div>

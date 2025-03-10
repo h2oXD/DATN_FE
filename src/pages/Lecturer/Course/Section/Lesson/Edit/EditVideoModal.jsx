@@ -31,7 +31,7 @@ export default function EditVideoModal({
     setVideoPreviewUrl(url);
   };
   console.log(lesson);
-  
+
   const formik = useFormik({
     initialValues: {
       title: lesson.title,
@@ -42,6 +42,25 @@ export default function EditVideoModal({
     validationSchema: Yup.object({
       title: Yup.string().required("Tiêu đề không được để trống"),
       description: Yup.string().nullable(),
+      video_url: Yup.mixed().nullable().test(
+        "fileType",
+        "Chỉ chấp nhận file video (MP4, MOV, AVI, WMV, FLV, WEBM)",
+        (value) =>
+          !value ||
+          [
+            "video/mp4",
+            "video/quicktime", // MOV
+            "video/x-msvideo", // AVI
+            "video/x-ms-wmv", // WMV
+            "video/x-flv", // FLV
+            "video/webm", // WEBM
+          ].includes(value.type)
+      )
+        .test(
+          "fileSize",
+          "Dung lượng video không được vượt quá 500MB",
+          (value) => !value || value.size <= 500 * 1024 * 1024 // 2GB
+        ),
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -56,11 +75,12 @@ export default function EditVideoModal({
           `lecturer/courses/${course_id}/sections/${section_id}/lessons/${lesson.id}`,
           updateLesson
         );
-        console.log(uploadVideo);
+        // console.log(uploadVideo);
 
         if (uploadVideo) {
-          await axiosClient.post(
-            `lecturer/courses/${course_id}/sections/${section_id}/lessons/${lesson.id}/videos/${lesson.videos[0].id}`,
+
+          const resx = await axiosClient.post(
+            `lecturer/courses/${course_id}/sections/${section_id}/lessons/${lesson.id}/videos/${lesson.videos.id}`,
             uploadVideo,
             {
               headers: {
@@ -68,11 +88,14 @@ export default function EditVideoModal({
               },
             }
           );
+          console.log(resx);
         }
+
         const res2 = await axiosClient.get(
           `lecturer/courses/${course_id}/sections/${section_id}/lessons/${lesson.id}`
         );
         const updatedLesson = res2.data.lesson;
+
 
         setLessons((prevLessons) => {
           return prevLessons.map((l) => {

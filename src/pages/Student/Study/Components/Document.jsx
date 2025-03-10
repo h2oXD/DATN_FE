@@ -9,7 +9,7 @@ export default function Document({ lesson, course_id, setRefresh }) {
 
         try {
             console.log("Gọi API để xử lý tải tài liệu...");
-            const res = await axiosClient.post(`student/courses/${course_id}/lessons/${lesson.id}/completes`)
+            await axiosClient.post(`student/courses/${course_id}/lessons/${lesson.id}/completes`)
             // Gọi API ở đây, ví dụ:
             // await api.downloadDocument(lesson.id);
             setRefresh(prev => !prev);
@@ -23,7 +23,7 @@ export default function Document({ lesson, course_id, setRefresh }) {
     return (
         <>
             {/* Content */}
-            <div className="px-5" style={{ width: '1000px' }}>
+            <div className=" mt-4 px-5" style={{ width: '1000px' }}>
                 <h3>{lesson.title}</h3>
                 <a href={getImageUrl(lesson.documents.document_url)} download onClick={handleDownloadClick}>
                     Tải xuống
