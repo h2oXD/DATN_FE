@@ -6,17 +6,16 @@ import Header from "../components/Header";
 // import SideBar from "../components/SideBar";
 
 export default function GuestLayout() {
-   
-   
-    return (
-        <>
-            <Header />
-            {/* <Slider /> */}
-            {/* <SideBar /> */}
-            <main style={{ marginTop: '10px' }}>
-                <Outlet />
-            </main>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <Header />
+
+      {/* <Slider /> */}
+      {/* <SideBar /> */}
+      <main style={{ marginTop: "10px" }}>
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
 }

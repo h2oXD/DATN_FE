@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
+
 import GuestLayout from "./layouts/GuestLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
 import StudentLayout from "./layouts/StudentLayout";
@@ -49,6 +50,10 @@ import VoucherHistory from "./pages/Student/Vouchers/History";
 import Wishlist from "./pages/Student/CoursePage/Wishlist";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
 import ShowCertificate from "./pages/Student/Certificates/ShowCertificate";
+import ResetPassword from "./pages/Auth/ResetPassword";
+import LoginGoogle from "./pages/Auth/LoginGoogle";
+import GoogleCallback from "./pages/Auth/GoogleCallback";
+import ChangePassword from "./pages/Auth/ChangePassword";
 
 function App() {
   return (
@@ -59,7 +64,11 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/course" element={<CourseList />} />
           <Route path="/course/detail/:id" element={<CourseDetail />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/changePassword" element={<ChangePassword />} />
+          <Route path="/loginGoogle" element={<LoginGoogle />} />
         </Route>
+        <Route path="/google/callback" element={<GoogleCallback />} />
 
         {/* Học Viên */}
         <Route path="/student" element={<StudentLayout />}>
