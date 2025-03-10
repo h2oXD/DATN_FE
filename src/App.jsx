@@ -49,6 +49,7 @@ import VoucherHistory from "./pages/Student/Vouchers/History";
 import Wishlist from "./pages/Student/CoursePage/Wishlist";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
 import ShowCertificate from "./pages/Student/Certificates/ShowCertificate";
+import Content from "./pages/Student/Study/Components/Content";
 
 function App() {
   return (

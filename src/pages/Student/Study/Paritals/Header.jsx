@@ -16,6 +16,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
     const [content, setContent] = useState(''); // Lưu nội dung
     const [openNote, setOpenNote] = useState('all');
     const [searchParams] = useSearchParams();
+    const [tienDo, setTienDo] = useState(null);
     const lesson_id = searchParams.get("lesson");
     useEffect(() => {
         const fetchData = async () => {
@@ -102,6 +103,18 @@ export default function Header({ course_id, refresh, setRefresh }) {
             console.log(error);
         }
     }
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                const res = await axiosClient.get(`progress/course/${course_id}`)
+                console.log(res);
+                setTienDo(res.data)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchProgress()
+    }, [course_id, refresh])
     return (
         <>
             <nav className="navbar navbar-expand-lg sticky-top shadow tw-px-5 tw-z-[999] tw-bg-[#29303b] " >
@@ -117,7 +130,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                         <div className="p-1">
                             <span className='text-light'>{parseInt(progress)}%</span>
                         </div>
-                        <p className="m-0 ms-2 tw-font-semibold fs-5 text-light">0/4 bài học</p>
+                        <p className="m-0 ms-2 tw-font-semibold fs-5 text-light">{tienDo && tienDo.completed_lessons}/{tienDo && tienDo.total_lessons} bài học</p>
                         <button className="btn btn-sm ms-2 text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGhiChuRight" aria-controls="offcanvasGhiChuRight">
                             <i className='fe fe-file me-1'></i>
                             <span>Ghi chú</span>
@@ -137,7 +150,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                 <div className="offcanvas-body">
                     <div className='row justify-content-end mb-2'>
                         <div className='col-5'>
-                            <select className='form-select text-dark' name="" id="" onChange={(e) => setOpenNote(e.target.value === "all")}>
+                            <select className='form-select text-dark' name="" id="" onChange={(e) => setOpenNote(e.target.value)}>
                                 <option value="all">Tất cả các chương</option>
                                 <option value="current">Chương hiện tại</option>
                             </select>

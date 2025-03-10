@@ -10,6 +10,8 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
     const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
     const lastTimeRef = useRef(0); // Lưu thời điểm trước khi tua
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [warningCount, setWarningCount] = useState(0); // Số lần vi phạm
+    const [maxWatchedTime, setMaxWatchedTime] = useState(0); // Lưu thời gian xem cao nhất
 
     // Hàm call API để cập nhật trạng thái lesson đã hoàn thành
     const markLessonAsComplete = async () => {
@@ -30,15 +32,22 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
         if (videoRef.current) {
             const currentTime = videoRef.current.currentTime;
             const duration = videoRef.current.duration;
-            setCurrentTime(currentTime); // Cập nhật thời gian hiện tại
+            setCurrentTime(currentTime);
             const percentage = (currentTime / duration) * 100;
             setWatchedPercentage(percentage);
 
-            // Kiểm tra nếu người dùng đã xem ít nhất 80% video
+            // Cập nhật thời gian xem cao nhất chỉ khi video không bị tua
+            if (currentTime > lastTimeRef.current) {
+                setMaxWatchedTime(currentTime);
+            }
+
+            // Hoàn thành 80% thì gọi API
             if (percentage >= 80 && !hasCompleted) {
                 setHasCompleted(true);
-                markLessonAsComplete(); // Call API khi hoàn thành 80% video
+                markLessonAsComplete();
             }
+
+            lastTimeRef.current = currentTime; // Cập nhật lastTimeRef để kiểm tra tua sau này
         }
     };
     // Format thời gian thành mm:ss
@@ -48,13 +57,14 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // Kiểm tra nếu người dùng tua quá 30 giây
+    // Kiểm tra nếu người dùng tua vượt quá thời gian đã xem lớn nhất
     const handleSeeking = () => {
         if (videoRef.current) {
             const newTime = videoRef.current.currentTime;
-            if (newTime > lastTimeRef.current + 60) {
+            if (newTime > maxWatchedTime + 60) { // Nếu người dùng tua vượt quá maxWatchedTime + 60s
                 setIsModalOpen(true);
-                videoRef.current.currentTime = lastTimeRef.current; // Trả video về thời điểm trước đó
+                setWarningCount(prev => prev + 1);
+                videoRef.current.currentTime = maxWatchedTime; // Quay lại vị trí cao nhất đã xem
             }
         }
     };
@@ -65,6 +75,13 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
             lastTimeRef.current = videoRef.current.currentTime;
         }
     };
+    // Chặn tua bằng bàn phím
+    // const handleKeyDown = (event) => {
+    //     if (['ArrowRight', 'ArrowLeft', 'L', 'J'].includes(event.key)) {
+    //         setIsModalOpen(true);
+    //         event.preventDefault();
+    //     }
+    // };
 
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -72,6 +89,7 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
             videoElement.addEventListener('timeupdate', handleTimeUpdate);
             videoElement.addEventListener('seeking', handleSeeking);
             videoElement.addEventListener('seeked', handleSeeked);
+            // document.addEventListener('keydown', handleKeyDown);
         }
 
         return () => {
@@ -79,16 +97,17 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
                 videoElement.removeEventListener('timeupdate', handleTimeUpdate);
                 videoElement.removeEventListener('seeking', handleSeeking);
                 videoElement.removeEventListener('seeked', handleSeeked);
+                // document.removeEventListener('keydown', handleKeyDown);
             }
         };
-    }, [hasCompleted]);
+    }, [hasCompleted, maxWatchedTime]);
 
 
     return (
         <>
 
             {/* Content */}
-            <div className="" style={{ width: '1150px' }}>
+            <div className="w-100">
                 <div style={{ height: '470px' }} className="d-flex tw-bg-black justify-content-center">
                     <video
                         ref={videoRef}
@@ -115,15 +134,17 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
             <Modal
                 title="Thông báo"
                 open={isModalOpen}
+                width={300}
                 onOk={() => setIsModalOpen(false)}
                 onCancel={() => setIsModalOpen(false)}
-                footer={[
-                    <Button key="ok" type="primary" onClick={() => setIsModalOpen(false)}>
-                        OK
-                    </Button>
-                ]}
+                footer={null}
             >
-                <p>Bạn đang học quá nhanh!</p>
+                <div>
+                    <p>Bạn không nên học quá nhanh!</p>
+                    <div className='d-flex justify-content-end'>
+                        <button type='button' onClick={() => setIsModalOpen(false)} className='btn btn-sm btn-primary'>OK</button>
+                    </div>
+                </div>
             </Modal>
         </>
     );
