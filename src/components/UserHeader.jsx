@@ -313,6 +313,14 @@ export default function UserHeader() {
                     <i className="fe fe-settings me-2"></i>
                     Settings
                   </a>
+                  <ul className="dropdown-submenu">
+                    <li>
+                      <Link to="/changePassword" className="dropdown-item">
+                        <i className="fe fe-lock me-2"></i>
+                        Đổi mật khẩu
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
               </ul>
               <div className="dropdown-divider"></div>

@@ -1,38 +1,38 @@
-import { createContext, useEffect, useState } from 'react'
-import Cookies from 'js-cookie';
-import {
-    getUser
-} from '../api/apiService';
+import { createContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { getUser } from "../api/apiService";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const StoreContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const StoreProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-    const token = Cookies.get('token')
+  const token = Cookies.get("token");
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            if (token) {
-                try {
-                    const res = await getUser()
-                    setUser(res.data)
-                } catch (error) {
-                    console.log(error);
-                }
-            }
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (token) {
+        try {
+          const res = await getUser();
+          setUser(res.data);
+        } catch (error) {
+          console.log(error);
         }
-        fetchUser()
-    }, [token])
+      }
+    };
+    fetchUser();
+  }, [token]);
 
-    return (
-        <StoreContext.Provider value={{
-            user,
-            setUser,
-        }}>
-            {children}
-        </StoreContext.Provider>
-    )
-}
+  return (
+    <StoreContext.Provider
+      value={{
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </StoreContext.Provider>
+  );
+};
