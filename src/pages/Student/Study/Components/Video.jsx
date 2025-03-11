@@ -35,12 +35,13 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
             setCurrentTime(currentTime);
             const percentage = (currentTime / duration) * 100;
             setWatchedPercentage(percentage);
-
             // Cập nhật thời gian xem cao nhất chỉ khi video không bị tua
             if (currentTime > lastTimeRef.current) {
                 setMaxWatchedTime(currentTime);
             }
-
+            if(percentage < 1){
+                setHasCompleted(false)
+            }
             // Hoàn thành 80% thì gọi API
             if (percentage >= 80 && !hasCompleted) {
                 setHasCompleted(true);

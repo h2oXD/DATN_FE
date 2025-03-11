@@ -8,7 +8,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { toast } from 'react-toastify'
 
 export default function Header({ course_id, refresh, setRefresh }) {
-    const [progress, setProgress] = useState(0)
     const [courseTitle, setCourseTitle] = useState('')
     const [certificate, setCertificate] = useState(false)
     const [notes, setNotes] = useState(null)
@@ -22,34 +21,23 @@ export default function Header({ course_id, refresh, setRefresh }) {
         const fetchData = async () => {
             try {
                 const res = await axiosClient(`/user/courses/${course_id}`)
-                setProgress(res.data.data.progress.progress_percent)
                 setCourseTitle(res.data.data.course.title)
                 // console.log(res.data.data);
-                // const progressPercent = res.data.data.progress.progress_percent;
+                const progressPercent = res.data.data.progress.progress_percent;
                 // // Nếu hoàn thành 100%, gọi API cấp chứng chỉ
 
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        const fetchCerti = async () => {
-            try {
-                const res = await axiosClient.get(`show/certificates/${course_id}`)
-                setCertificate(res.data.data)
-                // console.log(res.data.data);
-
-            } catch (error) {
-                console.log(error);
-                if (progress) {
-                    if (progress == 100) {
+                if (progressPercent) {
+                    if (progressPercent == 100 && !res.data.is_certificate) {
                         const res2 = await axiosClient.post(`/certificates/student/courses/${course_id}`);
                         // console.log(res2);
                         setCertificate(res2.data.data)
                     }
                 }
+
+            } catch (error) {
+                console.log(error);
             }
         }
-        fetchCerti()
         fetchData()
     }, [refresh, course_id])
 
@@ -58,7 +46,6 @@ export default function Header({ course_id, refresh, setRefresh }) {
             if (openNote == 'all') {
                 try {
                     const res = await axiosClient.get(`/learning/notes/${course_id}`)
-                    console.log(res.data);
                     setNotes(res.data)
                 } catch (error) {
                     console.log(error);
@@ -67,7 +54,6 @@ export default function Header({ course_id, refresh, setRefresh }) {
             } else {
                 try {
                     const res = await axiosClient.get(`/learning/notes/${course_id}/${lesson_id}`)
-                    console.log(res.data);
                     setNotes(res.data)
                 } catch (error) {
                     console.log(error);
@@ -76,7 +62,22 @@ export default function Header({ course_id, refresh, setRefresh }) {
             }
         }
         notes()
-    }, [refresh, openNote])
+    }, [refresh, openNote, course_id, lesson_id])
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                const res = await axiosClient.get(`progress/course/${course_id}`)
+                console.log(res);
+                setTienDo(res.data)
+                if (res.data.progress == '100%' && res.data.is_certificate) {
+                    setCertificate(res.data.is_certificate)
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchProgress()
+    }, [course_id, refresh])
     const handleDeleteNote = async (note_id) => {
         try {
             await axiosClient.delete(`/learning/notes/${note_id}`)
@@ -103,18 +104,6 @@ export default function Header({ course_id, refresh, setRefresh }) {
             console.log(error);
         }
     }
-    useEffect(() => {
-        const fetchProgress = async () => {
-            try {
-                const res = await axiosClient.get(`progress/course/${course_id}`)
-                console.log(res);
-                setTienDo(res.data)
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        fetchProgress()
-    }, [course_id, refresh])
     return (
         <>
             <nav className="navbar navbar-expand-lg sticky-top shadow tw-px-5 tw-z-[999] tw-bg-[#29303b] " >
@@ -128,7 +117,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                     <div className="d-flex align-items-center">
                         {certificate && (<Link to={`/student/certificate/${certificate.id}`} className='text-light btn btn-sm btn-primary me-2'>Nhận chứng chỉ</Link>)}
                         <div className="p-1">
-                            <span className='text-light'>{parseInt(progress)}%</span>
+                            <span className='text-light'>{tienDo && tienDo.progress}</span>
                         </div>
                         <p className="m-0 ms-2 tw-font-semibold fs-5 text-light">{tienDo && tienDo.completed_lessons}/{tienDo && tienDo.total_lessons} bài học</p>
                         <button className="btn btn-sm ms-2 text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGhiChuRight" aria-controls="offcanvasGhiChuRight">

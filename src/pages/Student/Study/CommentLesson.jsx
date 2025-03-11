@@ -36,7 +36,6 @@ export default function CommentLesson({ lesson_id }) {
         }
         fetchComment()
     }, [lesson_id, refresh])
-    console.log(comments);
 
     return (
         <> {/* Canvas của comment */}
