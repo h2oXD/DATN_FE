@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import ForgetPassword from "./ForgetPassword";
+
 import { ToastContext } from "../../contexts/ToastProvider";
 import Cookies from "js-cookie";
 import { useFormik } from "formik";
@@ -7,9 +7,11 @@ import * as Yup from "yup";
 import { getUser, login } from "../../api/apiService";
 // import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../contexts/StoreProvider";
+import LoginGoogle from "./LoginGoogle";
+import ForgetPassword from "./ForgetPassword";
 
 export default function FormLogin() {
-  const { setUser } = useContext(StoreContext)
+  const { setUser } = useContext(StoreContext);
   // const navigate = useNavigate();
   const { toast } = useContext(ToastContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,13 +40,15 @@ export default function FormLogin() {
         const { token } = res.data;
         Cookies.set("token", token);
         try {
-          const userResponse = await getUser()
-          const user = userResponse.data
-          setUser(user)
+          const userResponse = await getUser();
+          const user = userResponse.data;
+          setUser(user);
         } catch (error) {
           console.log(error);
           toast.success("Lấy dữ liệu người dùng vừa đăng nhập thất bại");
         }
+        window.location = "/";
+        toast.success("Đăng nhập thành công");
         window.location = '/'
       } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -107,10 +111,11 @@ export default function FormLogin() {
                   <input
                     type="email"
                     id="signInEmail"
-                    className={`form-control ${formik.errors.email && formik.touched.email
-                      ? "is-invalid"
-                      : ""
-                      }`}
+                    className={`form-control ${
+                      formik.errors.email && formik.touched.email
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     name="email"
                     placeholder="Nhập địa chỉ Email"
                     value={formik.values.email}
@@ -130,10 +135,11 @@ export default function FormLogin() {
                   <input
                     type="password"
                     id="signInPassword"
-                    className={`form-control ${formik.errors.password && formik.touched.password
-                      ? "is-invalid"
-                      : ""
-                      }`}
+                    className={`form-control ${
+                      formik.errors.password && formik.touched.password
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     name="password"
                     placeholder="Nhập mật khẩu"
                     value={formik.values.password}
@@ -158,8 +164,8 @@ export default function FormLogin() {
                       className="form-check-input"
                       id="rememberme"
                       name="rememberMe"
-                    // checked={formData.rememberMe}
-                    // onChange={handleInputChange}
+                      // checked={formData.rememberMe}
+                      // onChange={handleInputChange}
                     />
 
                     <label className="form-check-label" htmlFor="rememberme">
@@ -169,6 +175,10 @@ export default function FormLogin() {
                   <div>
                     <ForgetPassword />
                   </div>
+                </div>
+
+                <div>
+                  <LoginGoogle />
                 </div>
                 <div>
                   <div className="d-grid">
