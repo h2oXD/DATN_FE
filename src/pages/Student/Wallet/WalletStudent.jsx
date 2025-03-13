@@ -47,7 +47,6 @@ export default function WalletStudent() {
     axiosClient
       .post("/user/wallets/deposit", { amount: selectedAmount })
       .then((response) => {
-        // Chuyển hướng người dùng đến trang thanh toán của VNPay
         window.location.href = response.data.payment_url;
       })
       .catch((error) => {
@@ -63,7 +62,6 @@ export default function WalletStudent() {
     <>
       <div className="card">
         <div className="row p-3">
-          {/* <!-- Thông tin tài khoản --> */}
           <div className="col-md-4">
             <div className="card p-3">
               <div className="d-flex align-items-center">
