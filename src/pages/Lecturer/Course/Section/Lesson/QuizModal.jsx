@@ -28,6 +28,7 @@ const QuizModal = ({ showFormQuiz, setShowFormQuiz, setLessons, section_id }) =>
         formik.resetForm()
         formik.setFieldValue("description", '');
         toast.success('Thao tác thành công')
+        setShowFormQuiz(!showFormQuiz)
       } catch (error) {
         console.log(error);
       } finally {

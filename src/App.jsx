@@ -45,8 +45,7 @@ import Review from "./pages/Student/ReviewCourse/Review";
 import Course from "./pages/Student/Study/Course";
 import Voucher from "./pages/Student/Voucher/Voucher";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
-import { Content } from "antd/es/layout/layout";
-
+import { VoucherProvider } from "./contexts/VoucherContext";
 import BlogList from "./pages/Student/Blog/List";
 import MyBlog from "./pages/Student/Blog/MyBlog";
 import WriteBlog from "./pages/Student/Blog/WriteBlog";
@@ -54,6 +53,7 @@ import VoucherPage from "./pages/Student/Vouchers/List";
 import VoucherDetail from "./pages/Student/Vouchers/Detail";
 import VoucherHistory from "./pages/Student/Vouchers/History";
 import Wishlist from "./pages/Student/CoursePage/Wishlist";
+import Content from "./pages/Student/Study/Components/Content";
 
 import ResetPassword from "./pages/Auth/ResetPassword";
 import LoginGoogle from "./pages/Auth/LoginGoogle";
@@ -63,112 +63,114 @@ import ChangePassword from "./pages/Auth/ChangePassword";
 function App() {
   return (
     <>
-      <Routes>
-        {/* Khách */}
-        <Route path="/" element={<GuestLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/course" element={<CourseList />} />
-          <Route path="/course/detail/:id" element={<CourseDetail />} />
-          <Route path="/resetPassword" element={<ResetPassword />} />
-          <Route path="/changePassword" element={<ChangePassword />} />
-          <Route path="/loginGoogle" element={<LoginGoogle />} />
-        </Route>
-        <Route path="/google/callback" element={<GoogleCallback />} />
+      <VoucherProvider>
+        <Routes>
+          {/* Khách */}
+          <Route path="/" element={<GuestLayout />}>
+            <Route index element={<Home />} />
+            <Route path="/course" element={<CourseList />} />
+            <Route path="/course/detail/:id" element={<CourseDetail />} />
+            <Route path="/resetPassword" element={<ResetPassword />} />
+            <Route path="/changePassword" element={<ChangePassword />} />
+            <Route path="/loginGoogle" element={<LoginGoogle />} />
+          </Route>
+          <Route path="/google/callback" element={<GoogleCallback />} />
 
-        {/* Học Viên */}
-        <Route path="/student" element={<StudentLayout />}>
-          <Route index element={<HomeStudent />} />
-          <Route path="/student/home" element={<OverView />} />
-          <Route path="/student/MyCourse" element={<MyCourse />} />
-          <Route path="/student/wishList" element={<Wishlist />} />
-          <Route path="/student/course" element={<Course />} />
-          <Route path="/student/blogList" element={<BlogList />} />
-          <Route path="/student/myBlog" element={<MyBlog />} />
-          <Route path="/student/writeBlog" element={<WriteBlog />} />
+          {/* Học Viên */}
+          <Route path="/student" element={<StudentLayout />}>
+            <Route index element={<HomeStudent />} />
+            <Route path="/student/home" element={<OverView />} />
+            <Route path="/student/MyCourse" element={<MyCourse />} />
+            <Route path="/student/wishList" element={<Wishlist />} />
+            <Route path="/student/course" element={<Course />} />
+            <Route path="/student/blogList" element={<BlogList />} />
+            <Route path="/student/myBlog" element={<MyBlog />} />
+            <Route path="/student/writeBlog" element={<WriteBlog />} />
 
-          <Route path="/student/course/voucher" element={<VoucherPage />} />
-          <Route
-            path="/student/course/voucher/history"
-            element={<VoucherHistory />}
-          />
-          <Route
-            path="/student/course/voucher/detail/:voucher_id"
-            element={<VoucherDetail />}
-          />
+            <Route path="/student/course/voucher" element={<VoucherPage />} />
+            <Route
+              path="/student/course/voucher/history"
+              element={<VoucherHistory />}
+            />
+            <Route
+              path="/student/course/voucher/detail/:voucher_id"
+              element={<VoucherDetail />}
+            />
 
+            <Route
+              path="/student/certificate/:id"
+              element={<ShowCertificate />}
+            />
+            <Route
+              path="/student/home/:course_id/coursedetail/"
+              element={<CourseDetail />}
+            />
+            <Route path="/student/walletStudent" element={<WalletStudent />} />
+            <Route
+              path="/student/course/:course_id/review"
+              element={<Review />}
+            />
+          </Route>
+          <Route path="/registerTeacher" element={<RegisterTeacher />}>
+            <Route index element={<First />} />
+            <Route path="/registerTeacher/Last" element={<Last />} />
+          </Route>
+          <Route path="/student/course/:course_id" element={<Course />}>
+            <Route index element={<Content />} />
+          </Route>
+          <Route path="/voucher" element={<Voucher />} />
+          <Route path="/student/certificate/:id" element={<ShowCertificate />} />
+          {/* Giảng Viên */}
           <Route
-            path="/student/certificate/:id"
-            element={<ShowCertificate />}
-          />
-          <Route
-            path="/student/home/:course_id/coursedetail/"
-            element={<CourseDetail />}
-          />
-          <Route path="/student/walletStudent" element={<WalletStudent />} />
-          <Route
-            path="/student/course/:course_id/review"
-            element={<Review />}
-          />
-        </Route>
-        <Route path="/registerTeacher" element={<RegisterTeacher />}>
-          <Route index element={<First />} />
-          <Route path="/registerTeacher/Last" element={<Last />} />
-        </Route>
-        <Route path="/student/course/:course_id" element={<Course />}>
-          <Route index element={<Content />} />
-        </Route>
-        <Route path="/voucher" element={<Voucher />} />
-        <Route path="/student/certificate/:id" element={<ShowCertificate />} />
-        {/* Giảng Viên */}
-        <Route
-          path="/lecturer"
-          element={
-            <LecturerProvider>
-              <LecturerLayout />
-            </LecturerProvider>
-          }
-        >
-          <Route index element={<HomeLecturer />} />
-          <Route path="/lecturer/course" element={<List />} />
-          <Route path="/lecturer/quiz" element={<ListQuiz />} />
-          <Route
-            path="/lecturer/course/:course_id/edit"
+            path="/lecturer"
             element={
-              <CourseProvider>
-                <Edit />
-              </CourseProvider>
+              <LecturerProvider>
+                <LecturerLayout />
+              </LecturerProvider>
             }
           >
-            <Route index element={<Navigate to="basic" replace />} />
-            <Route path="basic" element={<Basic />} />
-            <Route path="goals" element={<Goals />} />
-            <Route path="curriculum" element={<Curriculum />} />
-            {/* <Route path="coding" element={<Coding />} /> */}
+            <Route index element={<HomeLecturer />} />
+            <Route path="/lecturer/course" element={<List />} />
+            <Route path="/lecturer/quiz" element={<ListQuiz />} />
+            <Route
+              path="/lecturer/course/:course_id/edit"
+              element={
+                <CourseProvider>
+                  <Edit />
+                </CourseProvider>
+              }
+            >
+              <Route index element={<Navigate to="basic" replace />} />
+              <Route path="basic" element={<Basic />} />
+              <Route path="goals" element={<Goals />} />
+              <Route path="curriculum" element={<Curriculum />} />
+              {/* <Route path="coding" element={<Coding />} /> */}
+            </Route>
+            <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
+
+            <Route path="/lecturer/inforStudents" element={<InforStudent />} />
+            <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
+
+            <Route path="/lecturer/chat" element={<Chat />} />
+            <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
+            <Route
+              path="/lecturer/instructorReviews"
+              element={<InstructorReviews />}
+            />
+            <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
           </Route>
-          <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
-
-          <Route path="/lecturer/inforStudents" element={<InforStudent />} />
-          <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
-
-          <Route path="/lecturer/chat" element={<Chat />} />
-          <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
           <Route
-            path="/lecturer/instructorReviews"
-            element={<InstructorReviews />}
+            path="/lecturer/quiz/edit"
+            element={
+              <RequireQuizParams>
+                <EditQuiz />
+              </RequireQuizParams>
+            }
           />
-          <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
-        </Route>
-        <Route
-          path="/lecturer/quiz/edit"
-          element={
-            <RequireQuizParams>
-              <EditQuiz />
-            </RequireQuizParams>
-          }
-        />
 
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </VoucherProvider>
     </>
   );
 }
