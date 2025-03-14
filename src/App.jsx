@@ -60,7 +60,8 @@ import ChangePassword from "./pages/Auth/ChangePassword";
 import GoogleCallback from "./pages/Auth/GoogleCallback";
 import LoginGoogle from "./pages/Auth/LoginGoogle";
 import ResetPassword from "./pages/Auth/ResetPassword";
-import HistoryWallet from "./pages/Student/Wallet/HistoryWallet";
+import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
+import WalletHome from "./pages/Student/Wallet/WalletHome";
 
 function App() {
   return (
@@ -108,12 +109,12 @@ function App() {
               element={<CourseDetail />}
             />
             <Route path="/student/walletStudent" element={<WalletStudent />} />
-            <Route path="/student/History" element={<HistoryWallet />} />
 
             <Route
               path="/student/course/:course_id/review"
               element={<Review />}
             />
+            <Route path="/student/wallethome" element={<WalletHome />} />
           </Route>
           <Route path="/registerTeacher" element={<RegisterTeacher />}>
             <Route index element={<First />} />
@@ -160,6 +161,11 @@ function App() {
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
             <Route
+              path="/lecturer/wallethome"
+              element={<WalletHomeLecturer />}
+            />
+
+            <Route
               path="/lecturer/walletLecturer"
               element={<WalletLecturer />}
             />
@@ -180,7 +186,6 @@ function App() {
               </RequireQuizParams>
             }
           />
-
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </VoucherProvider>

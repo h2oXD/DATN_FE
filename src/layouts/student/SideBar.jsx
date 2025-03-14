@@ -96,20 +96,14 @@ export default function SideBar({ collapsed }) {
           >
             Lộ trình
           </MenuItem>
-          <SubMenu className="text-dark" label="Ví" icon={<ViTienIcon />}>
-            <MenuItem
-              className="text-dark"
-              component={<Link to={"/student/walletStudent"} />}
-            >
-              Nạp tiền
-            </MenuItem>
-            <MenuItem
-              className="text-dark"
-              component={<Link to={"/student/History"} />}
-            >
-              Lịch sử nạp tiền
-            </MenuItem>
-          </SubMenu>
+
+          <MenuItem
+            className="text-dark"
+            icon={<ViTienIcon />}
+            component={<Link to={"/student/wallethome"} />}
+          >
+            Ví
+          </MenuItem>
 
           <MenuItem
             className="text-dark"

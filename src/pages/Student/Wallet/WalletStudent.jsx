@@ -1,5 +1,5 @@
 import { Modal, Skeleton } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   FaBolt,
   FaClock,
@@ -9,9 +9,10 @@ import {
   FaShieldAlt,
   FaUserCircle,
 } from "react-icons/fa";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../../api/axios";
+import { StoreContext } from "../../../contexts/StoreProvider";
 
 export default function WalletStudent() {
   const [wallet, setWallet] = useState(null);
@@ -19,6 +20,7 @@ export default function WalletStudent() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { user } = useContext(StoreContext);
 
   useEffect(() => {
     axiosClient
@@ -80,6 +82,19 @@ export default function WalletStudent() {
       });
   };
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("status") === "success") {
+      toast.success("Nạp tiền thành công!", { position: "top-right" });
+      params.delete("status");
+      const newUrl =
+        params.toString() === ""
+          ? window.location.pathname
+          : `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState({}, "", newUrl);
+    }
+  }, []);
+
   if (!wallet) {
     return <Skeleton />;
   }
@@ -94,9 +109,7 @@ export default function WalletStudent() {
                 <div className="d-flex align-items-center mb-2">
                   <FaUserCircle className="text-black me-2" size={50} />
                   <div className="text-start">
-                    <h5 className="fw-bold mb-0 text-black">
-                      Giảng viên Nguyễn Văn A
-                    </h5>
+                    <h4 className="fw-bold mb-0 text-black">{user.name}</h4>
                   </div>
                 </div>
                 <div className="d-flex justify-content-between align-items-center bg-white text-dark p-2 rounded shadow-sm">
