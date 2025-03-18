@@ -217,6 +217,7 @@ export default function Section({ section, setSections, index }) {
                                     setIsModalCodingOpen={setIsModalCodingOpen}
                                     section_id={section.id}
                                     setLessons={setLessons}
+                                    course_id={course_id}
                                 />
                             </div>
                             <button

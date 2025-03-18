@@ -13,6 +13,7 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
     const formik = useFormik({
         initialValues: {
             question_text: "",
+            image_url: '',
             is_multiple_choice: "0",
             answers: [{}, {}, {}, {}],
         },
@@ -139,11 +140,11 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                         onChange={formik.handleChange} // Sử dụng formik.handleChange
                     />
                 )}
-                <UploadImage
+                {/* <UploadImage
                     onUpload={(image) => handleImageUpload(index, image)}
                     index={index}
                     showUpload={input.showUpload !== false} // Truyền prop showUpload
-                />
+                /> */}
             </div>
         ));
     };
@@ -165,11 +166,12 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
     const handleQuestionImageUpload = (file) => {
         setQuestionImage(URL.createObjectURL(file));
         setShowQuestionUpload(false);
-        formik.setFieldValue("question_text", file); // Lưu trữ file
+        formik.setFieldValue("image_url", file); // Lưu trữ file
     };
     return (
         <>
             <Modal
+                className="tw-top-[40px]"
                 width={1000}
                 open={showAddQuizModal}
                 onCancel={() => {
@@ -181,21 +183,20 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                 <form onSubmit={formik.handleSubmit}>
                     <div className="row">
                         <div className="col-12">
-                            <div className="card shadow-none">
-                                {questionImage ? (
-                                    <img src={questionImage} alt="Question" className="p-5 border rounded" style={{ maxWidth: '400px', maxHeight: '400px', margin: '0 auto', display: 'block' }} />
-                                ) : (
-                                    <input
-                                        type="text"
-                                        name="question_text"
-                                        id="question_text"
-                                        value={formik.values.question_text}
-                                        onChange={formik.handleChange}
-                                        placeholder="Nhập câu hỏi vào đây"
-                                        className="form-control d-flex fs-4 text-center p-5"
-                                        style={{ height: "200px" }}
-                                    />
+                            <div className="card shadow-none flex-row align-items-center">
+                                {questionImage && (
+                                    <img src={questionImage} alt="Question" className="p-5 border rounded" style={{ maxWidth: '400px', maxHeight: '400px' }} />
                                 )}
+                                <input
+                                    type="text"
+                                    name="question_text"
+                                    id="question_text"
+                                    value={formik.values.question_text}
+                                    onChange={formik.handleChange}
+                                    placeholder="Nhập câu hỏi vào đây"
+                                    className="form-control d-flex fs-4 text-center p-5"
+                                    style={{ height: "200px" }}
+                                />
                                 <UploadImage
                                     onUpload={handleQuestionImageUpload}
                                     showUpload={showQuestionUpload}
@@ -224,7 +225,7 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                             <button
                                 className="btn btn-sm btn-primary"
                                 type="submit"
-                                disabled={!formik.isValid} // Vô hiệu hóa nút nếu formik.isValid là false
+                            disabled={!formik.isValid} // Vô hiệu hóa nút nếu formik.isValid là false
                             >
                                 Lưu
                             </button>

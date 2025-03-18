@@ -110,7 +110,7 @@ export default function SideBar({ collapsed }) {
             icon={<ChatIcon />}
             component={<Link to={"/student/chatAI"} />}
           >
-            Chat AI
+            Chat
           </MenuItem>
           <MenuItem
             className="text-dark"

@@ -54,6 +54,7 @@ import Wishlist from "./pages/Student/CoursePage/Wishlist";
 import VoucherDetail from "./pages/Student/Vouchers/Detail";
 import VoucherHistory from "./pages/Student/Vouchers/History";
 import VoucherPage from "./pages/Student/Vouchers/List";
+import Content from "./pages/Student/Study/Components/Content";
 
 import { VoucherProvider } from "./contexts/VoucherContext";
 import ChangePassword from "./pages/Auth/ChangePassword";
@@ -109,7 +110,6 @@ function App() {
               element={<CourseDetail />}
             />
             <Route path="/student/walletStudent" element={<WalletStudent />} />
-
             <Route
               path="/student/course/:course_id/review"
               element={<Review />}
@@ -124,10 +124,8 @@ function App() {
             <Route index element={<Content />} />
           </Route>
           <Route path="/voucher" element={<Voucher />} />
-          <Route
-            path="/student/certificate/:id"
-            element={<ShowCertificate />}
-          />
+          <Route path="/student/certificate/:id" element={<ShowCertificate />} />
+            
           {/* Giảng Viên */}
           <Route
             path="/lecturer"
@@ -154,6 +152,7 @@ function App() {
               <Route path="curriculum" element={<Curriculum />} />
               {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
+
             <Route
               path="/lecturer/inforLecturers"
               element={<InforLecturer />}
@@ -186,6 +185,7 @@ function App() {
               </RequireQuizParams>
             }
           />
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </VoucherProvider>

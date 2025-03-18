@@ -11,8 +11,24 @@ export default function Content() {
     const { lesson_id, course_id, setRefresh, setCurrentTime, currentTime } = useOutletContext()
     const [lesson, setLessons] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [first, setFirst] = useState(false)
+    // const [first, setFirst] = useState(false)
     const navigate = useNavigate()
+    useEffect(() => {
+        const lessonInProgress = async () => {
+            try {
+                const res = await axiosClient.get(`/progress/${course_id}`)
+                console.log(res);
+                if (!lesson) {
+                    if (res.data.lesson_id) {
+                        navigate(`?lesson=${res.data.lesson_id}`)
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        lessonInProgress()
+    }, [course_id])
     useEffect(() => {
         const fetchLesson = async () => {
             setLoading(true)
@@ -32,18 +48,18 @@ export default function Content() {
     }, [lesson_id])
 
 
-    useEffect(() => {
-        const lessonF = async () => {
-            try {
-                const res = await axiosClient.get(`course/${course_id}/lesson`)
-                console.log(res.data.data[0].lesson_id);
-                setFirst(res.data.data[0].lesson_id)
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        lessonF()
-    }, [])
+    // useEffect(() => {
+    //     const lessonF = async () => {
+    //         try {
+    //             const res = await axiosClient.get(`course/${course_id}/lesson`)
+    //             console.log(res.data.data[0].lesson_id);
+    //             setFirst(res.data.data[0].lesson_id)
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    //     lessonF()
+    // }, [])
     // if (loading) {
     //     return <>
     //         <div className="container tw-mt-[200px]">
@@ -54,10 +70,11 @@ export default function Content() {
     //         </div>
     //     </>
     // }
+
     if (!lesson) {
-        if (first) {
-            navigate(`?lesson=${first}`)
-        }
+        // if (first) {
+        //     navigate(`?lesson=${first}`)
+        // }
         return null
     }
     if (lesson.type == 'video') {
