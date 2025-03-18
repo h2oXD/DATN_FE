@@ -59,6 +59,11 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import LoginGoogle from "./pages/Auth/LoginGoogle";
 import GoogleCallback from "./pages/Auth/GoogleCallback";
 import ChangePassword from "./pages/Auth/ChangePassword";
+import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
+
+import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
+import ProfileStudent from "./pages/Student/Profile/Infor";
+import ComplaintHistory from "./pages/Lecturer/Wallet/ComplaintHistory";
 
 function App() {
   return (
@@ -109,6 +114,7 @@ function App() {
             path="/student/course/:course_id/review"
             element={<Review />}
           />
+          <Route path="/student/profile" element={<ProfileStudent />} />
         </Route>
         <Route path="/registerTeacher" element={<RegisterTeacher />}>
           <Route index element={<First />} />
@@ -119,6 +125,7 @@ function App() {
         </Route>
         <Route path="/voucher" element={<Voucher />} />
         <Route path="/student/certificate/:id" element={<ShowCertificate />} />
+
         {/* Giảng Viên */}
         <Route
           path="/lecturer"
@@ -149,6 +156,14 @@ function App() {
 
           <Route path="/lecturer/inforStudents" element={<InforStudent />} />
           <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
+          <Route
+            path="/lecturer/withdraw-history"
+            element={<WithdrawalHistory />}
+          />
+          <Route
+            path="/lecturer/complaintHistory"
+            element={<ComplaintHistory />}
+          />
 
           <Route path="/lecturer/chat" element={<Chat />} />
           <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
@@ -157,6 +172,7 @@ function App() {
             element={<InstructorReviews />}
           />
           <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
+          <Route path="/lecturer/profile" element={<ProfileLecturer />} />
         </Route>
         <Route
           path="/lecturer/quiz/edit"
