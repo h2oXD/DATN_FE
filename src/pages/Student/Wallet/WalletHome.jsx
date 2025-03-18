@@ -3,12 +3,12 @@ import { StoreContext } from "../../../contexts/StoreProvider";
 import { Link } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import { toast } from "react-toastify";
+import HistoryStudent from "./HistoryStudent";
+import Histories from "./Histories";
 
 export default function WalletHome() {
-  const { user } = useContext(StoreContext);
+  const { user, role } = useContext(StoreContext);
   const [wallet, setWallet] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [histories, setHistories] = useState([]);
 
   useEffect(() => {
     const fetchWallet = async () => {
@@ -25,24 +25,6 @@ export default function WalletHome() {
     };
 
     fetchWallet();
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchHistories = async () => {
-      try {
-        const response = await axiosClient.get(
-          "/user/wallet/deposit-histories"
-        );
-        setHistories(response.data.histories);
-      } catch (error) {
-        console.error("Đã xảy ra lỗi khi lấy lịch sử gửi tiền!", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHistories();
   }, []);
 
   return (
@@ -81,47 +63,8 @@ export default function WalletHome() {
 
         <div className="col-md-9">
           <div className="card shadow-lg">
-            <div className="p-3 mt-3">
-              <h3 className="fw-bold">Lịch sử giao dịch</h3>
-              <table className="table table-hover mt-3">
-                <thead className="table-light">
-                  <tr>
-                    <th className="text-center">#</th>
-                    <th className="text-center">Số tiền</th>
-                    <th className="text-center">Thời gian</th>
-                    <th className="text-center">Trạng thái</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {histories.map((history, index) => (
-                    <tr key={history.id}>
-                      <td className="text-center">{index + 1}</td>
-                      <td className="text-center">
-                        {parseFloat(history.amount).toLocaleString("vi-VN")} VNĐ
-                      </td>
-                      <td className="text-center">
-                        {new Date(history.transaction_date).toLocaleString(
-                          "vi-VN"
-                        )}
-                      </td>
-                      <td className="text-center">
-                        <span
-                          className={`badge ${
-                            history.status === "success"
-                              ? "bg-success"
-                              : "bg-danger"
-                          }`}
-                        >
-                          {history.status === "success"
-                            ? "Thành công"
-                            : "Thất bại"}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {/* <HistoryStudent /> */}
+            {role === "student" ? <HistoryStudent /> : <Histories />}
           </div>
         </div>
       </div>

@@ -6,6 +6,8 @@ import FormLogin from "../Auth/FormLogin";
 import FormRegister from "../Auth/FormRegister";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 // import CourseSale from "../components/CourseSale";
+import CourseList from "./../Student/OverView/CourseList";
+import CourseFree from "../Student/OverView/CourseFree";
 
 export default function Home() {
   return (
@@ -15,11 +17,19 @@ export default function Home() {
           <title>Trang chủ</title>
         </Helmet>
       </HelmetProvider>
-      
+
       <Banner />
       {/* <CourseSale /> */}
-      <MentorList />
-      <MostPopularCourse />
+      {/* <MostPopularCourse /> */}
+
+      <div className="container px-3 px-md-3">
+        <div className="col-md-12 col-12">
+          <MentorList />
+          <CourseList />
+          <CourseFree />
+        </div>
+      </div>
+
       <FormLogin />
       <FormRegister />
     </>
