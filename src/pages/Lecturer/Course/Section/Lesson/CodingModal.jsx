@@ -21,7 +21,9 @@ const CodingModal = ({
   setIsModalCodingOpen,
   section_id,
   setLessons,
-  course_id
+  course_id,
+  setIsReset,
+  isReset
 }) => {
   const [problemTitle, setProblemTitle] = useState('')
   const [problemDescription, setProblemDescription] = useState('')
@@ -78,7 +80,7 @@ const CodingModal = ({
       console.log(res);
       toast.success("Tạo bài tập thành công!");
       setIsModalCodingOpen(false);
-      window.location.reload
+      setIsReset(!isReset);
     } catch (error) {
       if (error.inner) {
         error.inner.forEach((err) => toast.error(err.message));
@@ -122,8 +124,10 @@ const CodingModal = ({
             setStarterCode(CODE_SNIPPETS[e.target.value])
             setsolutionCode(CODE_SNIPPETS[e.target.value])
           }}>
-            {languages.map(([lang, version]) => (
-              <> <option value={lang}>{lang} ({version})</option></>
+            {languages.map(([lang, version], index) => (
+              <option key={index} value={lang}>
+                {lang} ({version})
+              </option>
             ))}
 
           </select>

@@ -1,24 +1,25 @@
 /* eslint-disable react/prop-types */
 import { Modal } from "antd";
 import { Segmented } from 'antd';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosClient from "../../../api/axios";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../../api/common";
 
+export default function EditQuizModal({ question, quiz_id, showEditQuizModal, setShowEditQuizModal, lesson_id, setQuestionAdded, question_id }) {
+    console.log(question);
 
-export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, lesson_id, setQuestionAdded }) {
-    const [questionType, setQuestionType] = useState('0');
-    const [questionText, setQuestionText] = useState('')
+    const [questionType, setQuestionType] = useState(question.is_multiple_choice.toString());
+    const [questionText, setQuestionText] = useState(question.question_text)
     const [questionImage, setQuestionImage] = useState(null);
     const [previewQuestionImage, setPreviewQuestonImage] = useState(null)
-
+    const [currentImage, setCurrentImage] = useState(question.image_url)
     const handleQuestionTypeChange = (value) => {
         setQuestionType(value);
         if (value === "0") {
             setAnswers(answers.map(answer => ({ ...answer, is_correct: 0 })));
         }
     }
-
     // Hàm xử lý upload ảnh cho question_text
     const handleQuestionImageUpload = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -27,10 +28,7 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
             setPreviewQuestonImage(URL.createObjectURL(image));
         }
     };
-    const [answers, setAnswers] = useState([
-        { answer_text: "", is_correct: 0 },
-        { answer_text: "", is_correct: 0 }
-    ])
+    const [answers, setAnswers] = useState(question.answers)
     const handleAddInput = () => {
         if (answers.length < 5) {
             setAnswers([...answers, { answer_text: "", is_correct: 0 }]);
@@ -84,27 +82,18 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
             image_url: questionImage,
             is_multiple_choice: questionType,
             answers,
+            _method: 'PUT'
         };
         try {
-            // console.log(quizData);
-
-            const res = await axiosClient.post(`/lecturer/quizzes/${lesson_id}/questions`, quizData, {
+            const res = await axiosClient.post(`/lecturer/quizzes/${quiz_id}/questions/${question_id}`, quizData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             })
-            toast.success('Thêm mới thành công')
-            setShowAddQuizModal(false)
-            setQuestionAdded(1)
+            toast.success('Cập nhật thành công')
+            setShowEditQuizModal(false)
+            setQuestionAdded(pre => !pre)
             console.log(res);
-            setQuestionType('0')
-            setQuestionText('')
-            setQuestionImage(null)
-            setPreviewQuestonImage(null)
-            setAnswers([
-                { answer_text: "", is_correct: 0 },
-                { answer_text: "", is_correct: 0 }
-            ])
         } catch (error) {
             console.log("Lỗi:", error);
         }
@@ -115,9 +104,9 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
             <Modal
                 className="tw-top-[40px]"
                 width={1000}
-                open={showAddQuizModal}
+                open={showEditQuizModal == question_id}
                 onCancel={() => {
-                    setShowAddQuizModal(false)
+                    setShowEditQuizModal(false)
                 }}
                 footer={null}
             >
@@ -136,6 +125,16 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                                         <img src={previewQuestionImage} alt="Question" className="p-5" style={{ maxWidth: '200px', maxHeight: '200px' }} />
                                     </div>
                                 )}
+                                {!previewQuestionImage && currentImage && (
+                                    <div>
+                                        <i
+                                            className="fe fe-trash-2 cursor-pointer p-1 rounded border"
+                                            style={{ position: 'absolute', left: '5px', top: '5px' }}
+                                            onClick={() => { setQuestionImage(null), setPreviewQuestonImage(null), setCurrentImage(null) }}
+                                        ></i>
+                                        <img src={getImageUrl(currentImage)} alt="Question" className="p-5" style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                                    </div>
+                                )}
                                 <input
                                     type="text"
                                     name="question_text"
@@ -146,9 +145,9 @@ export default function AddQuizModal({ showAddQuizModal, setShowAddQuizModal, le
                                     className="form-control d-flex fs-4 text-center p-5"
                                     style={{ height: "200px" }}
                                 />
-                                {!previewQuestionImage && (<div style={{ position: 'absolute', bottom: '5px', right: '5px' }}>
+                                {!previewQuestionImage && !currentImage && (<div style={{ position: 'absolute', bottom: '5px', right: '5px' }}>
                                     <input type="file" accept="image/*" onChange={handleQuestionImageUpload} style={{ display: 'none' }} id='question_image' /> {/* Sử dụng ID duy nhất */}
-                                    <label htmlFor='question_image' style={{ cursor: 'pointer' }}> {/* Sử dụng ID duy nhất */}
+                                    <label htmlFor='question_image' style={{ cursor: 'pointer' }}>
                                         <i className="fe fe-upload cursor-pointer p-1 rounded border"></i>
                                     </label>
                                 </div>)}

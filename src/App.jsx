@@ -59,6 +59,7 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import LoginGoogle from "./pages/Auth/LoginGoogle";
 import GoogleCallback from "./pages/Auth/GoogleCallback";
 import ChangePassword from "./pages/Auth/ChangePassword";
+import ShowCourse from "./pages/Lecturer/Course/ShowCourse";
 
 function App() {
   return (
@@ -140,12 +141,13 @@ function App() {
                 </CourseProvider>
               }
             >
-              <Route index element={<Navigate to="basic" replace />} />
+              <Route index element={<Navigate to="goals" replace />} />
               <Route path="basic" element={<Basic />} />
               <Route path="goals" element={<Goals />} />
               <Route path="curriculum" element={<Curriculum />} />
               {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
+            <Route path="/lecturer/course/:course_id" element={<ShowCourse />} />
             <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
@@ -169,6 +171,7 @@ function App() {
           />
 
           <Route path="*" element={<PageNotFound />} />
+          <Route path="404" element={<PageNotFound />} />
         </Routes>
       </VoucherProvider>
     </>

@@ -90,19 +90,6 @@ export default function Edit() {
                         <ul className="nav flex-column nav-pills">
                             <li className="nav-item">
                                 <NavLink
-                                    to={`/lecturer/course/${course_id}/edit/basic`}
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link active text-dark d-flex justify-content-between align-items-center"
-                                            : "nav-link text-dark d-flex justify-content-between align-items-center"
-                                    }
-                                >
-                                    Tổng quan khoá học {!checkData.tong_quan && <FaCheckCircle className="text-success" />}
-                                </NavLink>
-
-                            </li>
-                            <li className="nav-item">
-                                <NavLink
                                     to={`/lecturer/course/${course_id}/edit/goals`}
                                     className={({ isActive }) =>
                                         isActive
@@ -124,6 +111,19 @@ export default function Edit() {
                                 >
                                     Chương trình giảng dạy {!checkData.giang_day && <FaCheckCircle className="text-success" />}
                                 </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink
+                                    to={`/lecturer/course/${course_id}/edit/basic`}
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? "nav-link active text-dark d-flex justify-content-between align-items-center"
+                                            : "nav-link text-dark d-flex justify-content-between align-items-center"
+                                    }
+                                >
+                                    Tổng quan khoá học {!checkData.tong_quan && <FaCheckCircle className="text-success" />}
+                                </NavLink>
+
                             </li>
                         </ul>
                     </div>
