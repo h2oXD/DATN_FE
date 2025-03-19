@@ -44,10 +44,10 @@ export default function SideBar({ collapsed }) {
             rootStyles={{
               ["." + "ps-menu-icon"]: {},
             }}
-            active={currentPath === "/student/"}
+            active={currentPath === "/student/home"}
             className="text-dark"
             icon={<TongQuanIcon />}
-            component={<Link to={"/student/"} />}
+            component={<Link to={"/student/home"} />}
           >
             Tổng quan
           </MenuItem>
@@ -96,13 +96,15 @@ export default function SideBar({ collapsed }) {
           >
             Lộ trình
           </MenuItem>
+
           <MenuItem
             className="text-dark"
             icon={<ViTienIcon />}
-            component={<Link to={"/student/walletStudent"} />}
+            component={<Link to={"/student/wallethome"} />}
           >
             Ví
           </MenuItem>
+
           <MenuItem
             className="text-dark"
             icon={<ChatIcon />}
