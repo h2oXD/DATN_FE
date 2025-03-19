@@ -7,15 +7,17 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { createSection } from "../../../api/apiService";
 import { useOutletContext, useParams } from "react-router-dom";
 import Section from "./Section/Section";
-import { useCourseContext } from "../../../contexts/CourseProvider";
+import axiosClient from "../../../api/axios";
 
 export default function Curriculum() {
-    const { courseData, loading, error } = useCourseContext();
+    const [error, setError] = useState(null)
     const { updateCheckData } = useOutletContext();
     const { course_id } = useParams();
     const [isModalSectionOpen, setIsModalSectionOpen] = useState(false);
     const [sections, setSections] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isReset, setIsReset] = useState(false);
+    const [loading, setLoading] = useState(false)
     const formik = useFormik({
         initialValues: {
             title: "",
@@ -42,10 +44,22 @@ export default function Curriculum() {
     });
 
     useEffect(() => {
-        if (courseData) {
-            setSections(courseData.sections);
+        const fetchData = async () => {
+            setLoading(true)
+            try {
+                const res = await axiosClient.get(`/lecturer/courses/${course_id}`)
+                setSections(res.data.data.sections);
+                console.log(res.data.data);
+
+            } catch (error) {
+                console.log(error);
+                setError(error);
+            } finally {
+                setLoading(false)
+            }
         }
-    }, [courseData]);
+        fetchData()
+    }, [isReset, course_id]);
 
     if (loading) {
         return (
@@ -79,6 +93,8 @@ export default function Curriculum() {
                             section={section}
                             setSections={setSections}
                             index={index}
+                            setIsReset={setIsReset}
+                            isReset={isReset}
                         />
                     ))}
 

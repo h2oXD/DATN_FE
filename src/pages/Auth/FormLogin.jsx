@@ -48,8 +48,8 @@ export default function FormLogin() {
           toast.success("Lấy dữ liệu người dùng vừa đăng nhập thất bại");
         }
         window.location = "/";
-        toast.success("Đăng nhập thành công");
-        window.location = '/'
+        // toast.success("Đăng nhập thành công");
+        // window.location = '/'
       } catch (error) {
         if (error.response && error.response.status === 401) {
           setLoginError(error.response.data.message || "Đăng nhập thất bại");

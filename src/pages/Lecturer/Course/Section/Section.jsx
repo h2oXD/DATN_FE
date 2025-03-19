@@ -17,7 +17,7 @@ import QuizModal from "./Lesson/QuizModal";
 import DocumentModal from "./Lesson/DocumentModal";
 import CodingModal from "./Lesson/CodingModal";
 
-export default function Section({ section, setSections, index }) {
+export default function Section({ section, setSections, index, setIsReset, isReset }) {
     const { updateCheckData } = useOutletContext();
     const { course_id } = useParams();
     const [showFrameworkItems, setShowFrameworkItems] = useState(false);
@@ -218,6 +218,8 @@ export default function Section({ section, setSections, index }) {
                                     section_id={section.id}
                                     setLessons={setLessons}
                                     course_id={course_id}
+                                    setIsReset={setIsReset}
+                                    isReset={isReset}
                                 />
                             </div>
                             <button

@@ -23,11 +23,6 @@ import Goals from "./pages/Lecturer/Course/Goals";
 import CourseReviews from "./pages/Lecturer/Reviews/CourseReviews";
 
 import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
-
-// import Edit from "./pages/Lecturer/Course/Edit";
-// import Coding from "./pages/Lecturer/Course/Coding";
-// import { Content } from "antd/es/layout/layout";
-import { Content } from "antd/es/layout/layout";
 import First from "./components/LecturerRegister/First";
 import Last from "./components/LecturerRegister/Last";
 import RegisterTeacher from "./components/RegisterTeacher";
@@ -58,6 +53,7 @@ import Content from "./pages/Student/Study/Components/Content";
 
 import { VoucherProvider } from "./contexts/VoucherContext";
 import ChangePassword from "./pages/Auth/ChangePassword";
+import ShowCourse from "./pages/Lecturer/Course/ShowCourse";
 import GoogleCallback from "./pages/Auth/GoogleCallback";
 import LoginGoogle from "./pages/Auth/LoginGoogle";
 import ResetPassword from "./pages/Auth/ResetPassword";
@@ -146,17 +142,14 @@ function App() {
                 </CourseProvider>
               }
             >
-              <Route index element={<Navigate to="basic" replace />} />
+              <Route index element={<Navigate to="goals" replace />} />
               <Route path="basic" element={<Basic />} />
               <Route path="goals" element={<Goals />} />
               <Route path="curriculum" element={<Curriculum />} />
               {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
-
-            <Route
-              path="/lecturer/inforLecturers"
-              element={<InforLecturer />}
-            />
+            <Route path="/lecturer/course/:course_id" element={<ShowCourse />} />
+            <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
             <Route
@@ -187,6 +180,7 @@ function App() {
           />
 
           <Route path="*" element={<PageNotFound />} />
+          <Route path="404" element={<PageNotFound />} />
         </Routes>
       </VoucherProvider>
     </>
