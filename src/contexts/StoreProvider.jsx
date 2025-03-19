@@ -8,6 +8,7 @@ export const StoreContext = createContext();
 // eslint-disable-next-line react/prop-types
 export const StoreProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
 
   const token = Cookies.get("token");
 
@@ -17,6 +18,7 @@ export const StoreProvider = ({ children }) => {
         try {
           const res = await getUser();
           setUser(res.data);
+          setRole(res.data.role);
         } catch (error) {
           console.log(error);
         }
@@ -30,6 +32,8 @@ export const StoreProvider = ({ children }) => {
       value={{
         user,
         setUser,
+        role,
+        setRole,
       }}
     >
       {children}

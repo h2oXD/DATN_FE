@@ -27,6 +27,7 @@ import DashboardLecturer from "./pages/Lecturer/DashboardLecturer";
 // import Edit from "./pages/Lecturer/Course/Edit";
 // import Coding from "./pages/Lecturer/Course/Coding";
 // import { Content } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import First from "./components/LecturerRegister/First";
 import Last from "./components/LecturerRegister/Last";
 import RegisterTeacher from "./components/RegisterTeacher";
@@ -45,20 +46,23 @@ import Review from "./pages/Student/ReviewCourse/Review";
 import Course from "./pages/Student/Study/Course";
 import Voucher from "./pages/Student/Voucher/Voucher";
 import WalletStudent from "./pages/Student/Wallet/WalletStudent";
-import { VoucherProvider } from "./contexts/VoucherContext";
+
 import BlogList from "./pages/Student/Blog/List";
 import MyBlog from "./pages/Student/Blog/MyBlog";
 import WriteBlog from "./pages/Student/Blog/WriteBlog";
-import VoucherPage from "./pages/Student/Vouchers/List";
+import Wishlist from "./pages/Student/CoursePage/Wishlist";
 import VoucherDetail from "./pages/Student/Vouchers/Detail";
 import VoucherHistory from "./pages/Student/Vouchers/History";
-import Wishlist from "./pages/Student/CoursePage/Wishlist";
+import VoucherPage from "./pages/Student/Vouchers/List";
 import Content from "./pages/Student/Study/Components/Content";
 
-import ResetPassword from "./pages/Auth/ResetPassword";
-import LoginGoogle from "./pages/Auth/LoginGoogle";
-import GoogleCallback from "./pages/Auth/GoogleCallback";
+import { VoucherProvider } from "./contexts/VoucherContext";
 import ChangePassword from "./pages/Auth/ChangePassword";
+import GoogleCallback from "./pages/Auth/GoogleCallback";
+import LoginGoogle from "./pages/Auth/LoginGoogle";
+import ResetPassword from "./pages/Auth/ResetPassword";
+import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
+import WalletHome from "./pages/Student/Wallet/WalletHome";
 
 function App() {
   return (
@@ -110,6 +114,7 @@ function App() {
               path="/student/course/:course_id/review"
               element={<Review />}
             />
+            <Route path="/student/wallethome" element={<WalletHome />} />
           </Route>
           <Route path="/registerTeacher" element={<RegisterTeacher />}>
             <Route index element={<First />} />
@@ -120,6 +125,7 @@ function App() {
           </Route>
           <Route path="/voucher" element={<Voucher />} />
           <Route path="/student/certificate/:id" element={<ShowCertificate />} />
+            
           {/* Giảng Viên */}
           <Route
             path="/lecturer"
@@ -146,10 +152,22 @@ function App() {
               <Route path="curriculum" element={<Curriculum />} />
               {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
-            <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
+
+            <Route
+              path="/lecturer/inforLecturers"
+              element={<InforLecturer />}
+            />
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
-            <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
+            <Route
+              path="/lecturer/wallethome"
+              element={<WalletHomeLecturer />}
+            />
+
+            <Route
+              path="/lecturer/walletLecturer"
+              element={<WalletLecturer />}
+            />
 
             <Route path="/lecturer/chat" element={<Chat />} />
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />

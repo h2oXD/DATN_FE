@@ -5,6 +5,7 @@ import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import axiosClient from "../../api/axios";
 import { getImageUrl } from "../../api/common";
 import { useVoucher } from "../../contexts/VoucherContext";
+import { FaClock, FaPlayCircle, FaUsers } from "react-icons/fa";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
@@ -563,37 +564,66 @@ export default function CourseDetail() {
           </div>
           <div className="px-1 py-1">
             <h4 className="mt-1 mb-1 text-truncate-line-2">{course.title}</h4>
-            <div className="d-flex justify-content-between align-items-center">
-              <small className="fs-12">
+            <div className="d-flex mt-2">
+              {isFree ? (
+                <h5 className="mb-0">Miễn phí</h5>
+              ) : (
+                <>
+                  <h4 className="mb-0 text-danger">
+                    {parseInt(
+                      course.price_sale || course.price_regular,
+                      10
+                    ).toLocaleString("vi-VN")}{" "}
+                    đ
+                  </h4>
+                  {course.price_sale && course.price_regular && (
+                    <h6
+                      className="mb-0 text-muted text-decoration-line-through"
+                      style={{ marginLeft: "10px" }}
+                    >
+                      {parseInt(course.price_regular, 10).toLocaleString(
+                        "vi-VN"
+                      )}{" "}
+                      đ
+                    </h6>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="d-flex justify-content-between align-items-center mt-2">
+              <div className="d-flex align-items-center">
+                <img
+                  src="../../../assets/images/avatar/avatar-2.jpg"
+                  alt="Avatar"
+                  className="rounded-circle me-2"
+                  style={{ width: "20px" }}
+                />
+                <span className="mb-0 ">
+                  {course.lecturer?.name || "Chưa cập nhật giảng viên"}
+                </span>
+              </div>
+              {/* <small className="fs-12">
                 By: {course.lecturer?.name || "Chưa cập nhật giảng viên"}
-              </small>
+              </small> */}
               <div className="text-warning">{course.average_rating} ★</div>
             </div>
-          </div>
 
-          <div className="d-flex mt-2">
-            {isFree ? (
-              <h5 className="mb-0">Miễn phí</h5>
-            ) : (
-              <>
-                <h5 className="mb-0">
-                  {parseInt(
-                    course.price_sale || course.price_regular,
-                    10
-                  ).toLocaleString("vi-VN")}{" "}
-                  đ
-                </h5>
-                {course.price_sale && course.price_regular && (
-                  <h6
-                    className="mb-0 text-muted text-decoration-line-through"
-                    style={{ marginLeft: "10px" }}
-                  >
-                    {parseInt(course.price_regular, 10).toLocaleString("vi-VN")}{" "}
-                    đ
-                  </h6>
-                )}
-              </>
-            )}
+            <div className="d-flex align-items-center justify-content-between text-muted mt-2">
+              <div className="d-flex align-items-center gap-1">
+                <FaUsers className="text-secondary" />
+                <span className="small">208.034</span>
+              </div>
+
+              <div className="d-flex align-items-center gap-1">
+                <FaPlayCircle className="text-secondary" />
+                <span className="small">117</span>
+              </div>
+
+              <div className="d-flex align-items-center gap-1">
+                <FaClock className="text-secondary" />
+                <span className="small">29h5p</span>
+              </div>
+            </div>
           </div>
 
           <div className="d-flex justify-content-between mt-3">

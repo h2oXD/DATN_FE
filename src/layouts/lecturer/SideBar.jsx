@@ -78,12 +78,16 @@ export default function SideBar({ collapsed }) {
           <MenuItem
             className="text-dark"
             icon={<ViTienIcon />}
-            active={currentPath === "/lecturer/walletLecturer"}
-            component={<Link to={"/lecturer/walletLecturer"} />}
+            active={currentPath === "/lecturer/wallethome"}
+            component={<Link to={"/lecturer/wallethome"} />}
           >
             Ví tiền
           </MenuItem>
-          <MenuItem className="text-dark" icon={<TinNhanIcon />} component={<Link to={"/lecturer/chat"} />}>
+          <MenuItem
+            className="text-dark"
+            icon={<TinNhanIcon />}
+            component={<Link to={"/lecturer/chat"} />}
+          >
             Tin nhắn
           </MenuItem>
           <SubMenu
@@ -106,7 +110,11 @@ export default function SideBar({ collapsed }) {
               Giảng viên
             </MenuItem>
           </SubMenu>
-          <MenuItem className="text-dark" icon={<LiaQuestionSolid className="tw-size-7" />} component={<Link to={"/lecturer/quiz"} />}>
+          <MenuItem
+            className="text-dark"
+            icon={<LiaQuestionSolid className="tw-size-7" />}
+            component={<Link to={"/lecturer/quiz"} />}
+          >
             Bộ câu hỏi trắc nghiệm
           </MenuItem>
         </Menu>
