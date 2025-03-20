@@ -58,7 +58,7 @@ export default function Quiz({ lesson, course_id, setRefresh }) {
         };
 
         return (
-            <div className=" mt-4 px-5" style={{ width: '1000px' }}>
+            <div className=" mt-4 px-5" style={{ width: '1150px' }}>
                 <form onSubmit={handleSubmit} className="px-5">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <div>

@@ -28,7 +28,13 @@ export default function List() {
         setTotalPages(res.data.courses.last_page);
       } catch (error) {
         console.log(error);
-        toast.error("Gọi Api danh sách khoá học của giảng viên thất bại");
+        if (error.response.status == 403) {
+          navigate('/404')
+        }
+        if (error.response.status == 404) {
+          navigate('/404')
+        }
+        // toast.error("Gọi Api danh sách khoá học của giảng viên thất bại");
       } finally {
         setIsLoading(false);
       }
@@ -240,7 +246,15 @@ export default function List() {
                     <h4 className="m-0 h5">
                       <div className="d-flex justify-content-between">
                         <div>
-                          <Link className="text-inherit">{course.title}</Link>
+                          {course.status == "draft" && (
+                            <Link to={`/lecturer/course/${course.id}/edit/goals`} className="text-inherit">{course.title}</Link>
+                          )}
+                          {course.status == "pending" && (
+                            <Link to={`${course.id}`} className="text-inherit">{course.title}</Link>
+                          )}
+                          {course.status == "published" && (
+                            <Link to={`${course.id}`} className="text-inherit">{course.title}</Link>
+                          )}
                         </div>
                         <div>
                           <span>
@@ -302,7 +316,7 @@ export default function List() {
                               <span className="dropdown-header">Setting</span>
                               <Link
                                 className="dropdown-item"
-                                to={`/lecturer/course/${course.id}/edit/basic`}
+                                to={`/lecturer/course/${course.id}/edit/goals`}
                               >
                                 <i className="fe fe-edit dropdown-item-icon text-dark"></i>
                                 Cập nhật
