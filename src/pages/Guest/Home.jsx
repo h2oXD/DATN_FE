@@ -22,9 +22,9 @@ export default function Home() {
       {/* <CourseSale /> */}
       {/* <MostPopularCourse /> */}
 
-      <div className="container px-3 px-md-3">
+      <div className="container px-2 px-md-3">
         <div className="col-md-12 col-12">
-          <MentorList />
+          {/* <MentorList /> */}
           <CourseList />
           <CourseFree />
         </div>

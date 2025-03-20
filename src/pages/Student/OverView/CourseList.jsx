@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../api/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { isEmptyArray } from "formik";
 import { Skeleton } from "antd";
+import { getImageUrl } from "../../../api/common";
 
 export default function CourseList() {
   const listRef = useRef(null);
@@ -87,14 +88,40 @@ export default function CourseList() {
       >
         {courses.map((item) => (
           <div className="col-md-3" key={item.course.id}>
-            <div className="card p-2">
-              <a href={`/student/home/${item.course.id}/coursedetail`}>
-                <img
-                  src={item.course.thumbnail || "/default-thumbnail.jpg"}
-                  alt={item.course.title}
-                  className="card-img-top rounded"
-                />
-              </a>
+            <div className="card p-2 rounded-3">
+              <Link to={`/student/home/${item.course.id}/coursedetail`}>
+                <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <img
+                    src={
+                      getImageUrl(item.course.thumbnail) ??
+                      "/default-thumbnail.jpg"
+                    }
+                    alt="course"
+                    className="rounded img-4by3-lg w-100"
+                  />
+                  {item.course.level && (
+                    <span
+                      className="badge bg-dark-soft"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        padding: "5px 10px",
+                        backgroundColor: "white",
+                      }}
+                    >
+                      {item.course.level}
+                    </span>
+                  )}
+                </div>
+              </Link>
               <div className="px-1 py-1">
                 <h4 className="mt-1 mb-1 text-truncate-line-2">
                   <span
@@ -108,7 +135,7 @@ export default function CourseList() {
                     {item.course.title}
                   </span>
                 </h4>
-                <ul className="mb-1 list-inline">
+                {/* <ul className="mb-1 list-inline">
                   <li className="list-inline-item">
                     <svg
                       className="me-1 mt-n1"
@@ -145,8 +172,19 @@ export default function CourseList() {
                     </svg>
                     <span>Level: {item.course.level || "N/A"}</span>
                   </li>
-                </ul>
-                <small>By: {item.user.name}</small>
+                </ul> */}
+                {/* <small>By: {item.course.user.name}</small> */}
+                <div className="d-flex align-items-center mt-2">
+                  <img
+                    src="../../../assets/images/avatar/avatar-2.jpg"
+                    alt="Avatar"
+                    className="rounded-circle me-2"
+                    style={{ width: "30px" }}
+                  />
+                  <span className="mb-0 ">
+                    {item.course.user.name || "Chưa cập nhật giảng viên"}
+                  </span>
+                </div>
                 <div className="lh-1 mt-2 text-warning">
                   {item.highest_rating} ★ ({item.course.reviews.length} reviews)
                 </div>

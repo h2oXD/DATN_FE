@@ -15,7 +15,7 @@ export default function Banner() {
     swiper.navigation.update();
   }, []);
   return (
-    <section className="pb-6 pt-2 relative">
+    <section className="pb-3 pt-2 relative">
       <div className="container">
         <div className="row">
           <div className="col-md-12 col-12 position-relative">

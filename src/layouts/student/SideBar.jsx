@@ -74,14 +74,14 @@ export default function SideBar({ collapsed }) {
               Lịch sử học tập
             </MenuItem>
           </SubMenu>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<LecturerIcon />}
             active={currentPath === "/student/lecturer"}
             component={<Link to={"/student/lecturer"} />}
           >
             Người hướng dẫn
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             className="text-dark"
             icon={<BaiVietIcon />}
@@ -89,13 +89,13 @@ export default function SideBar({ collapsed }) {
           >
             Bài viết
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<LoTrinhIcon />}
             component={<Link to={"/student/loTrinh"} />}
           >
             Lộ trình
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem
             className="text-dark"

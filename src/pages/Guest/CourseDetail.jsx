@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Modal, Skeleton } from "antd";
-import BuyCourse from "../Student/BuyCourse/BuyCourse";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axiosClient from "../../api/axios";
 import { getImageUrl } from "../../api/common";
 import { useVoucher } from "../../contexts/VoucherContext";
-import { FaClock, FaPlayCircle, FaUsers } from "react-icons/fa";
+import BuyCourse from "../Student/BuyCourse/BuyCourse";
+import FeaturedCourses from "../Student/OverView/FeaturedCourses";
 
 export default function CourseDetail() {
   const { course_id } = useParams();
@@ -108,6 +108,31 @@ export default function CourseDetail() {
             </div>
             <div className="px-3">
               <h2>{course.title}</h2>
+            </div>
+            <div className="d-flex align-items-center px-3 mt-3">
+              <img
+                src="../../../assets/images/avatar/avatar-2.jpg"
+                alt="Avatar"
+                className="rounded-circle me-2"
+                style={{ width: "30px" }}
+              />
+              <span className="mb-0 ">
+                {course.lecturer?.name || "Chưa cập nhật giảng viên"}
+              </span>
+            </div>
+            <div className="d-flex align-items-center gap-6 px-4 mt-3">
+              <span className="d-flex align-items-center">
+                <i className="bi bi-people text-secondary me-1"></i>
+                <span className="small">2 học viên</span>
+              </span>
+              <span className="d-flex align-items-center">
+                <i className="bi bi-play-circle text-secondary me-1"></i>
+                <span className="small">Tổng 10 bài giảng</span>
+              </span>
+              <span className="d-flex align-items-center">
+                <i className="bi bi-clock me-1"></i>
+                <span className="small">Thời lượng 29 giờ </span>
+              </span>
             </div>
             <div>
               {/* <!-- Nav --> */}
@@ -556,11 +581,34 @@ export default function CourseDetail() {
       <div className="col-lg-3">
         <div className="card p-2">
           <div className="card">
-            <img
-              src={getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"}
-              alt={course.title}
-              className="card-img-top rounded"
-            />
+            <div
+              style={{
+                position: "relative",
+                borderRadius: "10px",
+                overflow: "hidden",
+                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <img
+                src={getImageUrl(course.thumbnail) ?? "/default-thumbnail.jpg"}
+                alt="course"
+                className="rounded img-4by3-lg w-100"
+              />
+              {course.level && (
+                <span
+                  className="badge bg-dark-soft"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    padding: "5px 10px",
+                    backgroundColor: "white",
+                  }}
+                >
+                  {course.level}
+                </span>
+              )}
+            </div>
           </div>
           <div className="px-1 py-1">
             <h4 className="mt-1 mb-1 text-truncate-line-2">{course.title}</h4>
@@ -610,17 +658,17 @@ export default function CourseDetail() {
 
             <div className="d-flex align-items-center justify-content-between text-muted mt-2">
               <div className="d-flex align-items-center gap-1">
-                <FaUsers className="text-secondary" />
+                <i className="bi bi-people text-secondary"></i>
                 <span className="small">208.034</span>
               </div>
 
               <div className="d-flex align-items-center gap-1">
-                <FaPlayCircle className="text-secondary" />
+                <i className="bi bi-play-circle text-secondary"></i>
                 <span className="small">117</span>
               </div>
 
               <div className="d-flex align-items-center gap-1">
-                <FaClock className="text-secondary" />
+                <i className="bi bi-clock"></i>
                 <span className="small">29h5p</span>
               </div>
             </div>
@@ -654,6 +702,11 @@ export default function CourseDetail() {
               />
             </Modal>
           </div>
+        </div>
+      </div>
+      <div className="col-lg-9 col-md-12 col-12 mb-4 mb-lg-0 mt-3">
+        <div className="card rounded-3">
+          <FeaturedCourses />
         </div>
       </div>
     </div>

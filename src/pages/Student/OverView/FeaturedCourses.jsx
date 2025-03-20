@@ -1,35 +1,7 @@
-import { useRef, useState, useEffect } from "react";
-import axiosClient from "../../../api/axios";
-import { Link, useNavigate } from "react-router-dom";
-import { getImageUrl } from "../../../api/common";
-import { isEmptyArray } from "formik";
-import Skeleton from "react-loading-skeleton";
+import { useRef } from "react";
 
-export default function CourseFree() {
+export default function FeaturedCourses() {
   const listRef = useRef(null);
-  const [courses, setCourses] = useState([]);
-  const nav = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    axiosClient
-      .get("/student/home")
-      .then((response) => {
-        console.log(response.data);
-        setCourses(response.data.courseFree || []);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi tải danh sách khóa học miễn phí:", error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  const handleCourseClick = (id) => {
-    nav(`/student/home/${id}/coursedetail`);
-  };
 
   const scrollLeft = () => {
     if (listRef.current) {
@@ -42,27 +14,10 @@ export default function CourseFree() {
       listRef.current.scrollBy({ left: 300, behavior: "smooth" });
     }
   };
-  if (loading) {
-    return (
-      <>
-        <div className="p-5">
-          <Skeleton />
-        </div>
-      </>
-    );
-  }
-
-  if (isEmptyArray(courses)) {
-    return (
-      <>
-        <h4 className="p-5">Không có dữ liệu khoá học miễn phí</h4>
-      </>
-    );
-  }
 
   return (
     <div className="mt-1 p-3 position-relative">
-      <h2 className="mb-2">Khoá học miễn phí</h2>
+      <h2 className="mb-2">Khoá học liên quan</h2>
 
       {/* Nút điều hướng */}
       <div className="position-absolute top-0 end-0 d-flex mt-2 p-3">
@@ -74,6 +29,7 @@ export default function CourseFree() {
         </a>
       </div>
 
+      {/* Danh sách khoá học */}
       <div
         className="row g-3 overflow-auto"
         ref={listRef}
@@ -83,29 +39,19 @@ export default function CourseFree() {
           scrollBehavior: "smooth",
         }}
       >
-        {courses.map((course) => (
-          <div className="col-md-3" key={course.id}>
-            <div className="card p-2 rounded">
-              <Link to={`/student/home/${course.id}/coursedetail`}>
+        {[...Array(6)].map((_, index) => (
+          <div className="col-md-3" key={index}>
+            <div className="card p-2">
+              <a href="#">
                 <img
-                  src={
-                    getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"
-                  }
+                  src="/default-thumbnail.jpg"
+                  alt="Lập trình Web"
                   className="card-img-top rounded"
                 />
-              </Link>
+              </a>
               <div className="px-1 py-1">
                 <h4 className="mt-1 mb-1 text-truncate-line-2">
-                  <span
-                    className="text-inherit cursor-pointer"
-                    onClick={() => handleCourseClick(course.id)}
-                    style={{
-                      cursor: "pointer",
-                      color: "black",
-                    }}
-                  >
-                    {course.title}
-                  </span>
+                  Lập trình Web
                 </h4>
                 <ul className="mb-1 list-inline">
                   <li className="list-inline-item">
@@ -142,21 +88,13 @@ export default function CourseFree() {
                         fill="#754FFE"
                       />
                     </svg>
-                    Level : {course.level || "N/A"}
+                    <span>Level: Cơ bản</span>
                   </li>
                 </ul>
-                <small>By: {course.user?.name}</small>
-                <div className="lh-1 mt-2 text-warning">
-                  {course.reviews.length > 0
-                    ? `${(
-                        course.reviews.reduce(
-                          (sum, review) => sum + review.rating,
-                          0
-                        ) / course.reviews.length
-                      ).toFixed(1)} ★ (${course.reviews.length})`
-                    : "Chưa có đánh giá"}
-                </div>
+                <small>By: Nguyễn Văn A</small>
+                <div className="lh-1 mt-2 text-warning">5 ★ (10 reviews)</div>
               </div>
+
               <div className="d-flex mt-2">
                 <h5 className="mb-0">Miễn phí</h5>
               </div>
