@@ -6,6 +6,9 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { toast } from "react-toastify";
 import axiosClient from "../../../api/axios";
+import CommentLesson from "./CommentLesson";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 export default function Course() {
     const { course_id } = useParams();
@@ -40,14 +43,14 @@ export default function Course() {
         <>
             {/* Header */}
             <Header course_id={course_id} refresh={refresh} setRefresh={setRefresh} />
-            <div className="d-flex">
-                <div className="flex-grow-1 tw-fixed ">
-                    <Outlet context={{ lesson_id: id, course_id: course_id, refresh, setRefresh, setCurrentTime, currentTime }} />
-                </div>
+            <div className="tw-fixed tw-top-0 tw-left-0 tw-bottom-[51px] tw-w-[77%] tw-mt-[50px] tw-overflow-x-hidden tw-overscroll-contain">
+                <Outlet context={{ lesson_id: id, course_id: course_id, refresh, setRefresh, setCurrentTime, currentTime }} />
+            </div>
 
+            <div className="tw-fixed tw-top-0 tw-right-0 tw-bottom-[51px] tw-w-[23%] tw-mt-[50px] tw-border-l tw-border-gray-200">
                 {/* ListLesson */}
                 <ListLesson lesson_id={id} refresh={refresh} />
-            </div >
+            </div>
             <div className="tw-fixed tw-bottom-0 tw-left-0 tw-w-full tw-bg-[#f0f0f0] tw-text-center tw-p-3" style={{ boxShadow: '#0000001a 0 -2px 3px' }}>
                 <div className="d-flex justify-content-center">
                     <div className="d-flex gap-4">
@@ -65,28 +68,17 @@ export default function Course() {
                     </div>
                 </div>
             </div>
-            {/* Canvas của comment */}
-            <div className="offcanvas offcanvas-end tw-w-[700px] tw-bg-white" tabIndex="-1" id="offcanvasCommentRight" aria-labelledby="offcanvasCommentRightLabel">
-                <div className="offcanvas-header">
-                    <div className='d-flex flex-column'>
-                        <h3 id="offcanvasGhiChuRightLabel m-0">Hỏi đáp</h3>
-                        <small className=''>Hãy để lại thắc mắc của bạn để chúng ta cùng nhau xử lý</small>
-                    </div>
-                    <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div className="offcanvas-body">
-
-                </div>
-            </div>
+            <CommentLesson lesson_id={id} />
 
             {/* Canvas của Note */}
-            <div className="offcanvas offcanvas-bottom w-auto tw-bg-white" tabIndex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+            <div className="offcanvas offcanvas-bottom w-auto tw-bg-white tw-h-[250px]" tabIndex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
                 <div className="offcanvas-header pt-3 pb-1">
                     <h3 className="offcanvas-title" id="offcanvasBottomLabel">Thêm ghi chú tại <span className="bg-primary text-light p-1 rounded fs-5">{Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}</span></h3>
                     <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body small pt-1">
-                    <CKEditor
+                    <ReactQuill theme="snow" value={content} onChange={setContent} placeholder="Nhập nội dung của bạn..." />
+                    {/* <CKEditor
                         editor={ClassicEditor}
                         data={content}
                         onChange={(event, editor) => {
@@ -101,7 +93,7 @@ export default function Course() {
                             placeholder: "Nhập nội dung tại đây...",
 
                         }}
-                    />
+                    /> */}
                     <div className="d-flex gap-3 mt-2 justify-content-end">
                         <button type="button" className="btn btn-sm btn-warning" data-bs-dismiss="offcanvas" aria-label="Close">Huỷ</button>
                         <button className="btn btn-sm btn-primary" data-bs-dismiss="offcanvas" onClick={handleAddNote}>Thêm ghi chú</button>

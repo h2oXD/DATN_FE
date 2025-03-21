@@ -7,6 +7,8 @@ import { IoIosHelpCircle } from "react-icons/io";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import axiosClient from "../../../../api/axios";
+import { IoMdCode } from "react-icons/io";
+
 
 export default function ListLesson({ lesson_id, refresh }) {
     const { course_id } = useParams();
@@ -42,9 +44,9 @@ export default function ListLesson({ lesson_id, refresh }) {
 
     return (
         <div
-            className="card tw-rounded-none tw-fixed tw-top-0 tw-right-0 h-full "
+            className="card tw-rounded-none"
             style={{
-                width: "400px",
+                // width: "400px",
                 height: "100vh",
                 overflowY: "auto",
             }}
@@ -115,6 +117,7 @@ export default function ListLesson({ lesson_id, refresh }) {
                                                     {lesson.type == 'video' && <RiPlayCircleFill className="text-dark" />}
                                                     {lesson.type == 'document' && <IoMdDocument className="text-dark" />}
                                                     {lesson.type == 'quiz' && <IoIosHelpCircle className="text-dark" />}
+                                                    {lesson.type == 'coding' && <IoMdCode className="text-dark" />}
                                                     <span className="fs-6 ms-1">
                                                         {lesson.videos && lesson.videos.duration
                                                             ? `${Math.floor(lesson.videos.duration / 60)}:${lesson.videos.duration % 60
