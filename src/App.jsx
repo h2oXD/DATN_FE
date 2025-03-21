@@ -64,6 +64,8 @@ import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
 import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
 import ProfileStudent from "./pages/Student/Profile/Infor";
 import ComplaintHistory from "./pages/Lecturer/Wallet/ComplaintHistory";
+import PostDetail from "./pages/Student/Blog/Detail";
+import EditBlog from "./pages/Student/Blog/EditBlog";
 
 function App() {
   return (
@@ -90,6 +92,8 @@ function App() {
           <Route path="/student/blogList" element={<BlogList />} />
           <Route path="/student/myBlog" element={<MyBlog />} />
           <Route path="/student/writeBlog" element={<WriteBlog />} />
+          <Route path="/student/editBlog/:postId" element={<EditBlog />} />
+          <Route path="/student/post/detail/:id" element={<PostDetail />} />
 
           <Route path="/student/course/voucher" element={<VoucherPage />} />
           <Route
