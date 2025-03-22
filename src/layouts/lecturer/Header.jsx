@@ -9,12 +9,12 @@ import Skeleton from "react-loading-skeleton";
 
 export default function Header({ collapsed, setCollapsed }) {
   const { user } = useContext(StoreContext);
-  const [userInfo, setUserInfo] = useState(null)
+  const [userInfo, setUserInfo] = useState(null);
   useEffect(() => {
     if (user) {
-      setUserInfo(user)
+      setUserInfo(user);
     }
-  }, [user])
+  }, [user]);
   return (
     <>
       <div className="header sticky-top" style={{ zIndex: "999" }}>
@@ -264,24 +264,35 @@ export default function Header({ collapsed, setCollapsed }) {
                         />
                       </div>
                       <div className="ms-3 lh-1">
-                        {userInfo ? <h5 className="mb-1">{userInfo.name}</h5> : <Skeleton />}
-                        {userInfo ? <p className="mb-0">{userInfo.email}</p> : <Skeleton />}
-
+                        {userInfo ? (
+                          <h5 className="mb-1">{userInfo.name}</h5>
+                        ) : (
+                          <Skeleton />
+                        )}
+                        {userInfo ? (
+                          <p className="mb-0">{userInfo.email}</p>
+                        ) : (
+                          <Skeleton />
+                        )}
                       </div>
                     </div>
                   </div>
                   <div className="dropdown-divider"></div>
                   <ul className="list-unstyled">
                     <li>
-                      {userInfo ? (<><Link
-                        className="dropdown-item"
-                        to={''}
-                      >
-
-                        <i className="fe fe-user me-2"></i>
-                        Thông tin cá nhân
-                      </Link></>) : <Skeleton />}
-
+                      {userInfo ? (
+                        <>
+                          <Link
+                            className="dropdown-item"
+                            to={"/lecturer/profile"}
+                          >
+                            <i className="fe fe-user me-2"></i>
+                            Thông tin cá nhân
+                          </Link>
+                        </>
+                      ) : (
+                        <Skeleton />
+                      )}
                     </li>
                     <li>
                       <a
