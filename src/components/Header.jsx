@@ -2,23 +2,36 @@ import { CategoriesDropdown, LanguageModal } from "./CategoriesDropdown";
 import UserHeader from "./UserHeader";
 import Cookies from "js-cookie";
 import ButtonAuth from "../pages/Auth/ButtonAuth";
+import { Link } from "react-router-dom";
 
 const Header = () => {
-  const token = Cookies.get('token')
+  const token = Cookies.get("token");
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
       <div className="container-fluid px-0">
-        <a className="navbar-brand" href="">
-          <img src="/logo.png" width={'133px'} height={'31px'} alt="" />
-        </a>
+        <Link to="/" className="navbar-brand" href="">
+          <img src="/logo.png" width={"133px"} height={"31px"} alt="" />
+        </Link>
         <div className="order-lg-3 d-flex align-items-center">
           <div>
             <div className="d-flex align-items-center">
-              {token ?
-                (<UserHeader />) :
-                (<><LanguageModal />
-                  <ButtonAuth value='Đăng nhập' classData='btn btn-outline-dark shadow-sm me-1' dataTarget='#loginModal' />
-                  <ButtonAuth value='Đăng ký' classData='btn btn-dark d-none d-md-block shadow-sm me-1' dataTarget='#registerModal' /></>)}
+              {token ? (
+                <UserHeader />
+              ) : (
+                <>
+                  <LanguageModal />
+                  <ButtonAuth
+                    value="Đăng nhập"
+                    classData="btn btn-outline-dark shadow-sm me-1"
+                    dataTarget="#loginModal"
+                  />
+                  <ButtonAuth
+                    value="Đăng ký"
+                    classData="btn btn-dark d-none d-md-block shadow-sm me-1"
+                    dataTarget="#registerModal"
+                  />
+                </>
+              )}
             </div>
           </div>
           <button
@@ -38,9 +51,14 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbar-default">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
+              <Link
+                to="/"
+                className="nav-link active"
+                aria-current="page"
+                href="#"
+              >
                 Trang chủ
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
@@ -57,7 +75,7 @@ const Header = () => {
               type="search"
               className="form-control ps-6 rounded-5"
               placeholder="Tìm kiếm"
-              style={{ width: '400px' }}
+              style={{ width: "400px" }}
             />
           </form>
         </div>

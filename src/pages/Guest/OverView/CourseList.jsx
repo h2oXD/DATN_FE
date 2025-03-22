@@ -30,7 +30,7 @@ export default function CourseList() {
   }, []);
 
   const handleCourseClick = (id) => {
-    nav(`/student/home/${id}/coursedetail`);
+    nav(`/course/${id}/coursedetail`);
   };
 
   const scrollLeft = () => {
@@ -89,7 +89,7 @@ export default function CourseList() {
         {courses.map((item) => (
           <div className="col-md-3" key={item.course.id}>
             <div className="card p-2 rounded-3">
-              <Link to={`/student/home/${item.course.id}/coursedetail`}>
+              <Link to={`/course/${item.course.id}/coursedetail`}>
                 <div
                   style={{
                     position: "relative",
