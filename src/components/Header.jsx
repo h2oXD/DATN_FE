@@ -15,23 +15,12 @@ const Header = () => {
         <div className="order-lg-3 d-flex align-items-center">
           <div>
             <div className="d-flex align-items-center">
-              {token ? (
-                <UserHeader />
-              ) : (
-                <>
-                  <LanguageModal />
-                  <ButtonAuth
-                    value="Đăng nhập"
-                    classData="btn btn-outline-dark shadow-sm me-1"
-                    dataTarget="#loginModal"
-                  />
-                  <ButtonAuth
-                    value="Đăng ký"
-                    classData="btn btn-dark d-none d-md-block shadow-sm me-1"
-                    dataTarget="#registerModal"
-                  />
-                </>
-              )}
+              {token ?
+                (<UserHeader />) :
+                (<>
+                  {/* <LanguageModal /> */}
+                  <ButtonAuth value='Đăng nhập' classData='btn btn-outline-dark shadow-sm me-1' dataTarget='#loginModal' />
+                  <ButtonAuth value='Đăng ký' classData='btn btn-dark d-none d-md-block shadow-sm me-1' dataTarget='#registerModal' /></>)}
             </div>
           </div>
           <button

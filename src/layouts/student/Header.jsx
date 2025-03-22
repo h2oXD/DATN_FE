@@ -1,8 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import Logout from "../../pages/Auth/Logout";
-import { Skeleton } from "antd";
-import { useContext, useEffect, useState } from "react";
-import { StoreContext } from "../../contexts/StoreProvider";
+import LiUser from "./LiUser";
 
 export default function Header({ collapsed, setCollapsed }) {
   const { user } = useContext(StoreContext);
@@ -234,79 +233,7 @@ export default function Header({ collapsed, setCollapsed }) {
                   </div>
                 </div>
               </li>
-              <li className="dropdown ms-2 d-inline-block position-static">
-                <a
-                  className="rounded-circle"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                  data-bs-display="static"
-                  aria-expanded="false"
-                >
-                  <div className="avatar avatar-md avatar-indicators avatar-online">
-                    <img
-                      alt="avatar"
-                      src="/assets/images/avatar/avatar-1.jpg"
-                      className="rounded-circle"
-                    />
-                  </div>
-                </a>
-                <div className="dropdown-menu dropdown-menu-end position-absolute mx-3 my-5">
-                  <div className="dropdown-item">
-                    <div className="d-flex">
-                      <div className="avatar avatar-md avatar-indicators avatar-online">
-                        <img
-                          alt="avatar"
-                          src="/assets/images/avatar/avatar-1.jpg"
-                          className="rounded-circle"
-                        />
-                      </div>
-                      <div className="ms-3 lh-1">
-                        {userInfo ? (
-                          <h5 className="mb-1">{userInfo.name}</h5>
-                        ) : (
-                          <Skeleton />
-                        )}
-                        {userInfo ? (
-                          <p className="mb-0">{userInfo.email}</p>
-                        ) : (
-                          <Skeleton />
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="dropdown-divider"></div>
-                  <ul className="list-unstyled">
-                    <li className="ms-3">
-                      <Link to="/student/profile">
-                        <i className="fe fe-user me-2"></i>
-                        Thông tin cá nhân
-                      </Link>
-                    </li>
-                    <li>
-                      <a
-                        className="dropdown-item"
-                        href="../pages/student-subscriptions.html"
-                      >
-                        <i className="fe fe-star me-2"></i>
-                        Subscription
-                      </a>
-                    </li>
-
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <i className="fe fe-settings me-2"></i>
-                        Settings
-                      </a>
-                    </li>
-                  </ul>
-                  <div className="dropdown-divider"></div>
-                  <ul className="list-unstyled">
-                    <li>
-                      <Logout />
-                    </li>
-                  </ul>
-                </div>
-              </li>
+              <LiUser />
             </ul>
           </div>
         </nav>

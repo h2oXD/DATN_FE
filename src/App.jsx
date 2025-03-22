@@ -29,7 +29,7 @@ import RegisterTeacher from "./components/RegisterTeacher";
 import RequireQuizParams from "./components/RequireQuizParams";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
-import Chat from "./pages/Lecturer/Chat/Chat";
+// import Chat from "./pages/Lecturer/Chat/Chat";
 import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
 import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
@@ -57,7 +57,7 @@ import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
 
 import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
 import ProfileStudent from "./pages/Student/Profile/Infor";
-import ComplaintHistory from "./pages/Lecturer/Wallet/ComplaintHistory";
+// import ComplaintHistory from "./pages/Lecturer/Wallet/ComplaintHistory";
 import PostDetail from "./pages/Student/Blog/Detail";
 import EditBlog from "./pages/Student/Blog/EditBlog";
 import ShowCourse from "./pages/Lecturer/Course/ShowCourse";
@@ -66,6 +66,7 @@ import LoginGoogle from "./pages/Auth/LoginGoogle";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
 import WalletHome from "./pages/Student/Wallet/WalletHome";
+import ChatLayout from "./pages/Lecturer/Chat/ChatLayout";
 import CourseDetail from "./pages/Student/CourseDetail/CourseDetail";
 import CourseDetailGuest from "./pages/Guest/CourseDetail";
 
@@ -148,7 +149,7 @@ function App() {
               </LecturerProvider>
             }
           >
-            <Route index element={<HomeLecturer />} />
+            <Route index element={<DashboardLecturer />} />
             <Route path="/lecturer/course" element={<List />} />
             <Route path="/lecturer/quiz" element={<ListQuiz />} />
             <Route
@@ -215,6 +216,10 @@ function App() {
               />
             </Route>
             <Route
+              path="/lecturer/course/:course_id"
+              element={<ShowCourse />}
+            />
+            <Route
               path="/lecturer/inforLecturers"
               element={<InforLecturer />}
             />
@@ -228,12 +233,12 @@ function App() {
               path="/lecturer/withdraw-history"
               element={<WithdrawalHistory />}
             />
-            <Route
+            {/* <Route
               path="/lecturer/complaintHistory"
               element={<ComplaintHistory />}
-            />
+            /> */}
 
-            <Route path="/lecturer/chat" element={<Chat />} />
+            <Route path="/lecturer/chat" element={<ChatLayout />} />
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route
               path="/lecturer/quiz/edit"

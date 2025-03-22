@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { Modal } from "antd";
 import { useDropzone } from "react-dropzone";
-import { getImageUrl } from "../../../api/common";
+import { getImageUrl, getUrl } from "../../../api/common";
 import EditQuizModal from "./EditQuizModal";
 
 
@@ -90,18 +90,33 @@ export default function EditQuiz() {
             "application/vnd.ms-excel": [".xls"],
         },
     });
-    const handleSubmitExcel = () => {
+    const handleSubmitExcel = async () => {
         if (!fileExcel) return toast.error('Không được để trống file tải lên')
         if (fileExcel) {
-            toast.success('Tải lên thành công')
-            setFileExcel(null)
-            setModalExcel(false)
+            const data = {
+                file: fileExcel
+            }
+            console.log(data);
+            try {
+                const res = await axiosClient.post(`/lessons/${lessonId}/quizzes/${quizId}/upload`, data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                console.log(res);
+
+                toast.success('Tải lên thành công')
+                setFileExcel(null)
+                setModalExcel(false)
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } catch (error) {
+                console.log(error);
+                toast.error('Tải lên thất bại')
+            }
         }
-        // try {
-        //     await axiosClient.post(``)
-        // } catch (error) {
-        //     console.log(error);
-        // }
+
     }
     return (
         <>
@@ -145,7 +160,7 @@ export default function EditQuiz() {
                                 }
 
                                 <div className="d-flex justify-content-between">
-                                    <a href="" onClick={(e) => { e.preventDefault() }}>
+                                    <a href={getUrl('excel/quiz_template.xlsx')}>
                                         <button type="button" className="btn btn-sm btn-success">
                                             Tải xuống mẫu
                                         </button>

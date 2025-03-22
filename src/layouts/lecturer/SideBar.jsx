@@ -20,7 +20,7 @@ export default function SideBar({ collapsed }) {
   return (
     <>
       <Sidebar
-        className="vh-100 pe-1 mt-1"
+        className="tw-min-h-[630px] pe-1 mt-1"
         backgroundColor={"white"}
         collapsed={collapsed}
         transitionDuration={500}
@@ -110,13 +110,13 @@ export default function SideBar({ collapsed }) {
               Giảng viên
             </MenuItem>
           </SubMenu>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<LiaQuestionSolid className="tw-size-7" />}
             component={<Link to={"/lecturer/quiz"} />}
           >
             Bộ câu hỏi trắc nghiệm
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </Sidebar>
     </>

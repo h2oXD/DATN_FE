@@ -8,6 +8,7 @@ import axiosClient from "../../../api/axios";
 import { useLecturerContext } from "../../../contexts/LecturerProvider";
 import { getImageUrl } from "../../../api/common";
 import { format } from 'date-fns';
+import Swal from "sweetalert2";
 
 export default function List() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function List() {
   const navigate = useNavigate();
   const { categories } = useLecturerContext();
   const [isLoading, setIsLoading] = useState(false);
+  const [reset, setReset] = useState(false)
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -40,7 +42,7 @@ export default function List() {
       }
     };
     fetchCourse();
-  }, [page]);
+  }, [page, reset]);
 
   const formik = useFormik({
     initialValues: {
@@ -79,6 +81,30 @@ export default function List() {
       setPage(newPage);
     }
   };
+
+  const hanldeDeleteCourse = async (course_id) => {
+    const result = await Swal.fire({
+      title: "Bạn có chắc chắn muốn xóa không?",
+      text: "Hành động này không thể hoàn tác!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Xóa",
+      cancelButtonText: "Hủy",
+    });
+    if (result.isConfirmed) {
+      try {
+        await axiosClient.delete(`/lecturer/courses/${course_id}`)
+        setReset(pre => !pre)
+        toast.success('Xoá thành công')
+      } catch (error) {
+        console.log(error);
+        toast.errors('Có lỗi xảy ra')
+      }
+    }
+
+  }
 
   if (isLoading)
     return (
@@ -321,7 +347,9 @@ export default function List() {
                                 <i className="fe fe-edit dropdown-item-icon text-dark"></i>
                                 Cập nhật
                               </Link>
-                              <a className="dropdown-item" href="#">
+                              <a className="dropdown-item" href="#" onClick={() => {
+                                hanldeDeleteCourse(course.id)
+                              }}>
                                 <i className="fe fe-trash dropdown-item-icon text-dark"></i>
                                 Xoá
                               </a>
