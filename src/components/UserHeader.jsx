@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 export default function UserHeader() {
   const { user } = useContext(StoreContext);
   const isLecturer = user?.roles?.some((role) => role.name === "lecturer");
+  const isStudent = user?.roles?.some((role) => role.name === "student");
   return (
     <>
       {user ? (
@@ -255,7 +256,7 @@ export default function UserHeader() {
               </div>
               <div className="dropdown-divider"></div>
               <ul className="list-unstyled">
-                <li className="dropdown-submenu dropstart-lg">
+                {/* <li className="dropdown-submenu dropstart-lg">
                   <a
                     className="dropdown-item dropdown-list-group-item dropdown-toggle"
                     href="#"
@@ -289,8 +290,8 @@ export default function UserHeader() {
                       </a>
                     </li>
                   </ul>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <a
                     className="dropdown-item"
                     href="../pages/profile-edit.html"
@@ -298,8 +299,30 @@ export default function UserHeader() {
                     <i className="fe fe-user me-2"></i>
                     Profile
                   </a>
-                </li>
+                </li> */}
                 <li>
+                  <Link to="/profile" className="dropdown-item">
+                    <i className="fe fe-user me-2"></i>
+                    Thông tin cá nhân
+                  </Link>
+                </li>
+                {isStudent &&
+                  <li>
+                    <Link to="/student" className="dropdown-item">
+                      <i className="fe fe-star me-2"></i>
+                      Truy cập trang Học Viên
+                    </Link>
+                  </li>
+                }
+                {isLecturer &&
+                  <li>
+                    <Link to="/lecturer" className="dropdown-item">
+                      <i className="fe fe-star me-2"></i>
+                      Truy cập Trang Giảng Viên
+                    </Link>
+                  </li>
+                }
+                {/* <li>
                   <a
                     className="dropdown-item"
                     href="../pages/student-subscriptions.html"
@@ -307,20 +330,18 @@ export default function UserHeader() {
                     <i className="fe fe-star me-2"></i>
                     Subscription
                   </a>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <a className="dropdown-item" href="#">
                     <i className="fe fe-settings me-2"></i>
                     Settings
                   </a>
-                  <ul className="dropdown-submenu">
-                    <li>
-                      <Link to="/changePassword" className="dropdown-item">
-                        <i className="fe fe-lock me-2"></i>
-                        Đổi mật khẩu
-                      </Link>
-                    </li>
-                  </ul>
+                </li> */}
+                <li>
+                  <Link to="/changePassword" className="dropdown-item">
+                    <i className="fe fe-lock me-2"></i>
+                    Đổi mật khẩu
+                  </Link>
                 </li>
               </ul>
               <div className="dropdown-divider"></div>

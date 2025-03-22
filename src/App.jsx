@@ -9,7 +9,7 @@ import CourseList from "./pages/Guest/CourseList";
 import Home from "./pages/Guest/Home";
 import Edit from "./pages/Lecturer/Course/Edit";
 import List from "./pages/Lecturer/Course/List";
-import HomeLecturer from "./pages/Lecturer/HomeLecturer";
+// import HomeLecturer from "./pages/Lecturer/HomeLecturer";
 import InforLecturer from "./pages/Lecturer/Infor/InforLecturer";
 import InforStudent from "./pages/Lecturer/Infor/InforStudent";
 import PageNotFound from "./pages/PageNotFound";
@@ -29,7 +29,7 @@ import RegisterTeacher from "./components/RegisterTeacher";
 import RequireQuizParams from "./components/RequireQuizParams";
 import { CourseProvider } from "./contexts/CourseProvider";
 import { LecturerProvider } from "./contexts/LecturerProvider";
-import Chat from "./pages/Lecturer/Chat/Chat";
+// import Chat from "./pages/Lecturer/Chat/Chat";
 import EditQuiz from "./pages/Lecturer/Quiz/EditQuiz";
 import ListQuiz from "./pages/Lecturer/Quiz/ListQuiz";
 import InstructorReviews from "./pages/Lecturer/Reviews/InstructorReviews";
@@ -59,6 +59,7 @@ import LoginGoogle from "./pages/Auth/LoginGoogle";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
 import WalletHome from "./pages/Student/Wallet/WalletHome";
+import ChatLayout from "./pages/Lecturer/Chat/ChatLayout";
 
 function App() {
   return (
@@ -120,8 +121,11 @@ function App() {
             <Route index element={<Content />} />
           </Route>
           <Route path="/voucher" element={<Voucher />} />
-          <Route path="/student/certificate/:id" element={<ShowCertificate />} />
-            
+          <Route
+            path="/student/certificate/:id"
+            element={<ShowCertificate />}
+          />
+
           {/* Giảng Viên */}
           <Route
             path="/lecturer"
@@ -131,7 +135,7 @@ function App() {
               </LecturerProvider>
             }
           >
-            <Route index element={<HomeLecturer />} />
+            <Route index element={<DashboardLecturer />} />
             <Route path="/lecturer/course" element={<List />} />
             <Route path="/lecturer/quiz" element={<ListQuiz />} />
             <Route
@@ -148,8 +152,14 @@ function App() {
               <Route path="curriculum" element={<Curriculum />} />
               {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
-            <Route path="/lecturer/course/:course_id" element={<ShowCourse />} />
-            <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
+            <Route
+              path="/lecturer/course/:course_id"
+              element={<ShowCourse />}
+            />
+            <Route
+              path="/lecturer/inforLecturers"
+              element={<InforLecturer />}
+            />
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
             <Route
@@ -162,7 +172,7 @@ function App() {
               element={<WalletLecturer />}
             />
 
-            <Route path="/lecturer/chat" element={<Chat />} />
+            <Route path="/lecturer/chat" element={<ChatLayout />} />
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route
               path="/lecturer/instructorReviews"

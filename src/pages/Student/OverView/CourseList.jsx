@@ -3,6 +3,7 @@ import axiosClient from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { isEmptyArray } from "formik";
 import { Skeleton } from "antd";
+import { getImageUrl } from "../../../api/common";
 
 export default function CourseList() {
   const listRef = useRef(null);
@@ -90,7 +91,7 @@ export default function CourseList() {
             <div className="card p-2">
               <a href={`/student/home/${item.course.id}/coursedetail`}>
                 <img
-                  src={item.course.thumbnail || "/default-thumbnail.jpg"}
+                  src={getImageUrl(item.course.thumbnail) || "/default-thumbnail.jpg"}
                   alt={item.course.title}
                   className="card-img-top rounded"
                 />
@@ -146,7 +147,7 @@ export default function CourseList() {
                     <span>Level: {item.course.level || "N/A"}</span>
                   </li>
                 </ul>
-                <small>By: {item.user.name}</small>
+                <small>By: {item.course.user && item.course.user.name}</small>
                 <div className="lh-1 mt-2 text-warning">
                   {item.highest_rating} ★ ({item.course.reviews.length} reviews)
                 </div>

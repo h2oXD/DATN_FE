@@ -28,7 +28,7 @@ export default function ListLesson({ lesson_id, refresh }) {
             try {
                 const res = await axiosClient.get(`course/${course_id}/lesson`);
                 setLessonStatus(res.data.data)
-                // console.log(res.data.data);
+                console.log(res);
 
             } catch (error) {
                 console.error(error); // Use console.error for errors

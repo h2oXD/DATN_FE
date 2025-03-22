@@ -16,7 +16,8 @@ const Header = () => {
             <div className="d-flex align-items-center">
               {token ?
                 (<UserHeader />) :
-                (<><LanguageModal />
+                (<>
+                  {/* <LanguageModal /> */}
                   <ButtonAuth value='Đăng nhập' classData='btn btn-outline-dark shadow-sm me-1' dataTarget='#loginModal' />
                   <ButtonAuth value='Đăng ký' classData='btn btn-dark d-none d-md-block shadow-sm me-1' dataTarget='#registerModal' /></>)}
             </div>

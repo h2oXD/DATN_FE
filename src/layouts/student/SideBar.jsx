@@ -5,6 +5,7 @@ import {
   CertificateIcon,
   ChatIcon,
   CourseIcon,
+  HomeIcon,
   LecturerIcon,
   LoTrinhIcon,
   TongQuanIcon,
@@ -44,10 +45,10 @@ export default function SideBar({ collapsed }) {
             rootStyles={{
               ["." + "ps-menu-icon"]: {},
             }}
-            active={currentPath === "/student/home"}
+            active={currentPath === "/student"}
             className="text-dark"
-            icon={<TongQuanIcon />}
-            component={<Link to={"/student/home"} />}
+            icon={<HomeIcon />}
+            component={<Link to={"/student"} />}
           >
             Tổng quan
           </MenuItem>
@@ -74,14 +75,14 @@ export default function SideBar({ collapsed }) {
               Lịch sử học tập
             </MenuItem>
           </SubMenu>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<LecturerIcon />}
             active={currentPath === "/student/lecturer"}
             component={<Link to={"/student/lecturer"} />}
           >
             Người hướng dẫn
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             className="text-dark"
             icon={<BaiVietIcon />}
@@ -89,13 +90,13 @@ export default function SideBar({ collapsed }) {
           >
             Bài viết
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<LoTrinhIcon />}
             component={<Link to={"/student/loTrinh"} />}
           >
             Lộ trình
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem
             className="text-dark"
@@ -128,13 +129,13 @@ export default function SideBar({ collapsed }) {
           >
             Chứng chỉ
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<VoucherIcon />}
             component={<Link to={"/student/course/voucher"} />}
           >
             Voucher
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </Sidebar>
     </>
