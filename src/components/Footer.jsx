@@ -3,7 +3,7 @@ export default function Footer() {
     <>
       <footer className="bg-dark text-light py-4">
         <div className="container">
-          <div className="row">
+          <div className="row justify-content-between">
             <div className="col-md-4">
               <h5 className="mb-3 text-light">
                 <img src="logo.png" width="30" className="me-2" /> LoraSpace -
@@ -20,7 +20,7 @@ export default function Footer() {
               </p>
             </div>
 
-            <div className="col-md-3">
+            <div className="col-md-2">
               <h5 className="text-light">VỀ CHÚNG TÔI</h5>
               <ul
                 className="list-unstyled "

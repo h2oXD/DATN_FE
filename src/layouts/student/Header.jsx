@@ -4,6 +4,13 @@ import Logout from "../../pages/Auth/Logout";
 import LiUser from "./LiUser";
 
 export default function Header({ collapsed, setCollapsed }) {
+  const { user } = useContext(StoreContext);
+  const [userInfo, setUserInfo] = useState(null);
+  useEffect(() => {
+    if (user) {
+      setUserInfo(user);
+    }
+  }, [user]);
   return (
     <>
       <div className="header sticky-top" style={{ zIndex: "999" }}>

@@ -1,5 +1,5 @@
-import { useRef } from "react";
-
+import { useRef, useState } from "react";
+import axiosClient from "../../../api/axios";
 import {
   BiBold,
   BiItalic,
@@ -9,9 +9,16 @@ import {
   BiLink,
 } from "react-icons/bi";
 import { FaBullhorn } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function WriteBlog() {
   const editorRef = useRef(null);
+  const [title, setTitle] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
+  const [status, setStatus] = useState("published");
+  const navigate = useNavigate();
 
   const formatText = (command) => {
     if (command === "createLink") {
@@ -22,75 +29,106 @@ export default function WriteBlog() {
     }
   };
 
+  const handleSubmit = async () => {
+    const content = editorRef.current.innerHTML;
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    if (thumbnail) formData.append("thumbnail", thumbnail);
+    formData.append("status", status);
+
+    try {
+      const response = await axiosClient.post("/posts", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      if (response.status === 201) {
+        toast.success("Bài viết đã được tạo thành công!");
+        navigate("/student/myBlog");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 422) {
+        const errors = error.response.data.errors;
+        Object.keys(errors).forEach((key) => {
+          toast.error(errors[key][0]);
+        });
+      } else {
+        toast.error("Lỗi khi xuất bản bài viết!");
+      }
+    }
+  };
+
   return (
     <div className="container mt-4">
-      <div className="card shadow-lg">
-        <div className="card-header bg-primary">
-          <h5 className="mb-0 text-white">Trình Soạn Thảo Văn Bản</h5>
+      <div className="card shadow-lg border-0 rounded-3">
+        <div className="card-header bg-primary text-white fw-bold text-center">
+          Thêm bài viết mới
         </div>
-        <div className="card-body">
-          {/* Ô nhập tiêu đề */}
+        <div className="card-body p-4">
           <input
             type="text"
-            className="form-control mb-3 fw-bold"
+            className="form-control mb-3 fw-bold border-2"
             placeholder="Nhập tiêu đề bài viết..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
 
-          {/* Thanh công cụ soạn thảo */}
           <div className="d-flex gap-2 mb-2">
-            <button
-              className="border-0 bg-transparent cursor-pointer fs-5 p-1"
-              onClick={() => formatText("bold")}
-            >
-              <BiBold className="editor-icon fs-3" />
-            </button>
-            <button
-              className="border-0 bg-transparent cursor-pointer fs-5 p-1"
-              onClick={() => formatText("italic")}
-            >
-              <BiItalic className="editor-icon fs-3" />
-            </button>
-            <button
-              className="border-0 bg-transparent cursor-pointer fs-5 p-1"
-              onClick={() => formatText("underline")}
-            >
-              <BiUnderline className="editor-icon fs-3" />
-            </button>
-            <button
-              className="border-0 bg-transparent cursor-pointer fs-5 p-1"
-              onClick={() => formatText("insertOrderedList")}
-            >
-              <BiListOl className="editor-icon fs-3" />
-            </button>
-            <button
-              className="border-0 bg-transparent cursor-pointer fs-5 p-1"
-              onClick={() => formatText("insertUnorderedList")}
-            >
-              <BiListUl className="editor-icon fs-3" />
-            </button>
-            <button
-              className="border-0 bg-transparent cursor-pointer fs-5 p-1"
-              onClick={() => formatText("createLink")}
-            >
-              <BiLink className="editor-icon fs-3" />
-            </button>
+            {[BiBold, BiItalic, BiUnderline, BiListOl, BiListUl, BiLink].map(
+              (Icon, index) => (
+                <button
+                  key={index}
+                  className="btn btn-outline-secondary"
+                  onClick={() =>
+                    formatText(
+                      [
+                        "bold",
+                        "italic",
+                        "underline",
+                        "insertOrderedList",
+                        "insertUnorderedList",
+                        "createLink",
+                      ][index]
+                    )
+                  }
+                >
+                  <Icon />
+                </button>
+              )
+            )}
           </div>
 
-          {/* Khu vực nhập nội dung */}
           <div
             ref={editorRef}
-            className="border rounded p-3 bg-white"
+            className="border rounded p-3 bg-light"
             contentEditable="true"
             style={{ minHeight: "250px", outline: "none" }}
           ></div>
 
-          {/* Nút Xuất bản */}
-          <div className="mt-3 text-end">
+          <div className="mt-3">
+            <label className="form-label fw-bold">Ảnh bìa</label>
+            <input
+              type="file"
+              className="form-control border-2"
+              onChange={(e) => setThumbnail(e.target.files[0])}
+            />
+          </div>
+
+          <div className="mt-3">
+            <label className="form-label fw-bold">Trạng thái</label>
+            <select
+              className="form-select border-2"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="published">Xuất bản</option>
+              <option value="draft">Bản nháp</option>
+            </select>
+          </div>
+
+          <div className="mt-4 text-end">
             <button
               className="btn btn-success px-4 d-flex align-items-center gap-2"
-              style={{ transition: "0.3s ease-in-out" }}
-              onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
-              onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+              onClick={handleSubmit}
             >
               <FaBullhorn /> Xuất bản
             </button>

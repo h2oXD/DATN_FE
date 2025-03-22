@@ -4,94 +4,78 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axiosClient from "../api/axios";
+import { getImageUrl } from "./../api/common";
 
 export default function Banner() {
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const swiper = document.querySelector(".swiper").swiper;
-    swiper.params.navigation.prevEl = ".custom-prev";
-    swiper.params.navigation.nextEl = ".custom-next";
-    swiper.navigation.init();
-    swiper.navigation.update();
+    // Gọi API lấy danh sách banner
+    axiosClient
+      .get("/banners") // Endpoint API
+      .then((response) => {
+        setBanners(response.data.banners);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy dữ liệu banner:", error);
+        setLoading(false);
+      });
   }, []);
+
+  useEffect(() => {
+    const swiper = document.querySelector(".swiper")?.swiper;
+    if (swiper) {
+      swiper.params.navigation.prevEl = ".custom-prev";
+      swiper.params.navigation.nextEl = ".custom-next";
+      swiper.navigation.init();
+      swiper.navigation.update();
+    }
+  }, [banners]);
+
+  if (loading) {
+    return <p>Đang tải dữ liệu...</p>;
+  }
+
   return (
-    <section className="pb-6 pt-2 relative">
+    <section className="pb-2 pt-1 relative bg-light">
       <div className="container">
-        <div className="row">
-          <div className="col-md-12 col-12 position-relative">
-            <Swiper
-              modules={[Navigation, Pagination, Autoplay]}
-              navigation={{
-                prevEl: ".custom-prev",
-                nextEl: ".custom-next",
-              }}
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 3000 }}
-              loop={true}
-              className="relative"
-            >
-              {/* Slide 1 */}
-              <SwiperSlide>
-                <div className="d-flex align-items-center bg-primary text-white p-5 rounded-4">
+        <div className="col-md-12 col-12 position-relative">
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            navigation={{
+              prevEl: ".custom-prev",
+              nextEl: ".custom-next",
+            }}
+            pagination={{ clickable: true }}
+            autoplay={{ delay: 3000 }}
+            loop={true}
+            className="relative"
+          >
+            {banners.map((banner) => (
+              <SwiperSlide key={banner.id}>
+                <div className="d-flex align-items-center p-2 rounded-4">
+                  <div className="col-md-1"></div>
                   <div className="col-md-6">
-                    <h2 className="h1 mb-3">
-                      Giảm giá khóa học mới 50% học phí!
-                    </h2>
-                    <p className="fs-4">
-                      Nội dung bài học chất lượng, đa dạng loại bài tập.
-                    </p>
-                    <button className="btn btn-light">Đăng ký ngay</button>
+                    <h2 className="h1 mb-3">{banner.title}</h2>
+                    <p className="fs-4">Khám phá ngay!</p>
+                    <button className="btn btn-primary">Xem chi tiết</button>
                   </div>
-                  <div className="col-md-6 text-center">
+                  <div className="col-md-5">
                     <img
-                      src="../assets/images/education/course.png"
-                      alt="Khóa học"
-                      className="img-fluid"
+                      src={getImageUrl(banner.image)}
+                      alt={banner.title}
+                      className="img-fluid rounded-4"
+                      width="400"
                     />
                   </div>
                 </div>
               </SwiperSlide>
-
-              {/* Slide 2 */}
-              <SwiperSlide>
-                <div className="d-flex align-items-center bg-info-subtle text-white p-5 rounded-4">
-                  <div className="col-md-6">
-                    <h2 className="h1 mb-3">Chào mừng bạn đến với LoraSpace</h2>
-                    <p className="fs-4">
-                      Nội dung bài học chất lượng, đa dạng loại bài tập.
-                    </p>
-                    <button className="btn btn-light">Đăng ký ngay</button>
-                  </div>
-                  <div className="col-md-6 text-center">
-                    <img
-                      src="../assets/images/education/course.png"
-                      alt="Khóa học"
-                      className="img-fluid"
-                    />
-                  </div>
-                </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-                <div className="d-flex align-items-center bg-light text-white p-5 rounded-4">
-                  <div className="col-md-6">
-                    <h2 className="h1 mb-3">Chào mừng bạn đến với LoraSpace</h2>
-                    <p className="fs-4 text-black">
-                      Nội dung bài học chất lượng, đa dạng loại bài tập.
-                    </p>
-                    <button className="btn btn-primary">Đăng ký ngay</button>
-                  </div>
-                  <div className="col-md-6 text-center">
-                    <img
-                      src="../assets/images/education/course.png"
-                      alt="Khóa học"
-                      className="img-fluid"
-                    />
-                  </div>
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
+            ))}
+          </Swiper>
         </div>
       </div>
     </section>

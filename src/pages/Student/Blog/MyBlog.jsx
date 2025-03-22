@@ -1,34 +1,84 @@
-import { useState } from "react";
-
-const articles = [
-  {
-    id: 1,
-    title:
-      "Tôi đã viết Chrome extension đầu tiên của mình bằng Github Copilot như thế nào?",
-    description:
-      "Câu chuyện của tôi là Tôi đang học tiếng Nhật trên một trang web...",
-    date: "28 ngày trước",
-    // image: "https://via.placeholder.com/150",
-    link: "/post1",
-  },
-  {
-    id: 2,
-    title: "LÀ THÀNH VIÊN CỦA F8. BẠN ĐÃ THỰC SỰ SỬ DỤNG 'F8' HIỆU QUẢ CHƯA?",
-    description:
-      "Tiếp nối Chuỗi Extensions hữu ích, hôm nay mình tiếp tục giới thiệu...",
-    date: "16 ngày trước",
-    // image: "https://via.placeholder.com/150",
-    link: "/post2",
-  },
-];
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosClient from "../../../api/axios";
+import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 
 export default function MyBlog() {
   const [activeTab, setActiveTab] = useState("published");
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axiosClient.get("/user");
+        setUserId(response.data.id);
+      } catch (err) {
+        console.error("Lỗi khi lấy user:", err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      if (!userId) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await axiosClient.get("/posts");
+
+        if (
+          response?.data?.data?.data &&
+          Array.isArray(response.data.data.data)
+        ) {
+          const filteredArticles = response.data.data.data.filter(
+            (article) => article.user_id === userId
+          );
+          setArticles(filteredArticles);
+        } else {
+          throw new Error("Dữ liệu không hợp lệ.");
+        }
+      } catch (err) {
+        err("Đã có lỗi xảy ra, vui lòng thử lại sau.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, [userId]);
+
+  const handleDelete = async (postId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa bài viết này không?"))
+      return;
+
+    try {
+      await axiosClient.delete(`/posts/${postId}`);
+      setArticles(articles.filter((article) => article.id !== postId));
+      alert("Bài viết đã được xóa thành công.");
+    } catch (err) {
+      err("Lỗi khi xóa bài viết. Vui lòng thử lại.");
+    }
+  };
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-3 fw-bold text-primary">Bài viết của tôi</h2>
-      <div className="card shadow-sm rounded-3 border-0">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2 className="fw-bold text-primary">Bài viết của tôi</h2>
+        <button
+          className="btn btn-success d-flex align-items-center"
+          onClick={() => navigate("/student/writeBlog")}
+        >
+          <FaPlus className="me-2" /> Thêm bài viết
+        </button>
+      </div>
+      <div className="card shadow-lg rounded-4 border-0">
         <div className="card-header bg-light border-bottom-0">
           <ul className="nav nav-tabs card-header-tabs">
             <li className="nav-item">
@@ -58,60 +108,78 @@ export default function MyBlog() {
           </ul>
         </div>
         <div className="card-body">
-          {activeTab === "published" &&
-            articles.map((article) => (
-              <div
-                key={article.id}
-                className="d-flex mb-4 p-3 border rounded-3 align-items-center article-card transition-transform shadow-hover"
-              >
-                <img
-                  src={article.image || "/default-thumbnail.jpg"}
-                  className="me-3 rounded-3"
-                  width="100"
-                />
-                <div>
-                  <h4 className="card-title">
-                    <a
-                      href={article.link}
-                      className="text-decoration-none text-dark fw-bold article-link transition-color"
+          {loading && <p className="text-center text-muted">Đang tải...</p>}
+          {error && <p className="text-center text-danger">{error}</p>}
+
+          {!loading &&
+            !error &&
+            activeTab === "published" &&
+            (articles.length > 0 ? (
+              articles.map((article) => (
+                <div
+                  key={article.id}
+                  className="d-flex mb-4 p-3 border rounded-4 align-items-center shadow-sm bg-white"
+                >
+                  <img
+                    src={
+                      article.thumbnail?.startsWith("http")
+                        ? article.thumbnail
+                        : `http://datn_be.test/${article.thumbnail}`
+                    }
+                    className="me-3 rounded-3"
+                    width="100"
+                    height="100"
+                    alt="Thumbnail"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <div className="flex-grow-1">
+                    <h4
+                      className="card-title text-decoration-none text-dark fw-bold"
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        navigate(`/student/post/detail/${article.id}`)
+                      }
                     >
                       {article.title}
-                    </a>
-                  </h4>
-                  <p className="card-text text-muted small">
-                    {article.description}
-                  </p>
-                  <small className="text-muted">
-                    Đã xuất bản - {article.date}
-                  </small>
+                    </h4>
+                    <div className="text-muted">
+                      {article.content
+                        .replace(/<[^>]*>/g, "")
+                        .substring(0, 150)}
+                      ...
+                    </div>
+                    <small className="text-muted">
+                      Đã xuất bản -{" "}
+                      {new Date(article.created_at).toLocaleDateString("vi-VN")}
+                    </small>
+                  </div>
+                  <button
+                    className="btn btn-warning ms-3 d-flex align-items-center"
+                    onClick={() => navigate(`/student/editBlog/${article.id}`)}
+                  >
+                    <FaEdit className="me-2" /> Edit{" "}
+                  </button>
+                  <button
+                    className="btn btn-danger ms-3 d-flex align-items-center"
+                    onClick={() => handleDelete(article.id)}
+                  >
+                    <FaTrash className="me-2" /> Remove
+                  </button>
                 </div>
-              </div>
+              ))
+            ) : (
+              <p className="text-center text-muted">
+                Bạn chưa có bài viết nào.
+              </p>
             ))}
-          {activeTab === "drafts" && (
+
+          {!loading && !error && activeTab === "drafts" && (
             <p className="text-muted text-center">
               Chưa có bài viết nào trong bản nháp.
             </p>
           )}
         </div>
       </div>
-
-      <style>
-        {`
-          .article-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-          }
-          .article-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-          }
-          .article-link {
-            transition: color 0.3s ease;
-          }
-          .article-link:hover {
-            color: #007bff;
-          }
-        `}
-      </style>
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function GuestLayout() {
 
       {/* <Slider /> */}
       {/* <SideBar /> */}
-      <main style={{ marginTop: "10px" }}>
+      <main>
         <Outlet />
       </main>
       <Footer />
