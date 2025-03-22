@@ -4,7 +4,7 @@ import "./App.css";
 import GuestLayout from "./layouts/GuestLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
 import StudentLayout from "./layouts/StudentLayout";
-import CourseDetail from "./pages/Guest/CourseDetail";
+// import CourseDetail from "./pages/Guest/CourseDetail";
 import CourseList from "./pages/Guest/CourseList";
 import Home from "./pages/Guest/Home";
 import Edit from "./pages/Lecturer/Course/Edit";
@@ -59,6 +59,8 @@ import LoginGoogle from "./pages/Auth/LoginGoogle";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
 import WalletHome from "./pages/Student/Wallet/WalletHome";
+import CourseDetail from "./pages/Student/CourseDetail/CourseDetail";
+import CourseDetailGuest from "./pages/Guest/CourseDetail";
 
 function App() {
   return (
@@ -69,7 +71,10 @@ function App() {
           <Route path="/" element={<GuestLayout />}>
             <Route index element={<Home />} />
             <Route path="/course" element={<CourseList />} />
-            <Route path="/course/detail/:id" element={<CourseDetail />} />
+            <Route
+              path="/course/:course_id/coursedetail"
+              element={<CourseDetailGuest />}
+            />
             <Route path="/resetPassword" element={<ResetPassword />} />
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/loginGoogle" element={<LoginGoogle />} />
@@ -120,8 +125,11 @@ function App() {
             <Route index element={<Content />} />
           </Route>
           <Route path="/voucher" element={<Voucher />} />
-          <Route path="/student/certificate/:id" element={<ShowCertificate />} />
-            
+          <Route
+            path="/student/certificate/:id"
+            element={<ShowCertificate />}
+          />
+
           {/* Giảng Viên */}
           <Route
             path="/lecturer"
@@ -148,8 +156,14 @@ function App() {
               <Route path="curriculum" element={<Curriculum />} />
               {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
-            <Route path="/lecturer/course/:course_id" element={<ShowCourse />} />
-            <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
+            <Route
+              path="/lecturer/course/:course_id"
+              element={<ShowCourse />}
+            />
+            <Route
+              path="/lecturer/inforLecturers"
+              element={<InforLecturer />}
+            />
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
             <Route

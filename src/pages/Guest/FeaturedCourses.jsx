@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axiosClient from "../../../api/axios";
-import { getImageUrl } from "../../../api/common";
+import axiosClient from "../../api/axios";
+import { getImageUrl } from "../../api/common";
 
 export default function FeaturedCourses() {
   const listRef = useRef(null);
@@ -39,7 +39,7 @@ export default function FeaturedCourses() {
     if (registeredCourses.includes(id)) {
       nav(`/student/course/${id}`); // Điều hướng vào học nếu đã đăng ký
     } else {
-      nav(`/student/home/${id}/coursedetail`); // Điều hướng vào chi tiết nếu chưa đăng ký
+      nav(`/course/${id}/coursedetail`); // Điều hướng vào chi tiết nếu chưa đăng ký
     }
   };
 
