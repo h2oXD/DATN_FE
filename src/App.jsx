@@ -4,7 +4,7 @@ import "./App.css";
 import GuestLayout from "./layouts/GuestLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
 import StudentLayout from "./layouts/StudentLayout";
-import CourseDetail from "./pages/Guest/CourseDetail";
+import CourseDetail from "./pages/Student/CourseDetail/CourseDetail";
 import CourseList from "./pages/Guest/CourseList";
 import Home from "./pages/Guest/Home";
 import Edit from "./pages/Lecturer/Course/Edit";
@@ -61,6 +61,9 @@ import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
 import WalletHome from "./pages/Student/Wallet/WalletHome";
 import ChatLayout from "./pages/Lecturer/Chat/ChatLayout";
 import CourseDetailGuest from "./pages/Guest/CourseDetail";
+import BasicView from "./pages/Lecturer/Course/Show/BasicView";
+import GoalsView from "./pages/Lecturer/Course/Show/GoalsView";
+import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 
 function App() {
   return (
@@ -122,6 +125,12 @@ function App() {
               <Route path="goals" element={<Goals />} />
               <Route path="curriculum" element={<Curriculum />} />
             </Route>
+            <Route path="/lecturer/course/:course_id/view" element={<ShowCourse />}>
+              <Route index element={<Navigate to="goals" replace />} />
+              <Route path="basic" element={<BasicView />} />
+              <Route path="goals" element={<GoalsView />} />
+              <Route path="curriculum" element={<CurriculumView />} />
+            </Route>
             <Route path="/lecturer/course/:course_id" element={<ShowCourse />} />
             <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
@@ -134,7 +143,7 @@ function App() {
           </Route>
 
           <Route path="/lecturer/quiz/edit" element={<RequireQuizParams><EditQuiz /></RequireQuizParams>} />
-          
+
           <Route path="*" element={<PageNotFound />} />
           <Route path="404" element={<PageNotFound />} />
         </Routes>

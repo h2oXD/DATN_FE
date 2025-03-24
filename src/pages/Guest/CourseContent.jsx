@@ -45,6 +45,10 @@ export default function CourseContent() {
       <>
         <div className="card p-5">
           <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
         </div>
       </>
     );
@@ -80,11 +84,11 @@ export default function CourseContent() {
           <div className="d-flex align-items-center gap-6 px-4 mt-3">
             <span className="d-flex align-items-center">
               <i className="bi bi-people text-secondary me-1"></i>
-              <span className="small">{course && course.student_count}</span>
+              <span className="small text-dark">{course && course.student_count}</span>
             </span>
             <span className="d-flex align-items-center">
               <i className="bi bi-play-circle text-secondary me-1"></i>
-              <span className="small">Tổng {course && course.total_lessons} bài giảng</span>
+              <span className="small text-dark">Tổng {course && course.total_lessons} bài giảng</span>
             </span>
             {/* <span className="d-flex align-items-center">
               <i className="bi bi-clock me-1"></i>
@@ -188,7 +192,7 @@ export default function CourseContent() {
                                   <span>{lesson.title}</span>
                                 </div>
                                 <div className="text-truncate">
-                                  <span>{lesson.is_preview == 1 && (<a onClick={() => { setPreview(lesson.id) }} type="button">Xem trước</a>)}</span>
+                                  <span>{lesson.is_preview == 1 && (<a onClick={() => { setPreview(lesson.id) }} className="tw-cursor-pointer">Xem trước</a>)}</span>
                                   <Modal
                                     open={preivew == lesson.id}
                                     onCancel={() => { setPreview(false) }}
@@ -258,8 +262,9 @@ export default function CourseContent() {
             >
               <div className="mb-3">
                 <div className="d-lg-flex align-items-center justify-content-between mb-5">
-                  <div className="mb-3 mb-lg-0">
-                    <h3 className="mb-0">Reviews</h3>
+                  <div className="mb-3 mb-lg-0 d-flex gap-3">
+                    <h3 className="mb-0">Đánh giá</h3>
+                    <h3 className="m-0 text-warning">{course.average_rating} ★ ({course.reviews_count} đánh giá)</h3>
                   </div>
                   <div>
                     <form className="form-inline">
@@ -302,7 +307,7 @@ export default function CourseContent() {
                       <div>
                         <p className={`m-0 tw-font-semibold`}>{c.reviewer && c.reviewer.name}</p>
                         <div className="d-flex align-items-center gap-2">
-                          <p className="m-0 text-warning">{c.rating}★</p>
+                          <p className="m-0 text-warning">{c.rating} ★</p>
                           <small className="m-0">{format(new Date(c.created_at), "dd/MM/yyyy HH:mm:ss")}</small>
                         </div>
                       </div>

@@ -276,10 +276,10 @@ export default function List() {
                             <Link to={`/lecturer/course/${course.id}/edit/goals`} className="text-inherit">{course.title}</Link>
                           )}
                           {course.status == "pending" && (
-                            <Link to={`${course.id}`} className="text-inherit">{course.title}</Link>
+                            <Link to={`${course.id}/view/goals`} className="text-inherit">{course.title}</Link>
                           )}
                           {course.status == "published" && (
-                            <Link to={`${course.id}`} className="text-inherit">{course.title}</Link>
+                            <Link to={`${course.id}/view/goals`} className="text-inherit">{course.title}</Link>
                           )}
                         </div>
                         <div>

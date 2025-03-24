@@ -1,11 +1,12 @@
 import { Modal, Skeleton } from "antd";
 import BuyCourse from "../Student/BuyCourse/BuyCourse";
 import { getImageUrl } from "../../api/common";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { useVoucher } from "../../contexts/VoucherContext";
 import { toast } from "react-toastify";
 import axiosClient from "../../api/axios";
+import { StoreContext } from "../../contexts/StoreProvider";
 
 export default function CourseSummary() {
   const { course_id } = useParams();
@@ -16,7 +17,7 @@ export default function CourseSummary() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedVoucher } = useVoucher();
   const location = useLocation();
-
+  const { user } = useContext(StoreContext)
   useEffect(() => {
     if (!course_id) return;
     // console.log("course_id của khóa học:", course_id);
@@ -25,13 +26,14 @@ export default function CourseSummary() {
       .get(`/courses/${course_id}/public`)
       .then((response) => {
         console.log("Dữ liệu API nhận được:", response.data.data);
-        const { course, instructor, average_rating, student_count, total_lessons } = response.data.data;
+        const { course, instructor, average_rating, student_count, total_lessons, isEnrollment } = response.data.data;
         setCourse({
           ...course,
           lecturer: instructor || {},
           average_rating,
           student_count,
           total_lessons,
+          isEnrollment
         });
       })
       .catch((error) => {
@@ -54,7 +56,15 @@ export default function CourseSummary() {
   }, [selectedVoucher, location.search]);
 
   const showModal = () => {
-    setIsModalVisible(true);
+    if (user) {
+      setIsModalVisible(true);
+    } else {
+      const loginModal = document.getElementById("loginModal");
+      if (loginModal) {
+        const modal = new bootstrap.Modal(loginModal);
+        modal.show();
+      }
+    }
   };
 
   const handleCancel = () => {
@@ -100,6 +110,8 @@ export default function CourseSummary() {
     return (
       <>
         <div className="card p-5">
+          <Skeleton />
+          <Skeleton />
           <Skeleton />
         </div>
       </>
@@ -190,23 +202,23 @@ export default function CourseSummary() {
           <div className="d-flex align-items-center justify-content-between text-muted mt-2">
             <div className="d-flex align-items-center gap-1">
               <i className="bi bi-people text-secondary"></i>
-              <span className="small">{course && course.student_count}</span>
+              <span className="small text-dark">{course && course.student_count} học viên</span>
             </div>
 
             <div className="d-flex align-items-center gap-1">
               <i className="bi bi-play-circle text-secondary"></i>
-              <span className="small">{course && course.total_lessons}</span>
+              <span className="small text-dark">{course && course.total_lessons} bài học</span>
             </div>
 
-            <div className="d-flex align-items-center gap-1">
+            {/* <div className="d-flex align-items-center gap-1">
               <i className="bi bi-clock"></i>
               <span className="small">29h5p</span>
-            </div>
+            </div> */}
           </div>
         </div>
 
         <div className="d-flex justify-content-between mt-3">
-          {isFree ? (
+          {/* {isFree ? (
             <button
               className="btn btn-success flex-grow-1"
               onClick={handleLearn}
@@ -217,7 +229,27 @@ export default function CourseSummary() {
             <button className="btn btn-primary flex-grow-1" onClick={showModal}>
               Mua khóa học
             </button>
-          )}
+          )} */}
+          {user && course && user.id == course.lecturer.id ? (
+            <Link to={`/lecturer/course/${course.id}/view/goals`} className="btn btn-primary flex-grow-1">
+              Xem chi tiết
+            </Link>
+          ) : course.isEnrollment ? <Link to={`/student/course/${course.id}`} className="btn btn-primary flex-grow-1">
+            Học khoá học
+          </Link> :
+            isFree ? (
+              <button
+                className="btn btn-success flex-grow-1"
+                onClick={handleLearn}
+              >
+                Đăng ký học
+              </button>
+            ) : (
+              <button className="btn btn-primary flex-grow-1" onClick={showModal}>
+                Mua khóa học
+              </button>
+            )
+          }
           <Modal
             open={isModalVisible}
             onCancel={handleCancel}
