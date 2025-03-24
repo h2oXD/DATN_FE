@@ -14,7 +14,7 @@ export default function Home() {
     <>
       <HelmetProvider>
         <Helmet>
-          <title>Trang chủ</title>
+          <title>LoraSpace</title>
         </Helmet>
       </HelmetProvider>
 
