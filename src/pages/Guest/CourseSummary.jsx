@@ -25,11 +25,13 @@ export default function CourseSummary() {
       .get(`/courses/${course_id}/public`)
       .then((response) => {
         console.log("Dữ liệu API nhận được:", response.data.data);
-        const { course, instructor, average_rating } = response.data.data;
+        const { course, instructor, average_rating, student_count, total_lessons } = response.data.data;
         setCourse({
           ...course,
           lecturer: instructor || {},
           average_rating,
+          student_count,
+          total_lessons,
         });
       })
       .catch((error) => {
@@ -171,7 +173,7 @@ export default function CourseSummary() {
           <div className="d-flex justify-content-between align-items-center mt-2">
             <div className="d-flex align-items-center">
               <img
-                src="../../../assets/images/avatar/avatar-2.jpg"
+                src={course && course.user.profile_picture ? getImageUrl(course.user.profile_picture) : '/avatarDefault.jpg'}
                 alt="Avatar"
                 className="rounded-circle me-2"
                 style={{ width: "20px" }}
@@ -183,18 +185,17 @@ export default function CourseSummary() {
             {/* <small className="fs-12">
                 By: {course.lecturer?.name || "Chưa cập nhật giảng viên"}
               </small> */}
-            <div className="text-warning">{course.average_rating} ★</div>
           </div>
-
+          <div className="text-warning mt-3">{course.average_rating} ★ ({course && course.reviews_count ? course.reviews_count : 0} đánh giá)</div>
           <div className="d-flex align-items-center justify-content-between text-muted mt-2">
             <div className="d-flex align-items-center gap-1">
               <i className="bi bi-people text-secondary"></i>
-              <span className="small">208.034</span>
+              <span className="small">{course && course.student_count}</span>
             </div>
 
             <div className="d-flex align-items-center gap-1">
               <i className="bi bi-play-circle text-secondary"></i>
-              <span className="small">117</span>
+              <span className="small">{course && course.total_lessons}</span>
             </div>
 
             <div className="d-flex align-items-center gap-1">

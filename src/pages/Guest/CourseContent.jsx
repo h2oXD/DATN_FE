@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../api/axios";
 import { useParams } from "react-router-dom";
-import { Skeleton } from "antd";
+import { Modal, Skeleton } from "antd";
 import { getImageUrl } from "../../api/common";
+import { MdOutlineOndemandVideo } from "react-icons/md";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoIosHelpCircleOutline } from "react-icons/io";
+import { GoCodeSquare } from "react-icons/go";
+import { format } from "date-fns";
 
 export default function CourseContent() {
   const { course_id } = useParams();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [preivew, setPreview] = useState(null)
 
   useEffect(() => {
     if (!course_id) return;
@@ -17,11 +23,13 @@ export default function CourseContent() {
       .get(`/courses/${course_id}/public`)
       .then((response) => {
         console.log("Dữ liệu API nhận được:", response.data.data);
-        const { course, instructor, average_rating } = response.data.data;
+        const { course, instructor, average_rating, student_count, total_lessons } = response.data.data;
         setCourse({
           ...course,
           lecturer: instructor || {},
           average_rating,
+          student_count,
+          total_lessons
         });
       })
       .catch((error) => {
@@ -60,7 +68,7 @@ export default function CourseContent() {
           </div>
           <div className="d-flex align-items-center px-3 mt-3">
             <img
-              src="../../../assets/images/avatar/avatar-2.jpg"
+              src={course && course.user && course.user.profile_picture ? getImageUrl(course.user.profile_picture) : '/avatarDefault.jpg'}
               alt="Avatar"
               className="rounded-circle me-2"
               style={{ width: "30px" }}
@@ -72,16 +80,16 @@ export default function CourseContent() {
           <div className="d-flex align-items-center gap-6 px-4 mt-3">
             <span className="d-flex align-items-center">
               <i className="bi bi-people text-secondary me-1"></i>
-              <span className="small">2 học viên</span>
+              <span className="small">{course && course.student_count}</span>
             </span>
             <span className="d-flex align-items-center">
               <i className="bi bi-play-circle text-secondary me-1"></i>
-              <span className="small">Tổng 10 bài giảng</span>
+              <span className="small">Tổng {course && course.total_lessons} bài giảng</span>
             </span>
-            <span className="d-flex align-items-center">
+            {/* <span className="d-flex align-items-center">
               <i className="bi bi-clock me-1"></i>
               <span className="small">Thời lượng 29 giờ </span>
-            </span>
+            </span> */}
           </div>
           <div>
             {/* <!-- Nav --> */}
@@ -142,269 +150,74 @@ export default function CourseContent() {
                 <div>
                   {/* <!-- List group --> */}
                   <ul className="list-group list-group-flush">
-                    <li className="list-group-item px-0 pt-0">
-                      {/* <!-- Toggle --> */}
-                      <a
-                        className="h4 mb-0 d-flex align-items-center active"
-                        data-bs-toggle="collapse"
-                        href="#courseTwo"
-                        aria-expanded="true"
-                        aria-controls="courseTwo"
-                      >
-                        <div className="me-auto">Introduction</div>
-                        {/* <!-- Chevron --> */}
-                        <span className="chevron-arrow ms-4">
-                          <i className="fe fe-chevron-down fs-4"></i>
-                        </span>
-                      </a>
-                      {/* <!-- Row --> */}
-                      {/* <!-- Collapse --> */}
-                      <div
-                        className="collapse show"
-                        id="courseTwo"
-                        data-bs-parent="#courseAccordion"
-                      >
-                        <div className="pt-3 pb-2">
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Introduction</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>1m 7s</span>
-                            </div>
-                          </a>
+                    {course && course.sections.map((section, index) => (
+                      <li key={index} className="list-group-item px-0 pt-0">
+                        {/* <!-- Toggle --> */}
+                        <a
+                          className="h4 mb-0 d-flex align-items-center active"
+                          data-bs-toggle="collapse"
+                          href="#courseTwo"
+                          aria-expanded="true"
+                          aria-controls="courseTwo"
+                        >
+                          <div className="me-auto">{section.title}</div>
+                          {/* <!-- Chevron --> */}
+                          <span className="chevron-arrow ms-4">
+                            <i className="fe fe-chevron-down fs-4"></i>
+                          </span>
+                        </a>
+                        {/* <!-- Row --> */}
+                        {/* <!-- Collapse --> */}
+                        <div
+                          className="collapse show"
+                          id="courseTwo"
+                          data-bs-parent="#courseAccordion"
+                        >
+                          <div className="pt-3 pb-2">
+                            {section && section.lessons.map((lesson, index) => (
+                              <a key={index}
+                                className="mb-2 d-flex justify-content-between align-items-center text-inherit border p-2"
+                              >
+                                <div className="text-truncate">
+                                  <span className="">
+                                    {lesson.type == 'video' && (<><MdOutlineOndemandVideo className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Video:</p></>)}
+                                    {lesson.type == 'document' && (<><IoDocumentTextOutline className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Tài liệu:</p></>)}
+                                    {lesson.type == 'quiz' && (<><IoIosHelpCircleOutline className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Trắc nghiệm:</p></>)}
+                                    {lesson.type == 'coding' && (<><GoCodeSquare className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Coding:</p></>)}
+                                  </span>
+                                  <span>{lesson.title}</span>
+                                </div>
+                                <div className="text-truncate">
+                                  <span>{lesson.is_preview == 1 && (<a onClick={() => { setPreview(lesson.id) }} type="button">Xem trước</a>)}</span>
+                                  <Modal
+                                    open={preivew == lesson.id}
+                                    onCancel={() => { setPreview(false) }}
+                                    width={700}
+                                    footer={null}
+                                  >
+                                    <h3>{lesson.title}</h3>
+                                    {lesson.is_preview == 1 && lesson.type == 'video' &&
+                                      <video
+                                        controls
+                                        className="w-100 rounded border"
+                                        src={getImageUrl(lesson.videos.video_url)}
+                                      ></video>
+                                    }
+                                    {lesson.is_preview == 1 && lesson.type == 'document' &&
+                                      <>
+                                        <p>{lesson.documents.description}</p>
+                                        <a href={getImageUrl(lesson.documents.document_url)} download="document_name.pdf">Tải xuống</a>
+                                      </>
+                                    }
+                                  </Modal>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </li>
-                    {/* <!-- List group item --> */}
-                    <li className="list-group-item px-0">
-                      {/* <!-- Toggle --> */}
-                      <a
-                        className="h4 mb-0 d-flex align-items-center"
-                        data-bs-toggle="collapse"
-                        href="#courseThree"
-                        aria-expanded="false"
-                        aria-controls="courseThree"
-                      >
-                        <div className="me-auto">
-                          {/* <!-- Title --> */}
-                          JavaScript Beginning
-                        </div>
-                        {/* <!-- Chevron --> */}
-                        <span className="chevron-arrow ms-4">
-                          <i className="fe fe-chevron-down fs-4"></i>
-                        </span>
-                      </a>
-                      {/* <!-- Row --> */}
-                      {/* <!-- Collapse --> */}
-                      <div
-                        className="collapse"
-                        id="courseThree"
-                        data-bs-parent="#courseAccordion"
-                      >
-                        <div className="pt-3 pb-2">
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Introduction</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>1m 41s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Adding JavaScript Code to a Web Page</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>3m 39s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Working with JavaScript Files</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>6m 18s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Formatting Code</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>2m 18s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Detecting and Fixing Errors</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>3m 14s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Case Sensitivity</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>1m 48s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-2 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Commenting Code</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>2m 24s</span>
-                            </div>
-                          </a>
-                          <a
-                            href="course-resume.html"
-                            className="mb-0 d-flex justify-content-between align-items-center text-inherit"
-                          >
-                            <div className="text-truncate">
-                              <span className="icon-shape bg-light icon-sm rounded-circle me-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="12"
-                                  height="12"
-                                  fill="currentColor"
-                                  className="bi bi-play-fill"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"></path>
-                                </svg>
-                              </span>
-                              <span>Summary</span>
-                            </div>
-                            <div className="text-truncate">
-                              <span>2m 14s</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
+                      </li>
+                    ))}
+
                   </ul>
                 </div>
               </div>
@@ -417,7 +230,22 @@ export default function CourseContent() {
               aria-labelledby="description-tab"
             >
               <div className="mb-4">
-                <h3 className="mb-2">{course.description}</h3>
+                <div className="">
+                  <h4>Học viên sẽ học được trong khóa học</h4>
+                  {course && JSON.parse(course.learning_outcomes).map((l, index) => (
+                    <p key={index}><i className="fe fe-check me-1 text-success"></i>{l}</p>
+                  ))}
+                  <h4>Khóa học này dành cho đối tượng</h4>
+                  {course && JSON.parse(course.target_students).map((t, index) => (
+                    <p key={index}><i className="fe fe-check me-1 text-success"></i>{t}</p>
+                  ))}
+                  <h4>Yêu cầu hoặc điều kiện tiên quyết để tham gia khóa học</h4>
+                  {course && JSON.parse(course.prerequisites).map((t, index) => (
+                    <p key={index}><i className="fe fe-check me-1 text-success"></i>{t}</p>
+                  ))}
+                </div>
+                <h4 className="mb-2">Nội dung chính: {course && course.primary_content}</h4>
+                <h4 className="mb-2">Mô tả</h4>
                 <p>{course.description}</p>
               </div>
             </div>
@@ -456,7 +284,31 @@ export default function CourseContent() {
                     </form>
                   </div>
                 </div>
-
+                {course && course.reviews.length == 0 && <>
+                  <p className="text-center">
+                    Chưa có đánh giá nào cho khóa học này.
+                  </p>
+                </>}
+                {course && course.reviews.length > 0 && course.reviews.map((c, index) => (
+                  <div key={index} className="alert alert-light">
+                    <div className="d-flex gap-3">
+                      <div className="avatar avatar-md">
+                        <img
+                          alt="avatar"
+                          src={c.reviewer && c.reviewer.profile_picture ? getImageUrl(c.reviewer.profile_picture) : '/avatarDefault.jpg'}
+                          className="rounded-circle"
+                        />
+                      </div>
+                      <div>
+                        <p className={`m-0 tw-font-semibold`}>{c.reviewer && c.reviewer.name}</p>
+                        <div className="d-flex align-items-center gap-2">
+                          <p className="m-0 text-warning">{c.rating}★</p>
+                          <small className="m-0">{format(new Date(c.created_at), "dd/MM/yyyy HH:mm:ss")}</small>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="m-0">{c.review_text}</p>
+                  </div>))}
                 {/* {loading ? (
                     <p>Đang tải đánh giá...</p>
                   ) : reviews.length === 0 ? (
@@ -521,7 +373,7 @@ export default function CourseContent() {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }

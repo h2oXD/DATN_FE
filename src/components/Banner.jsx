@@ -37,7 +37,11 @@ export default function Banner() {
   }, [banners]);
 
   if (loading) {
-    return <p>Đang tải dữ liệu...</p>;
+    return <p></p>;
+  }
+
+  if (!banners) {
+    return <p>Không có dữ liệu banner...</p>;
   }
 
   return (

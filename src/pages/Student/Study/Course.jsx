@@ -9,6 +9,7 @@ import axiosClient from "../../../api/axios";
 import CommentLesson from "./CommentLesson";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
+import Review from "./Review";
 
 export default function Course() {
     const { course_id } = useParams();
@@ -64,6 +65,7 @@ export default function Course() {
                         </button>
                     </div>
                     <div className="tw-absolute tw-top-0 tw-right-0 tw-bottom-0 tw-w-[30%] tw-flex tw-items-center tw-justify-end tw-cursor-pointer">
+                        <button className="btn btn-warning tw-rounded-3xl me-3 btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasReview" aria-controls="offcanvasReview"><i className="fe fe-star me-1"></i>Đánh giá</button>
                         <button className="btn btn-primary tw-rounded-3xl me-3 btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCommentRight" aria-controls="offcanvasCommentRight"><i className="fe fe-message-circle me-1"></i>Hỏi đáp</button>
                     </div>
                 </div>
@@ -100,6 +102,7 @@ export default function Course() {
                     </div>
                 </div>
             </div>
+            <Review course_id={course_id}/>
         </>
     )
 }

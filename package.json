@@ -37,6 +37,7 @@
     "react-player": "^2.16.0",
     "react-pro-sidebar": "^1.1.0",
     "react-quill": "^2.0.0",
+    "react-rating-stars-component": "^2.2.0",
     "react-router-dom": "^7.1.1",
     "react-toastify": "^11.0.3",
     "sweetalert2": "^11.17.2",

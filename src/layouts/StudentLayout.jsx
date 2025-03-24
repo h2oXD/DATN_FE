@@ -8,7 +8,11 @@ export default function StudentLayout() {
   const [collapsed, setCollapsed] = useState(true);
   const { user } = useContext(StoreContext)
   const navigate = useNavigate();
+  const isStudent = user?.roles?.some((role) => role.name === "student");
 
+  if (user && !isStudent) {
+    navigate('404')
+  }
   // useEffect(() => {
   //   if (!user) {
   //     navigate("/");
@@ -16,7 +20,7 @@ export default function StudentLayout() {
   // }, [user, navigate]);
   if (!user) {
     navigate('404')
-    return null; // Hoặc hiển thị loading indicator
+    // return null; // Hoặc hiển thị loading indicator
   }
   return (
     <>

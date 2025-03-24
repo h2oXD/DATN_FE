@@ -14,7 +14,8 @@ export default function DashboardLecturer() {
       try {
         const response = await axiosClient.get("/lecturer/statistics");
         const data = response.data;
-
+        console.log(response);
+        
         // Tính tổng số học viên từ danh sách khóa học
         const totalStudents = data.courses.reduce(
           (sum, course) => sum + course.enrollments_count,
@@ -48,7 +49,21 @@ export default function DashboardLecturer() {
               />
               <span className="fs-6 text-uppercase fw-semibold">Doanh thu</span>
               <h2 className="mt-4 fw-bold mb-1 d-flex align-items-center h1 lh-1">
-                {stats.total_revenue.toLocaleString("vi-VN")} VND
+                {parseInt(stats.total_revenue).toLocaleString("vi-VN")} VND
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-12 col-12">
+          <div className="card mb-4 position-relative">
+            <div className="p-4">
+              <BsCurrencyDollar
+                className="position-absolute top-0 end-0 m-3 text-muted"
+                size={24}
+              />
+              <span className="fs-6 text-uppercase fw-semibold">Lợi nhuận</span>
+              <h2 className="mt-4 fw-bold mb-1 d-flex align-items-center h1 lh-1">
+                {parseInt(stats.total_revenue*0.7).toLocaleString("vi-VN")} VND
               </h2>
             </div>
           </div>
