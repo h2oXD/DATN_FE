@@ -5,6 +5,7 @@ import Logout from "../pages/Auth/Logout";
 import { useContext } from "react";
 import { StoreContext } from "../contexts/StoreProvider";
 import Skeleton from "react-loading-skeleton";
+import { getImageUrl } from "../api/common";
 
 export default function UserHeader() {
   const { user } = useContext(StoreContext);
@@ -14,9 +15,11 @@ export default function UserHeader() {
     <>
       {user ? (
         <ul className="navbar-nav navbar-right-wrap mx-2 flex-row">
-          <li className="nav nav-link">
-            <Link to="/student">Học viên</Link>
-          </li>
+          {isStudent && (
+            <li className="nav nav-link">
+              <Link to="/student">Học viên</Link>
+            </li>
+          )}
           {isLecturer && (
             <li className="nav nav-link">
               <Link to="/lecturer">Giảng viên</Link>
@@ -233,7 +236,7 @@ export default function UserHeader() {
               <div className="avatar avatar-md avatar-indicators avatar-online">
                 <img
                   alt="avatar"
-                  src="../assets/images/avatar/avatar-1.jpg"
+                  src={user.profile_picture ? getImageUrl(user.profile_picture) : '/avatarDefault.jpg'}
                   className="rounded-circle"
                 />
               </div>
@@ -244,7 +247,7 @@ export default function UserHeader() {
                   <div className="avatar avatar-md avatar-indicators avatar-online">
                     <img
                       alt="avatar"
-                      src="../assets/images/avatar/avatar-1.jpg"
+                      src={user.profile_picture ? getImageUrl(user.profile_picture) : '/avatarDefault.jpg'}
                       className="rounded-circle"
                     />
                   </div>

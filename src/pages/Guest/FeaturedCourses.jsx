@@ -15,6 +15,7 @@ export default function FeaturedCourses() {
       try {
         const response = await axiosClient.get(`/courses/${course_id}/related`);
         setCourses(response.data.related_courses);
+        console.log(response);
       } catch (error) {
         console.error("Lỗi khi lấy danh sách khoá học liên quan:", error);
       }
@@ -56,7 +57,7 @@ export default function FeaturedCourses() {
   };
 
   return (
-    <div className="mt-1 p-3 position-relative">
+    <div className="mt-1 py-3 position-relative">
       <h2 className="mb-2">Khoá học liên quan</h2>
 
       {/* Nút điều hướng */}
@@ -128,15 +129,15 @@ export default function FeaturedCourses() {
                   </span>
                 </h4>
                 <img
-                  src="../../../assets/images/avatar/avatar-2.jpg"
+                  src={course.user.profile_picture && course.user.profile_picture ? getImageUrl(course.user.profile_picture) : '/avatarDefault.jpg'}
                   alt="Avatar"
                   className="rounded-circle me-2"
                   style={{ width: "30px" }}
                 />
                 <span className="mb-0 ">
-                  {course.user_id || "Chưa cập nhật giảng viên"}
+                  {course.user.name || "Chưa cập nhật giảng viên"}
                 </span>
-                <div className="lh-1 mt-2 text-warning">5 ★ (10 reviews)</div>
+                <div className="lh-1 mt-2 text-warning">{course.reviews_avg_rating ? parseFloat(course.reviews_avg_rating).toFixed(1) : 0} ★ ({course.reviews_count} đánh giá)</div>
               </div>
 
               <div className="d-flex mt-2">

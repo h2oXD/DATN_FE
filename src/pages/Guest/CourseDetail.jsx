@@ -7,7 +7,7 @@ import FeaturedCourses from "./FeaturedCourses";
 export default function CourseDetailGuest() {
   return (
     <>
-      <div className="container bg-light">
+      <div className="container">
         <div className="row d-flex align-items-start pt-2">
           {/* Nội dung khóa học */}
           <div className="col-lg-9 col-md-12">
@@ -19,15 +19,15 @@ export default function CourseDetailGuest() {
             <CourseSummary />
           </div>
         </div>
-
+        <FeaturedCourses />
         {/* Khóa học nổi bật */}
-        <div className="row mt-4 pb-4">
-          <div className="col-lg-9">
-            <div className="card rounded-3 p-3 shadow">
-              <FeaturedCourses />
+        {/* <div className="row mt-4 pb-4">
+          <div className="col-lg-12">
+            <div className="rounded-3 p-3 shadow-none">
+              
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <FormLogin />

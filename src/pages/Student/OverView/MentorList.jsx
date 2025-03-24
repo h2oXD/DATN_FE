@@ -85,15 +85,15 @@ export default function MentorList() {
               <div className="d-flex m-0">
                 <div className="d-flex gap-3">
                   <a
-                    href="mentor-single.html"
+                    href=""
                     className="bg-white text-center shadow-sm text-wrap rounded-4 w-100 border card-lift border"
                     style={{ width: "200px", important: true }}
                   >
                     <div className="p-3">
                       <img
                         src={
-                          getImageUrl(mentor.lecturer.profile_picture) ||
-                          "/default-thumbnail.jpg"
+                          mentor.lecturer.profile_picture && getImageUrl(mentor.lecturer.profile_picture) ||
+                          "/avatarDefault.jpg"
                         }
                         alt={mentor.lecturer.name}
                         className="avatar avatar-xl rounded-circle"

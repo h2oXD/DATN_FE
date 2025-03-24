@@ -113,6 +113,9 @@ export default function Last() {
     },
   ];
 
+  if(!user){
+    return null
+  }
   return (
     <div className="container py-3 w-60">
       <h2 className="my-2 mb-3 text-center text-primary">
