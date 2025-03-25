@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import { getImageUrl } from "../../../api/common";
 
 export default function MyBlog() {
   const [activeTab, setActiveTab] = useState("published");
@@ -121,11 +122,7 @@ export default function MyBlog() {
                   className="d-flex mb-4 p-3 border rounded-4 align-items-center shadow-sm bg-white"
                 >
                   <img
-                    src={
-                      article.thumbnail?.startsWith("http")
-                        ? article.thumbnail
-                        : `http://datn_be.test/${article.thumbnail}`
-                    }
+                    src={getImageUrl(article.thumbnail)}
                     className="me-3 rounded-3"
                     width="100"
                     height="100"

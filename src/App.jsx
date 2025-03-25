@@ -65,6 +65,9 @@ import BasicView from "./pages/Lecturer/Course/Show/BasicView";
 import GoalsView from "./pages/Lecturer/Course/Show/GoalsView";
 import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 
+import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
+import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
+
 function App() {
   return (
     <>
@@ -136,6 +139,8 @@ function App() {
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
             <Route path="/lecturer/wallethome" element={<WalletHomeLecturer />} />
             <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
+            <Route path="/lecturer/withdraw-history" element={<WithdrawalHistory />} />
+            <Route path="/lecturer/complaintHistory" element={<ComplaintHistory />} />
             <Route path="/lecturer/chat" element={<ChatLayout />} />
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route path="/lecturer/instructorReviews" element={<InstructorReviews />} />
