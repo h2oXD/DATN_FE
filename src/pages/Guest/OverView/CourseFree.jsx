@@ -28,7 +28,7 @@ export default function CourseFree() {
   }, []);
 
   const handleCourseClick = (id) => {
-    nav(`/student/home/${id}/coursedetail`);
+    nav(`/course/${id}/coursedetail`);
   };
 
   const scrollLeft = () => {
@@ -86,7 +86,7 @@ export default function CourseFree() {
         {courses.map((course) => (
           <div className="col-md-3" key={course.id}>
             <div className="card p-2 rounded">
-              <Link to={`/student/home/${course.id}/coursedetail`}>
+              <Link to={`/course/${course.id}/coursedetail`}>
                 <img
                   src={
                     getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"

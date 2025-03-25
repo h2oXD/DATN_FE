@@ -38,7 +38,8 @@ export default function CommentLesson({ lesson_id }) {
     }, [lesson_id, refresh])
 
     return (
-        <> {/* Canvas của comment */}
+        <>
+            {/* Canvas của comment */}
             <div className="offcanvas offcanvas-end tw-w-[700px] tw-bg-white" tabIndex="-1" id="offcanvasCommentRight" aria-labelledby="offcanvasCommentRightLabel">
                 <div className="offcanvas-header pb-1">
                     <div className='d-flex flex-column'>

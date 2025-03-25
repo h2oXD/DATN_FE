@@ -42,10 +42,10 @@ export default function NewCourse() {
     return (
         <>
             <div className="ms-2 mt-2">
-                <h4 className="ms-1">Khoá học mới nhất</h4>
+                <h3 className="ms-1">Khoá học mới nhất</h3>
                 <div className="row mb-2">
                     {courses.map((course, index) => (
-                        <div className="col-lg-3 col-12" key={index}>
+                        <div className="col-lg-3 col-12 mt-2" key={index}>
                             <div className="card d-flex rounded shadow-none">
                                 <div className="p-2" style={{ position: "relative" }}>
                                     {" "}
@@ -173,7 +173,7 @@ export default function NewCourse() {
                                                 </>
                                             )}
 
-                                            <span className="text-warning fw-bold">
+                                            {/* <span className="text-warning fw-bold">
                                                 {course.average_rating % 1 === 0
                                                     ? Math.floor(course.average_rating)
                                                     : course.average_rating.toFixed(1)}{" "}
@@ -182,7 +182,7 @@ export default function NewCourse() {
                                                     ? Math.floor(course.average_rating)
                                                     : course.average_rating.toFixed(1)}{" "}
                                                 đánh giá)
-                                            </span>
+                                            </span> */}
                                         </li>
                                     </ul>
                                 </div>

@@ -30,7 +30,7 @@ export default function CourseList() {
   }, []);
 
   const handleCourseClick = (id) => {
-    nav(`/student/home/${id}/coursedetail`);
+    nav(`/course/${id}/coursedetail`);
   };
 
   const scrollLeft = () => {
@@ -64,7 +64,7 @@ export default function CourseList() {
 
   return (
     <div className="mt-1 p-3 position-relative">
-      <h2 className="mb-2">Khoá học nổi bật</h2>
+      <h3 className="mb-2 text-center">Khoá học nổi bật</h3>
 
       {/* Nút điều hướng */}
       <div className="position-absolute top-0 end-0 d-flex mt-2 p-3">
@@ -89,7 +89,7 @@ export default function CourseList() {
         {courses.map((item) => (
           <div className="col-md-3" key={item.course.id}>
             <div className="card p-2 rounded-3">
-              <Link to={`/student/home/${item.course.id}/coursedetail`}>
+              <Link to={`/course/${item.course.id}/coursedetail`}>
                 <div
                   style={{
                     position: "relative",
@@ -100,7 +100,7 @@ export default function CourseList() {
                 >
                   <img
                     src={
-                      getImageUrl(item.course.thumbnail) ||
+                      item.course.thumbnail && getImageUrl(item.course.thumbnail) ||
                       "/default-thumbnail.jpg"
                     }
                     alt="course"
@@ -117,7 +117,12 @@ export default function CourseList() {
                         backgroundColor: "white",
                       }}
                     >
-                      {item.course.level}
+                      <div className="d-flex align-items-center gap-1">
+                        {item.course.level}
+                        {item.course.level == 'Sơ cấp' && <svg className="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="2" height="6" rx="1" fill="#19cb98" /><rect x="7" y="5" width="2" height="9" rx="1" fill="#D3D3D3" /><rect x="11" y="2" width="2" height="12" rx="1" fill="#D3D3D3" /></svg>}
+                        {item.course.level == 'Trung cấp' && <svg className="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="2" height="6" rx="1" fill="#ffaa46" /><rect x="7" y="5" width="2" height="9" rx="1" fill="#ffaa46" /><rect x="11" y="2" width="2" height="12" rx="1" fill="#D3D3D3" /></svg>}
+                        {item.course.level == 'Chuyên gia' && <svg className="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="2" height="6" rx="1" fill="#e53f3c" /><rect x="7" y="5" width="2" height="9" rx="1" fill="#e53f3c" /><rect x="11" y="2" width="2" height="12" rx="1" fill="#e53f3c" /></svg>}
+                      </div>
                     </span>
                   )}
                 </div>
@@ -172,15 +177,11 @@ export default function CourseList() {
                     </svg>
                     <span>Level: {item.course.level || "N/A"}</span>
                   </li>
-<<<<<<< HEAD
-                </ul>
-                <small>By: {item.course.user.name}</small>
-=======
                 </ul> */}
                 {/* <small>By: {item.course.user.name}</small> */}
                 <div className="d-flex align-items-center mt-2">
                   <img
-                    src="../../../assets/images/avatar/avatar-2.jpg"
+                    src={item.course.user.profile_picture ? getImageUrl(item.course.user.profile_picture) : '/avatarDefault.jpg'}
                     alt="Avatar"
                     className="rounded-circle me-2"
                     style={{ width: "30px" }}
@@ -189,9 +190,8 @@ export default function CourseList() {
                     {item.course.user.name || "Chưa cập nhật giảng viên"}
                   </span>
                 </div>
->>>>>>> bebe48181637a8f8231b357d09819c49d8a5c747
                 <div className="lh-1 mt-2 text-warning">
-                  {item.highest_rating} ★ ({item.course.reviews.length} reviews)
+                  {item.highest_rating} ★ ({item.course.reviews.length} đánh giá)
                 </div>
               </div>
 

@@ -152,13 +152,24 @@ export default function BuyCourse() {
             src={getImageUrl(course.thumbnail) ?? "/default-thumbnail.jpg"}
             alt={course.title}
             className="rounded"
-            style={{ maxWidth: "190px", height: "120px" }}
+            style={{ maxWidth: "150px", height: "100px" }}
           />
-          <div className="px-1 py-1">
+          <div className="px-3">
             <h4 className="mt-1 mb-1 text-truncate-line-2">{course.title}</h4>
-            <small>
+            {/* <small>
               By: {course.lecturer?.name || "Chưa cập nhật giảng viên"}
-            </small>
+            </small> */}
+            <div className="d-flex align-items-center">
+              <img
+                src="../../../assets/images/avatar/avatar-2.jpg"
+                alt="Avatar"
+                className="rounded-circle me-2"
+                style={{ width: "20px" }}
+              />
+              <span className="mb-0 ">
+                {course.lecturer?.name || "Chưa cập nhật giảng viên"}
+              </span>
+            </div>
             <div className="lh-1 mt-2 text-warning">
               {course.average_rating} ★
             </div>
@@ -198,6 +209,7 @@ export default function BuyCourse() {
       </div>
       <div className="col-md-5 p-3">
         <h4 className="mb-3">Chi tiết thanh toán</h4>
+        <hr />
         {!selectedVoucher && (
           <>
             <div className="mb-3">
@@ -277,6 +289,7 @@ export default function BuyCourse() {
             </span>
           </p>
         )}
+        <hr />
 
         <p className="d-flex justify-content-between">
           <span>Tổng thanh toán:</span>

@@ -1,20 +1,20 @@
 import "../../App.css";
-import MentorList from "../../components/MentorList";
 import MostPopularCourse from "../../components/MostPopularCourse";
 import Banner from "../../components/Banner";
 import FormLogin from "../Auth/FormLogin";
 import FormRegister from "../Auth/FormRegister";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 // import CourseSale from "../components/CourseSale";
-import CourseList from "./../Student/OverView/CourseList";
-import CourseFree from "../Student/OverView/CourseFree";
+import MentorList from "./OverView/MentorList";
+import CourseList from "./OverView/CourseList";
+import CourseFree from "./OverView/CourseFree";
 
 export default function Home() {
   return (
     <>
       <HelmetProvider>
         <Helmet>
-          <title>Trang chủ</title>
+          <title>LoraSpace</title>
         </Helmet>
       </HelmetProvider>
 
@@ -22,7 +22,7 @@ export default function Home() {
       {/* <CourseSale /> */}
       {/* <MostPopularCourse /> */}
 
-      <div className="container px-3 px-md-3">
+      <div className="container px-2 px-md-3">
         <div className="col-md-12 col-12">
           <MentorList />
           <CourseList />
