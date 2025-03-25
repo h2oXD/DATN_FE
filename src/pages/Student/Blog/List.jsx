@@ -73,7 +73,10 @@ const BlogList = () => {
                     <img
                       src={getImageUrl(post.thumbnail)}
                       alt="Bài viết"
-                      className="card-img-top"
+                      className="me-3 rounded-3 my-4 mx-3"
+                      width="220"
+                      height="200"
+                      // style={{ objectFit: "cover" }}
                     />
                     {/* <img
                       src={
@@ -86,7 +89,7 @@ const BlogList = () => {
                     /> */}
                   </div>
                   <div className="col-md-8">
-                    <div className="card-body">
+                    <div className="card-body mx-4">
                       <div className="d-flex align-items-center mb-2">
                         <FaUserCircle size={30} className="me-2 text-primary" />
                         <div>

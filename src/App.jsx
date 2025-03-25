@@ -57,7 +57,7 @@ import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
 
 import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
 import ProfileStudent from "./pages/Student/Profile/Infor";
-import ComplaintHistory from "./pages/Lecturer/Wallet/ComplaintHistory";
+//import ComplaintHistory from "./pages/Lecturer/Wallet/ComplaintHistory";
 import PostDetail from "./pages/Student/Blog/Detail";
 import EditBlog from "./pages/Student/Blog/EditBlog";
 import ShowCourse from "./pages/Lecturer/Course/ShowCourse";
@@ -66,6 +66,7 @@ import LoginGoogle from "./pages/Auth/LoginGoogle";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import WalletHomeLecturer from "./pages/Lecturer/Wallet/WalletHome";
 import WalletHome from "./pages/Student/Wallet/WalletHome";
+import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
 
 function App() {
   return (
@@ -177,65 +178,21 @@ function App() {
             <Route
               path="/lecturer/course/:course_id/edit"
               element={
-                <LecturerProvider>
-                  <LecturerLayout />
-                </LecturerProvider>
+                <CourseProvider>
+                  <Edit />
+                </CourseProvider>
               }
             >
-              <Route index element={<HomeLecturer />} />
-              <Route path="/lecturer/course" element={<List />} />
-              <Route path="/lecturer/quiz" element={<ListQuiz />} />
-              <Route
-                path="/lecturer/course/:course_id/edit"
-                element={
-                  <CourseProvider>
-                    <Edit />
-                  </CourseProvider>
-                }
-              >
-                <Route index element={<Navigate to="goals" replace />} />
-                <Route path="basic" element={<Basic />} />
-                <Route path="goals" element={<Goals />} />
-                <Route path="curriculum" element={<Curriculum />} />
-                {/* <Route path="coding" element={<Coding />} /> */}
-              </Route>
-              <Route
-                path="/lecturer/course/:course_id"
-                element={<ShowCourse />}
-              />
-              <Route
-                path="/lecturer/inforLecturers"
-                element={<InforLecturer />}
-              />
-
-              <Route
-                path="/lecturer/inforStudents"
-                element={<InforStudent />}
-              />
-              <Route
-                path="/lecturer/wallethome"
-                element={<WalletHomeLecturer />}
-              />
-
-              <Route
-                path="/lecturer/walletLecturer"
-                element={<WalletLecturer />}
-              />
-
-              <Route path="/lecturer/chat" element={<Chat />} />
-              <Route
-                path="/lecturer/courseReviews"
-                element={<CourseReviews />}
-              />
-              <Route
-                path="/lecturer/instructorReviews"
-                element={<InstructorReviews />}
-              />
-              <Route
-                path="/lecturer/dashboard"
-                element={<DashboardLecturer />}
-              />
+              <Route index element={<Navigate to="goals" replace />} />
+              <Route path="basic" element={<Basic />} />
+              <Route path="goals" element={<Goals />} />
+              <Route path="curriculum" element={<Curriculum />} />
+              {/* <Route path="coding" element={<Coding />} /> */}
             </Route>
+            <Route
+              path="/lecturer/course/:course_id"
+              element={<ShowCourse />}
+            />
             <Route
               path="/lecturer/inforLecturers"
               element={<InforLecturer />}
@@ -243,31 +200,38 @@ function App() {
 
             <Route path="/lecturer/inforStudents" element={<InforStudent />} />
             <Route
+              path="/lecturer/wallethome"
+              element={<WalletHomeLecturer />}
+            />
+
+            <Route
               path="/lecturer/walletLecturer"
               element={<WalletLecturer />}
-            />
-            <Route
-              path="/lecturer/withdraw-history"
-              element={<WithdrawalHistory />}
-            />
-            <Route
-              path="/lecturer/complaintHistory"
-              element={<ComplaintHistory />}
             />
 
             <Route path="/lecturer/chat" element={<Chat />} />
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route
-              path="/lecturer/quiz/edit"
-              element={
-                <RequireQuizParams>
-                  <EditQuiz />
-                </RequireQuizParams>
-              }
+              path="/lecturer/instructorReviews"
+              element={<InstructorReviews />}
             />
             <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
-            <Route path="/lecturer/profile" element={<ProfileLecturer />} />
           </Route>
+          <Route path="/lecturer/inforLecturers" element={<InforLecturer />} />
+
+          <Route path="/lecturer/inforStudents" element={<InforStudent />} />
+          <Route path="/lecturer/walletLecturer" element={<WalletLecturer />} />
+          <Route
+            path="/lecturer/withdraw-history"
+            element={<WithdrawalHistory />}
+          />
+          <Route
+            path="/lecturer/complaintHistory"
+            element={<ComplaintHistory />}
+          />
+
+          <Route path="/lecturer/chat" element={<Chat />} />
+          <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
           <Route
             path="/lecturer/quiz/edit"
             element={
@@ -276,6 +240,8 @@ function App() {
               </RequireQuizParams>
             }
           />
+          <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
+          <Route path="/lecturer/profile" element={<ProfileLecturer />} />
 
           <Route path="*" element={<PageNotFound />} />
           <Route path="404" element={<PageNotFound />} />

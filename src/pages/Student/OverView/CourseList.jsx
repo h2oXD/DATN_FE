@@ -146,7 +146,7 @@ export default function CourseList() {
                     <span>Level: {item.course.level || "N/A"}</span>
                   </li>
                 </ul>
-                <small>By: {item.user.name}</small>
+                <small>By: {item.course.user.name}</small>
                 <div className="lh-1 mt-2 text-warning">
                   {item.highest_rating} ★ ({item.course.reviews.length} reviews)
                 </div>

@@ -143,7 +143,7 @@ export default function CourseFree() {
                     Level : {course.level || "N/A"}
                   </li>
                 </ul>
-                <small>By: {course.user.name}</small>
+                <small>By: {course.user?.name}</small>
                 <div className="lh-1 mt-2 text-warning">
                   {course.reviews.length > 0
                     ? `${(
