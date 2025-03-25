@@ -49,7 +49,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                     setNotes(res.data)
                 } catch (error) {
                     console.log(error);
-                    setNotes(null)
+                    setNotes([])
                 }
             } else {
                 try {
@@ -57,7 +57,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                     setNotes(res.data)
                 } catch (error) {
                     console.log(error);
-                    setNotes(null)
+                    setNotes([])
                 }
             }
         }
@@ -86,6 +86,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
             console.log(error);
         }
     }
+    const [loadingEditNote, setLoadingEditNote] = useState(false)
     const handleEditNote = async (content, note_id) => {
         if (!content) {
             toast.warning('Không được để trống nội dung ghi chú')
@@ -96,12 +97,15 @@ export default function Header({ course_id, refresh, setRefresh }) {
             _method: 'PUT'
         }
         try {
+            setLoadingEditNote(true)
             await axiosClient.post(`/learning/notes/${note_id}`, data)
             setRefresh(!refresh)
             setIsEditing(!isEditing)
             toast.success('Cập nhật thành công')
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingEditNote(false)
         }
     }
     return (
@@ -145,7 +149,8 @@ export default function Header({ course_id, refresh, setRefresh }) {
                             </select>
                         </div>
                     </div>
-                    {notes &&
+                    {notes && notes.length == 0 && <p className='text-center mt-5'>Chưa có ghi chú nào</p>}
+                    {notes && notes.length > 0 &&
                         notes.map((note, index) => (
                             <div className='d-flex flex-column' key={index}>
                                 <div className='d-flex align-items-center mb-1 justify-content-between'>
@@ -186,7 +191,9 @@ export default function Header({ course_id, refresh, setRefresh }) {
                                         />
                                         <div className='d-flex gap-2 mt-2 justify-content-end'>
                                             <button onClick={() => setIsEditing(!isEditing)} className='btn btn-sm btn-light'>Huỷ bỏ</button>
-                                            <button onClick={() => { handleEditNote(content, note.id) }} className='btn btn-sm btn-primary'>Sửa</button>
+                                            {loadingEditNote 
+                                            ? <button className='btn btn-sm btn-primary' disabled><div className="spinner-border spinner-border-sm" role="status"></div></button> 
+                                            : <button onClick={() => { handleEditNote(content, note.id) }} className='btn btn-sm btn-primary'>Sửa</button>}
                                         </div>
                                     </>
                                 )}

@@ -26,6 +26,7 @@ export default function EditQuiz() {
     const [questions, setQuestions] = useState(null)
     const [course, setCourse] = useState(null)
     const [quizId, setQuizId] = useState(null)
+    const [loadingImport, setLoadingImport] = useState(false)
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -97,6 +98,7 @@ export default function EditQuiz() {
                 file: fileExcel
             }
             console.log(data);
+            setLoadingImport(true)
             try {
                 const res = await axiosClient.post(`/lessons/${lessonId}/quizzes/${quizId}/upload`, data, {
                     headers: {
@@ -114,6 +116,8 @@ export default function EditQuiz() {
             } catch (error) {
                 console.log(error);
                 toast.error('Tải lên thất bại')
+            } finally {
+                setLoadingImport(false)
             }
         }
 
@@ -165,7 +169,10 @@ export default function EditQuiz() {
                                             Tải xuống mẫu
                                         </button>
                                     </a>
-                                    {fileExcel &&
+                                    {fileExcel && loadingImport ?
+                                        <button className="btn btn-sm btn-primary" disabled>
+                                            Nhập file
+                                        </button> :
                                         <button className="btn btn-sm btn-primary" onClick={handleSubmitExcel}>
                                             Nhập file
                                         </button>
