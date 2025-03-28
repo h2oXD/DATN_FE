@@ -119,7 +119,7 @@ export default function Header({ course_id, refresh, setRefresh }) {
                         <h4 className="m-0 ms-3 text-light">|{courseTitle}</h4>
                     </div>
                     <div className="d-flex align-items-center">
-                        {certificate && (<Link to={`/student/certificate/${certificate.id}`} className='text-light btn btn-sm btn-primary me-2'>Nhận chứng chỉ</Link>)}
+                        {certificate && (<a href={certificate.certificate_url} className='text-light btn btn-sm btn-primary me-2'>Nhận chứng chỉ</a>)}
                         <div className="p-1">
                             <span className='text-light'>{tienDo && tienDo.progress}</span>
                         </div>
