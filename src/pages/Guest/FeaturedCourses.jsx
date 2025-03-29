@@ -95,7 +95,8 @@ export default function FeaturedCourses() {
               >
                 <img
                   src={
-                    getImageUrl(course.thumbnail) || "/default-thumbnail.jpg"
+                    (course.thumbnail && getImageUrl(course.thumbnail)) ||
+                    "/default-thumbnail.jpg"
                   }
                   alt="course"
                   className="rounded img-4by3-lg w-100"
@@ -111,10 +112,118 @@ export default function FeaturedCourses() {
                       backgroundColor: "white",
                     }}
                   >
-                    {course.level}
+                    <div className="d-flex align-items-center gap-1">
+                      {course.level}
+                      {course.level == "Sơ cấp" && (
+                        <svg
+                          className=""
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="3"
+                            y="8"
+                            width="2"
+                            height="6"
+                            rx="1"
+                            fill="#19cb98"
+                          />
+                          <rect
+                            x="7"
+                            y="5"
+                            width="2"
+                            height="9"
+                            rx="1"
+                            fill="#D3D3D3"
+                          />
+                          <rect
+                            x="11"
+                            y="2"
+                            width="2"
+                            height="12"
+                            rx="1"
+                            fill="#D3D3D3"
+                          />
+                        </svg>
+                      )}
+                      {course.level == "Trung cấp" && (
+                        <svg
+                          className=""
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="3"
+                            y="8"
+                            width="2"
+                            height="6"
+                            rx="1"
+                            fill="#ffaa46"
+                          />
+                          <rect
+                            x="7"
+                            y="5"
+                            width="2"
+                            height="9"
+                            rx="1"
+                            fill="#ffaa46"
+                          />
+                          <rect
+                            x="11"
+                            y="2"
+                            width="2"
+                            height="12"
+                            rx="1"
+                            fill="#D3D3D3"
+                          />
+                        </svg>
+                      )}
+                      {course.level == "Chuyên gia" && (
+                        <svg
+                          className=""
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="3"
+                            y="8"
+                            width="2"
+                            height="6"
+                            rx="1"
+                            fill="#e53f3c"
+                          />
+                          <rect
+                            x="7"
+                            y="5"
+                            width="2"
+                            height="9"
+                            rx="1"
+                            fill="#e53f3c"
+                          />
+                          <rect
+                            x="11"
+                            y="2"
+                            width="2"
+                            height="12"
+                            rx="1"
+                            fill="#e53f3c"
+                          />
+                        </svg>
+                      )}
+                    </div>
                   </span>
                 )}
               </div>
+
               <div className="px-1 py-1">
                 <h4 className="mt-1 mb-1 text-truncate-line-2">
                   <span
@@ -129,7 +238,11 @@ export default function FeaturedCourses() {
                   </span>
                 </h4>
                 <img
-                  src={course.user.profile_picture && course.user.profile_picture ? getImageUrl(course.user.profile_picture) : '/avatarDefault.jpg'}
+                  src={
+                    course.user.profile_picture && course.user.profile_picture
+                      ? getImageUrl(course.user.profile_picture)
+                      : "/avatarDefault.jpg"
+                  }
                   alt="Avatar"
                   className="rounded-circle me-2"
                   style={{ width: "30px" }}
@@ -137,7 +250,12 @@ export default function FeaturedCourses() {
                 <span className="mb-0 ">
                   {course.user.name || "Chưa cập nhật giảng viên"}
                 </span>
-                <div className="lh-1 mt-2 text-warning">{course.reviews_avg_rating ? parseFloat(course.reviews_avg_rating).toFixed(1) : 0} ★ ({course.reviews_count} đánh giá)</div>
+                <div className="lh-1 mt-2 text-warning">
+                  {course.reviews_avg_rating
+                    ? parseFloat(course.reviews_avg_rating).toFixed(1)
+                    : 0}{" "}
+                  ★ ({course.reviews_count} đánh giá)
+                </div>
               </div>
 
               <div className="d-flex mt-2">
