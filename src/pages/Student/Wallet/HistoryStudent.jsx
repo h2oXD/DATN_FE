@@ -29,6 +29,7 @@ export default function HistoryStudent() {
         <table className="table table-hover mt-3">
           <thead className="table-light">
             <tr>
+              <th className="text-center">#</th>
               <th className="text-center">Loại giao dịch</th>
               <th className="text-center">Số tiền</th>
               <th className="text-center">Thời gian</th>
@@ -38,7 +39,16 @@ export default function HistoryStudent() {
           <tbody>
             {histories.map((history, index) => (
               <tr key={history.id}>
-                <td className="text-center">{history.type}</td>
+                <td className="text-center">{index + 1}</td>
+                <td className="text-center">
+                  {history.type === "deposit"
+                    ? "Nạp tiền"
+                    : history.type === "withdraw"
+                    ? "Rút tiền"
+                    : history.type === "payment"
+                    ? "Thanh toán" 
+                    : "Chưa xác định"}
+                </td>
                 <td className="text-center">
                   {parseFloat(history.amount).toLocaleString("vi-VN")} VNĐ
                 </td>
