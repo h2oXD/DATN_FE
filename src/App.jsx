@@ -67,6 +67,10 @@ import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 
 import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
 import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
+import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
+import ProfileStudent from "./pages/Student/Profile/Infor";
+import EditBlog from "./pages/Student/Blog/EditBlog";
+import PostDetail from "./pages/Student/Blog/Detail";
 
 function App() {
   return (
@@ -94,6 +98,8 @@ function App() {
             <Route path="/student/blogList" element={<BlogList />} />
             <Route path="/student/myBlog" element={<MyBlog />} />
             <Route path="/student/writeBlog" element={<WriteBlog />} />
+            <Route path="/student/editBlog/:postId" element={<EditBlog />} />
+            <Route path="/student/post/detail/:id" element={<PostDetail />} />
             <Route path="/student/course/voucher" element={<VoucherPage />} />
             <Route path="/student/course/voucher/history" element={<VoucherHistory />} />
             <Route path="/student/course/voucher/detail/:voucher_id" element={<VoucherDetail />} />
@@ -102,6 +108,7 @@ function App() {
             <Route path="/student/walletStudent" element={<WalletStudent />} />
             <Route path="/student/course/:course_id/review" element={<Review />} />
             <Route path="/student/wallethome" element={<WalletHome />} />
+            <Route path="/student/profile" element={<ProfileStudent/>} />
           </Route>
 
           {/* Đăng ký giảng viên */}
@@ -145,6 +152,7 @@ function App() {
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route path="/lecturer/instructorReviews" element={<InstructorReviews />} />
             <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
+            <Route path="/lecturer/profile" element={<ProfileLecturer />} />
           </Route>
 
           <Route path="/lecturer/quiz/edit" element={<RequireQuizParams><EditQuiz /></RequireQuizParams>} />

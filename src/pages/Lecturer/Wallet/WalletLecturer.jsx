@@ -268,7 +268,7 @@ import {
   FaInfinity,
   FaMoneyBillWave,
   FaShieldAlt,
-  FaUserCircle,
+  
 } from "react-icons/fa";
 import axiosClient from "../../../api/axios";
 import { toast } from "react-toastify";
