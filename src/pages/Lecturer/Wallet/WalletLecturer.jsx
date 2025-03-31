@@ -387,7 +387,7 @@ const WalletWithdraw = () => {
                     />
                   </div>
                   <div className="text-start">
-                    <h5 className="fw-bold mb-0 text-black">{user && user.name}</h5>
+                    <h5 className="fw-bold mb-0 text-black tw-ml-3">{user && user.name}</h5>
                   </div>
                 </div>
                 <div className="d-flex justify-content-between align-items-center bg-white text-dark p-2 rounded shadow-sm">

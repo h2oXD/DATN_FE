@@ -48,3 +48,4 @@ const TopSellingCoursesList = () => {
 };
 
 export default TopSellingCoursesList;
+
