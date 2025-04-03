@@ -50,8 +50,19 @@ export default function BuyCourse() {
   let finalPrice = originalPrice;
   if (selectedVoucher) {
     if (selectedVoucher.type === "percent") {
-      finalPrice = originalPrice * (1 - selectedVoucher.discount_price / 100);
+      // Tính giá giảm theo phần trăm và áp dụng discount_max_price nếu có
+      const discountAmount =
+        originalPrice * (selectedVoucher.discount_price / 100);
+      finalPrice = Math.max(
+        0,
+        originalPrice -
+          Math.min(
+            discountAmount,
+            selectedVoucher.discount_max_price || discountAmount
+          )
+      );
     } else {
+      // Tính giá giảm theo số tiền cố định
       finalPrice = Math.max(0, originalPrice - selectedVoucher.discount_price);
     }
   }

@@ -78,10 +78,10 @@ export default function CourseFree() {
 
   return (
     <div className="mt-1 p-3 position-relative">
-      <h2 className="mb-2">Khoá học miễn phí</h2>
-
+      <h3 className="mb-2 text-center fw-bold">KHÓA HỌC MIỄN PHÍ</h3>
+      <div className="mx-auto bg-warning mt-2 mb-3" style={{ width: "80px", height: "2px" }}></div>
       {/* Nút điều hướng */}
-      <div className="position-absolute top-0 end-0 d-flex mt-2 p-3">
+      <div className="position-absolute top-0 end-0 d-flex mt-4 p-3">
         <a className="text-dark me-2" onClick={scrollLeft}>
           <i className="bi bi-chevron-left"></i>
         </a>
