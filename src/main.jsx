@@ -12,26 +12,14 @@ import "./assets/libs/simplebar/dist/simplebar.min.js";
 
 import { ToastProvider } from "./contexts/ToastProvider.jsx";
 import { StoreProvider } from "./contexts/StoreProvider.jsx";
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
 
-window.Pusher = Pusher;
-
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: true
-})
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <StoreProvider>
-        <ToastProvider>
-          <App />
-        </ToastProvider>
-      </StoreProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <StoreProvider>
+      <ToastProvider>
+        <App />
+      </ToastProvider>
+    </StoreProvider>
+  </BrowserRouter>
 );

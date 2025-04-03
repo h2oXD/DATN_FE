@@ -16,7 +16,7 @@ export default function Header({ collapsed, setCollapsed }) {
   }, [user]);
   return (
     <>
-      <div className="header sticky-top" style={{ zIndex: "999" }}>
+      <div className="header tw-fixed tw-top-0 tw-left-0 tw-w-full" style={{ zIndex: "999" }}>
         <nav className="navbar-default navbar navbar-expand-lg flex-nowrap">
           <a
             className="me-3 ms-1"

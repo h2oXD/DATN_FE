@@ -8,7 +8,7 @@ const Header = () => {
   const token = Cookies.get("token");
   return (
     <nav className="navbar navbar-expand-lg sticky-top" style={{ zIndex: "999" }}>
-      <div className="container-fluid px-0">
+      <div className="container px-0">
         <Link to="/" className="navbar-brand" href="">
           <img src="/logo.png" width={"133px"} height={"31px"} alt="" />
         </Link>

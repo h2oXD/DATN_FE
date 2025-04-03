@@ -176,7 +176,7 @@ export default function CourseList() {
                 {/* <small>By: {item.course.user.name}</small> */}
                 <div className="d-flex align-items-center mt-2">
                   <img
-                    src="../../../assets/images/avatar/avatar-2.jpg"
+                    src="/avatarDefault.jpg"
                     alt="Avatar"
                     className="rounded-circle me-2"
                     style={{ width: "30px" }}

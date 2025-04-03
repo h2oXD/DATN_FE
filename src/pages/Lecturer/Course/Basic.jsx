@@ -394,6 +394,7 @@ export default function Basic() {
                                             name="thumbnail"
                                             className="form-control"
                                             id="thumbnail"
+                                            accept="image/png, image/jpeg, image/jpg, image/webp"
                                             onChange={handleThumbnailChange}
                                         />
                                     </div>
@@ -429,13 +430,14 @@ export default function Basic() {
                                     <div className="col-lg-6 mt-3 col-12">
                                         <p>
                                             Để được chấp nhận,video phải đáp ứng tiêu chuẩn chất lượng video khóa học.
-                                            Hướng dẫn quan trọng: 750x422 pixel; .mp4, .mov,...,
+                                            Hướng dẫn quan trọng: .mp4, .mov,...,
                                         </p>
                                         <input
                                             type="file"
                                             name="video_preview"
                                             className="form-control"
                                             id="video_preview"
+                                            accept="video/mp4,video/quicktime"
                                             onChange={handleVideoPreviewChange}
                                         />
                                     </div>
