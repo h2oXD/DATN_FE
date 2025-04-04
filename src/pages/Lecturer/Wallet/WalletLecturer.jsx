@@ -362,43 +362,37 @@ const WalletWithdraw = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="container mt-2 ms-0">
-      <button
-        className="btn btn-outline-primary mt-0 mb-2"
-        onClick={() => navigate("/lecturer/withdraw-history")}
-      >
-        Xem lịch sử rút tiền
-      </button>
+    <div className="card">
       <div className="row">
         <div className="col-md-4">
-          <div className="card p-4 shadow-sm text-center border-0 bg-light">
-            <div className="d-flex flex-column align-items-center text-center mb-4">
-              <div className=" text-white p-4 rounded shadow-sm text-center w-100">
-                <div className="d-flex align-items-center mb-2">
-                  <div className="avatar avatar-md">
-                    <img
-                      alt="avatar"
-                      src={
-                        user && user.profile_picture
-                          ? getImageUrl(user.profile_picture)
-                          : "/avatarDefault.jpg"
-                      }
-                      className="rounded-circle"
-                    />
-                  </div>
-                  <div className="text-start">
-                    <h5 className="fw-bold mb-0 text-black">{user && user.name}</h5>
-                  </div>
+          <div className="card p-4 shadow-sm border-0">
+            <div className="d-flex flex-column alert border tw-rounded">
+              <div className="d-flex align-items-center">
+                <div className="avatar avatar-md">
+                  <img
+                    alt="avatar"
+                    src={
+                      user && user.profile_picture
+                        ? getImageUrl(user.profile_picture)
+                        : "/avatarDefault.jpg"
+                    }
+                    className="rounded-circle"
+                  />
                 </div>
-                <div className="d-flex justify-content-between align-items-center bg-white text-dark p-2 rounded shadow-sm">
-                  <h6 className="mb-0">Số dư khả dụng</h6>
-                  <h4 className="text-success fw-bold mb-0">
-                    {balance.toLocaleString()} đ
-                  </h4>
+                <div className="d-flex flex-column ms-3">
+                  <div className="text-start">
+                    <h5 className="mb-0 text-black">{user && user.name}</h5>
+                  </div>
+                  <div className="d-flex text-dark rounded">
+                    <h5 className="mb-0 me-2">Số dư:</h5>
+                    <h5 className="text-dark mb-0">
+                      <b>{balance.toLocaleString()} VNĐ</b>
+                    </h5>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="text-start">
+            {/* <div className="text-start">
               <p>
                 <FaClock className="text-primary me-2" />
                 <strong>Thời gian xử lý nhanh:</strong> Chỉ từ 1 - 5 phút
@@ -422,7 +416,7 @@ const WalletWithdraw = () => {
                 <strong>Không giới hạn:</strong> Rút tiền bất cứ lúc nào, không
                 hạn chế số lần
               </p>
-            </div>
+            </div> */}
             {/* <button
               className="btn btn-primary w-100 mt-3 fw-bold"
               onClick={handleWithdraw}
@@ -430,19 +424,29 @@ const WalletWithdraw = () => {
             >
               {loading ? "Đang xử lý..." : "Rút tiền ngay"}
             </button> */}
-            <div className="alert alert-info mt-3">
-              <p>
-                Số tiền tối thiểu cho mỗi lần rút là 50.000 VNĐ. Số dư trong tài
-                khoản phải lớn hơn số tiền bạn muốn rút.
+            <div className="alert border mt-2 tw-rounded d-flex flex-column ">
+              <label htmlFor="" className="tw-font-semibold fs-4">Quy tắc rút tiền</label>
+              <p className="m-0 fs-5">
+                Số tiền tối thiểu cho mỗi lần rút là <b>50.000 VNĐ.</b>
               </p>
             </div>
-            <div className="alert alert-danger mt-2">
-              <p>
+            <div className="alert border tw-rounded mt-2">
+              <div className="d-flex align-items-center">
+                <i className="fe fe-alert-triangle text-warning me-2"></i>
+                <p className="m-0 text-warning">Lưu ý</p>
+              </div>
+              <p className="m-0 fs-5 text-warning ">
                 Vui lòng kiểm tra kỹ thông tin tài khoản ngân hàng trước khi
                 thực hiện rút tiền. Chúng tôi không chịu trách nhiệm nếu bạn
                 cung cấp sai thông tin.
               </p>
             </div>
+            <button
+              className="btn btn-outline-primary mt-0 mb-2"
+              onClick={() => navigate("/lecturer/withdraw-history")}
+            >
+              Xem lịch sử rút tiền
+            </button>
           </div>
         </div>
         <div className="col-md-8">

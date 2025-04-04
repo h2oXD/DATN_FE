@@ -18,7 +18,8 @@ export default function Edit() {
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         if (courseData) {
-            setCourse(course)
+            setCourse(courseData)
+
         }
         const checkData = async () => {
             const courseShow = await axiosClient.get(`/lecturer/courses/${course_id}/check`)
@@ -167,6 +168,12 @@ export default function Edit() {
                             </ul>
                         </Modal>
                     </div>
+                    {course && course.admin_comment &&
+                        <div className="alert alert-warning mt-2 tw-max-w-[250px]">
+                            <p className="m-0">Đã bị từ chối vì: {course.admin_comment}</p>
+                        </div>
+                    }
+
                 </div>
 
                 {/* Cột phải - Nội dung */}

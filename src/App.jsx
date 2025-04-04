@@ -68,6 +68,8 @@ import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
 import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
 import HomeCourseList from "./pages/Guest/Course/HomCourseList";
+import LecturerShowInfo from "./pages/Guest/LecturerShowInfo";
+
 
 function App() {
   return (
@@ -82,6 +84,7 @@ function App() {
             <Route path="/resetPassword" element={<ResetPassword />} />
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/loginGoogle" element={<LoginGoogle />} />
+            <Route path="/lecturer/:id" element={<LecturerShowInfo />} />
           </Route>
           <Route path="/google/callback" element={<GoogleCallback />} />
 
@@ -103,6 +106,7 @@ function App() {
             <Route path="/student/walletStudent" element={<WalletStudent />} />
             <Route path="/student/course/:course_id/review" element={<Review />} />
             <Route path="/student/wallethome" element={<WalletHome />} />
+            <Route path="/student/chat" element={<ChatLayout />} />
           </Route>
 
           {/* Đăng ký giảng viên */}

@@ -25,7 +25,7 @@ export default function SideBar({ collapsed }) {
   return (
     <>
       <Sidebar
-        className="vh-100 pe-1 mt-1"
+        className="tw-min-h-[630px]pe-1 mt-1"
         backgroundColor={"white"}
         collapsed={collapsed}
         transitionDuration={500}
@@ -109,7 +109,7 @@ export default function SideBar({ collapsed }) {
           <MenuItem
             className="text-dark"
             icon={<ChatIcon />}
-            component={<Link to={"/student/chatAI"} />}
+            component={<Link to={"/student/chat"} />}
           >
             Chat
           </MenuItem>
@@ -120,7 +120,7 @@ export default function SideBar({ collapsed }) {
           >
             Đăng ký giảng viên
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<CertificateIcon />}
             component={
@@ -128,7 +128,7 @@ export default function SideBar({ collapsed }) {
             }
           >
             Chứng chỉ
-          </MenuItem>
+          </MenuItem> */}
           {/* <MenuItem
             className="text-dark"
             icon={<VoucherIcon />}

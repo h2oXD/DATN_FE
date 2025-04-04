@@ -1,5 +1,24 @@
+import { useContext, useEffect, useState } from "react"
+import axiosClient from "../../../api/axios"
+import { Link } from "react-router-dom"
+import { StoreContext } from "../../../contexts/StoreProvider";
+import { getImageUrl } from "../../../api/common";
 
-export default function ChatList() {
+export default function ChatList({ setRoomId }) {
+    const [room, setRoom] = useState(null)
+    const { user } = useContext(StoreContext);
+    useEffect(() => {
+        const fetchRoom = async () => {
+            try {
+                const res = await axiosClient.get(`/chat-rooms`)
+                console.log(res);
+                setRoom(res.data.room)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchRoom()
+    }, [])
     return (
         <>
             <div className="d-flex tw-bg-white flex-column">
@@ -25,13 +44,13 @@ export default function ChatList() {
                             <div className="d-flex">
                                 <div className="avatar avatar-md avatar-indicators avatar-online">
                                     <img
-                                        src="../../assets/images/avatar/avatar-1.jpg"
+                                        src={user && user.profile_picture ? getImageUrl(user.profile_picture) : '/avatarDefault.jpg'}
                                         alt=""
                                         className="rounded-circle"
                                     />
                                 </div>
                                 <div className="ms-2">
-                                    <h5 className="mb-0">Nguyễn Hữu Hào</h5>
+                                    <h5 className="mb-0">{user && user.name}</h5>
                                     <p className="mb-0">Online</p>
                                 </div>
                             </div>
@@ -63,27 +82,21 @@ export default function ChatList() {
                 <div className="tab-content" id="tabContent">
                     <div className="tab-pane fade show active" id="recent" role="tabpanel" aria-labelledby="recent-tab">
                         <ul className="list-unstyled contacts-list tw-overflow-auto tw-max-h-[374px] tw-min-h-[374px]">
-                            <li className="py-3 px-4 chat-item contacts-item">
-                                <div className="d-flex justify-content-between align-items-center">
-                                    <a href="#" className="text-link contacts-link">
-                                        <div className="d-flex">
-                                            <div className="avatar avatar-md avatar-indicators avatar-online">
-                                                <img
-                                                    src="../../assets/images/avatar/avatar-2.jpg"
-                                                    alt=""
-                                                    className="rounded-circle"
-                                                />
+                            {room && room.length > 0 && room.map((r, index) => (
+                                <li key={index} className="py-3 px-4 chat-item contacts-item">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <Link to={'#'} onClick={() => { setRoomId(r.chat_room_id) }} className="text-link contacts-link">
+                                            <div className="d-flex align-items-center">
+                                                <i className="fe fe-hash"></i>
+                                                <div className="ms-2">
+                                                    <h5 className="mb-0 fw-bold">{r && r.chat_room.name}</h5>
+                                                </div>
                                             </div>
-                                            <div className="ms-2">
-                                                <h5 className="mb-0 fw-bold">Olivia Cooper</h5>
-                                                <p className="mb-0 text-truncate">
-                                                    I m for unread message components...
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </li>
+                                        </Link>
+                                    </div>
+                                </li>
+                            ))}
+                            {room && room.length <= 0 && <h4 className="text-center mt-3">Chưa có tin nhắn nào</h4>}
                         </ul>
                     </div>
                 </div>

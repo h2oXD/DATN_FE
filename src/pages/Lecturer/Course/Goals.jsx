@@ -52,6 +52,11 @@ export default function Goals() {
       target_students: targetStudents,
     },
     onSubmit: async (values) => {
+      if (values.learning_outcomes) {
+        for (let index = 0; index < values.learning_outcomes.length; index++) {
+          if (values.learning_outcomes[index] == '') return toast.warning('Cần điền đầu đủ thông tin')
+        }
+      }
       setIsSubmitting(true);
       values._method = "PUT";
       console.log(values);

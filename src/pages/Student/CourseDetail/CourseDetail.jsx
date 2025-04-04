@@ -1,6 +1,6 @@
 import CourseContent from "./../../Guest/CourseContent";
 import CourseSummary from "./../../Guest/CourseSummary";
-import FeaturedCourses from "./../OverView/FeaturedCourses";
+import FeaturedCourses from "./../../Guest/FeaturedCourses";
 export default function CourseDetail() {
   return (
     <div className="row">
