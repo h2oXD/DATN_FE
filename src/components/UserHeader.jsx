@@ -148,6 +148,14 @@ export default function UserHeader() {
                     </Link>
                   </li>
                 }
+                {!isLecturer &&
+                  <li>
+                    <Link to="/registerTeacher" className="dropdown-item">
+                      <i className="fe fe-book me-2"></i>
+                      Đăng ký trở thành giảng viên
+                    </Link>
+                  </li>
+                }
               </ul>
               <div className="dropdown-divider"></div>
               <ul className="list-unstyled">

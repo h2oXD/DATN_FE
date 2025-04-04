@@ -15,11 +15,13 @@ import { StoreProvider } from "./contexts/StoreProvider.jsx";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <StoreProvider>
-      <ToastProvider>
-        <App />
-      </ToastProvider>
-    </StoreProvider>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <StoreProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </StoreProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

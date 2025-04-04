@@ -25,7 +25,7 @@ export default function SideBar({ collapsed }) {
   return (
     <>
       <Sidebar
-        className="tw-min-h-[630px]pe-1 mt-1"
+        className="tw-min-h-[630px] pe-1 mt-1"
         backgroundColor={"white"}
         collapsed={collapsed}
         transitionDuration={500}
@@ -113,13 +113,13 @@ export default function SideBar({ collapsed }) {
           >
             Chat
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             className="text-dark"
             icon={<ĐKiIcon />}
             component={<Link to={"/registerTeacher"} />}
           >
             Đăng ký giảng viên
-          </MenuItem>
+          </MenuItem> */}
           {/* <MenuItem
             className="text-dark"
             icon={<CertificateIcon />}
