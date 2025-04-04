@@ -67,14 +67,26 @@ export default function SideBar({ collapsed }) {
               Học viên
             </MenuItem>
           </SubMenu>
-          <MenuItem
-            className="text-dark"
-            icon={<CourseIcon />}
-            active={currentPath === "/lecturer/course"}
-            component={<Link to={"/lecturer/course"} />}
-          >
-            Khoá học
-          </MenuItem>
+          <SubMenu 
+             className="text-dark"
+             label="Khóa học" 
+             icon={<CourseIcon />}>
+            <MenuItem
+              className="text-dark"
+              active={currentPath === "/lecturer/course"}
+              component={<Link to={"/lecturer/course"} />}
+            >
+              Khoá học
+            </MenuItem>
+            <MenuItem 
+              className="text-dark"
+              active={currentPath === "/lecturer/SalesHistory"}
+              component={<Link to={"/lecturer/SalesHistory"} />}
+            >
+              Lịch sử bán khóa học
+            </MenuItem>
+          </SubMenu>
+          
           <MenuItem
             className="text-dark"
             icon={<ViTienIcon />}

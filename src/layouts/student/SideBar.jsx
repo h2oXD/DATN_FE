@@ -69,10 +69,10 @@ export default function SideBar({ collapsed }) {
             </MenuItem>
             <MenuItem
               className="text-dark"
-              active={currentPath === "/student/LSHocTap"}
-              component={<Link to={"/student/LSHocTap"} />}
+              active={currentPath === "/student/PurchaseHistory"}
+              component={<Link to={"/student/PurchaseHistory"} />}
             >
-              Lịch sử học tập
+              Lịch sử mua khóa học
             </MenuItem>
           </SubMenu>
           {/* <MenuItem

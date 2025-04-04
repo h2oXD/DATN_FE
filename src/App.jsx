@@ -68,6 +68,8 @@ import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
 import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
 import HomeCourseList from "./pages/Guest/Course/HomCourseList";
+import PurchaseHistory from "./pages/Student/CoursePage/PurchaseHistory";
+import SalesHistory from './pages/Lecturer/Course/SalesHistory';
 
 function App() {
   return (
@@ -103,6 +105,7 @@ function App() {
             <Route path="/student/walletStudent" element={<WalletStudent />} />
             <Route path="/student/course/:course_id/review" element={<Review />} />
             <Route path="/student/wallethome" element={<WalletHome />} />
+            <Route path="/student/PurchaseHistory" element={<PurchaseHistory />} />
           </Route>
 
           {/* Đăng ký giảng viên */}
@@ -146,6 +149,7 @@ function App() {
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route path="/lecturer/instructorReviews" element={<InstructorReviews />} />
             <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
+            <Route path="/lecturer/SalesHistory" element={<SalesHistory />} />
           </Route>
 
           <Route path="/lecturer/quiz/edit" element={<RequireQuizParams><EditQuiz /></RequireQuizParams>} />
