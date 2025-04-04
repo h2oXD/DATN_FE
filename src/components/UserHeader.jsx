@@ -1,6 +1,6 @@
 // import React from 'react'
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logout from "../pages/Auth/Logout";
 import { useContext } from "react";
 import { StoreContext } from "../contexts/StoreProvider";
@@ -12,6 +12,10 @@ export default function UserHeader() {
   const { user } = useContext(StoreContext);
   const isLecturer = user?.roles?.some((role) => role.name === "lecturer");
   const isStudent = user?.roles?.some((role) => role.name === "student");
+  const location = useLocation();
+const isOnStudentPage = location.pathname.includes("/student");
+const isOnLecturerPage = location.pathname.includes("/lecturer");
+
   return (
     <>
       {user ? (
@@ -105,12 +109,30 @@ export default function UserHeader() {
                     Profile
                   </a>
                 </li> */}
-                <li>
+                {/* <li>
                   <Link to="/profile" className="dropdown-item">
                     <i className="fe fe-user me-2"></i>
                     Thông tin cá nhân
                   </Link>
-                </li>
+
+                </li> */}
+                {isStudent && isOnStudentPage && (
+  <li>
+    <Link to="/student/profile" className="dropdown-item">
+      <i className="fe fe-star me-2"></i>
+      Thông tin cá nhân
+    </Link>
+  </li>
+)}
+{isLecturer && isOnLecturerPage && (
+  <li>
+    <Link to="/lecturer/profile" className="dropdown-item">
+      <i className="fe fe-star me-2"></i>
+      Thông tin cá nhân
+    </Link>
+  </li>
+)}
+
                 {/* <li>
                   <a
                     className="dropdown-item"
