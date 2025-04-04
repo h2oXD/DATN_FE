@@ -20,7 +20,7 @@ export default function Logout() {
       <form onSubmit={handleSubmit}>
         <button type="submit" className="dropdown-item">
           <i className="fe fe-power me-2"></i>
-          Sign Out
+          Đăng xuất
         </button>
       </form>
     </>

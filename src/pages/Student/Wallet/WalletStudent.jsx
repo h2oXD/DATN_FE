@@ -13,6 +13,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../../api/axios";
 import { StoreContext } from "../../../contexts/StoreProvider";
+import { getImageUrl } from "../../../api/common";
 
 export default function WalletStudent() {
   const [wallet, setWallet] = useState(null);
@@ -96,27 +97,57 @@ export default function WalletStudent() {
   }, []);
 
   if (!wallet) {
-    return <Skeleton />;
+    return (
+      <>
+        <div className="row">
+          <div className="col-md-4">
+            <div className="card p-4 shadow-sm text-center border-0">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
+          </div>
+
+          {/* <!-- Chọn mệnh giá --> */}
+          <div className="col-md-8">
+            <div className="card p-4">
+              <Skeleton />
+              <Skeleton />
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (
     <>
-      <div className="row p-2">
+      <div className="row">
         <div className="col-md-4">
-          <div className="card p-4 shadow-sm text-center border-0 bg-light">
-            <div className="d-flex flex-column align-items-center text-center mb-4">
-              <div className="bg-info text-white p-4 rounded shadow-sm text-center w-100">
-                <div className="d-flex align-items-center mb-2">
-                  <FaUserCircle className="text-black me-2" size={50} />
-                  <div className="text-start">
-                    <h4 className="fw-bold mb-0 text-black">{user.name}</h4>
-                  </div>
+          <div className="card p-4 shadow-sm text-center border-0">
+            <div className="d-flex flex-column alert border tw-rounded">
+              <div className="d-flex align-items-center">
+                <div className="avatar avatar-md">
+                  <img
+                    alt="avatar"
+                    src={
+                      user && user.profile_picture
+                        ? getImageUrl(user.profile_picture)
+                        : "/avatarDefault.jpg"
+                    }
+                    className="rounded-circle"
+                  />
                 </div>
-                <div className="d-flex justify-content-between align-items-center bg-white text-dark p-2 rounded shadow-sm">
-                  <h6 className="mb-0">Số dư khả dụng</h6>
-                  <h4 className="text-success fw-bold mb-0">
-                    {wallet.balance.toLocaleString("vi-VN")} đ
-                  </h4>
+                <div className="d-flex flex-column ms-3">
+                  <div className="text-start">
+                    <h5 className="mb-0 text-black">{user && user.name}</h5>
+                  </div>
+                  <div className="d-flex text-dark rounded">
+                    <h5 className="mb-0 me-2">Số dư:</h5>
+                    <h5 className="text-dark mb-0">
+                      <b>{wallet.balance ? wallet.balance.toLocaleString() : 0} VNĐ</b>
+                    </h5>
+                  </div>
                 </div>
               </div>
             </div>

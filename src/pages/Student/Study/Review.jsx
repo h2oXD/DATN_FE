@@ -16,11 +16,13 @@ export default function Review({ course_id }) {
     const [content, setContent] = useState('')
     const [star, setStar] = useState(0)
     const [reset, setReset] = useState(false)
+    const [avgRate, setAvgRate] = useState(0)
     useEffect(() => {
         const reviewKhoaHoc = async () => {
             try {
                 const res = await axiosClient.get(`/courses/${course_id}/reviews`)
                 console.log(res.data);
+                setAvgRate(res.data.avgRate)
                 setCourseReview(res.data.reviews)
                 setIsReviewed(res.data.isReviewed)
             } catch (error) {
@@ -79,7 +81,10 @@ export default function Review({ course_id }) {
                         <button onClick={() => { setIsSwitch(false) }} className="btn btn-warning btn-sm">Đánh giá người hướng dẫn</button>
                     </div>
                     {isSwitch && <>
-                        <h4>Đánh giá khoá học</h4>
+                        <div className="d-flex justify-content-between mt-2 align-items-center">
+                            <h4>Đánh giá khoá học </h4>
+                            <p className="m-0 text-warning">{courseReview && (`${avgRate ? parseFloat(avgRate ?? 0).toFixed(1) : 0}★ (${courseReview.length}) đánh giá`)}</p>
+                        </div>
                         {isReviewed == 0 && <>
                             <div className="alert border">
                                 <div className="d-flex align-items-center mb-3">
