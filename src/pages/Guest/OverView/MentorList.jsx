@@ -64,6 +64,7 @@ export default function MentorList() {
           <div className="animate-marquee d-flex gap-3">
             {mentors && mentors.map((mentor, index) => (
               <Link
+                to={`/lecturer/${mentor.id}`}
                 key={index}
                 className="bg-white text-center shadow-sm text-wrap rounded-4 border card-lift border tw-min-w-[200px]"
               >

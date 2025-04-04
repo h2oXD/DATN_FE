@@ -12,6 +12,7 @@ export default function Content() {
     const [lesson, setLessons] = useState(null)
     const [loading, setLoading] = useState(false)
     // const [first, setFirst] = useState(false)
+    const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
     const navigate = useNavigate()
     useEffect(() => {
         const lessonInProgress = async () => {
@@ -37,6 +38,7 @@ export default function Content() {
                 setLessons(res.data.data)
                 // console.log(res.data.data);
                 // console.log(loading);
+                setHasCompleted(false)
             } catch (error) {
                 console.log(error);
             } finally {
@@ -80,7 +82,7 @@ export default function Content() {
     if (lesson.type == 'video') {
         return (
             <>
-                <Video lesson={lesson} course_id={course_id} setRefresh={setRefresh} setCurrentTime={setCurrentTime} currentTime={currentTime} />
+                <Video setHasCompleted={setHasCompleted} hasCompleted={hasCompleted} lesson={lesson} course_id={course_id} setRefresh={setRefresh} setCurrentTime={setCurrentTime} currentTime={currentTime} />
             </>
         )
     }

@@ -1,28 +1,23 @@
+/* eslint-disable react/prop-types */
 
-export default function ChatHeader() {
+export default function ChatHeader({ contentChat }) {
     return (
         <>
             <div className="bg-white border-top border-bottom px-4 py-3">
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex align-items-center">
-                        <a href="#" className="me-2 d-xl-none d-block" data-close="">
+                        <a href="#offcanvasChatList" className="me-2 d-xl-none d-block" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasChatList">
                             <i className="fe fe-arrow-left" />
                         </a>
-                        <div className="avatar avatar-md avatar-indicators avatar-online">
-                            <img
-                                src="../../assets/images/avatar/avatar-4.jpg"
-                                alt=""
-                                className="rounded-circle"
-                            />
-                        </div>
+                        <i className="fe fe-hash"></i>
                         <div className="ms-2">
-                            <h4 className="mb-0">Hữu Hào</h4>
-                            <p className="mb-0">Online</p>
+                            <h4 className="mb-0">{contentChat && contentChat.name}</h4>
                         </div>
                     </div>
                     <div>
                         <a
-                            href="#"
+                            href="#offcanvasChatInfo"
+                            data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasChatInfo"
                             className="me-3 text-link texttooltip"
                             data-template="phone"
                         >

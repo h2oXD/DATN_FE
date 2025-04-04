@@ -26,7 +26,7 @@ export default function StudentLayout() {
     <>
       <div id="">
         <Header collapsed={collapsed} setCollapsed={setCollapsed} />
-        <div className="d-flex">
+        <div className="d-flex tw-mt-[60px]">
           <SideBar collapsed={collapsed} />
           <main className="w-100" style={{ backgroundColor: "#F1F5F9" }}>
             <div className="container-fluid p-3">

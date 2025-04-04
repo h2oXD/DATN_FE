@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import { toast } from "react-toastify";
 import Histories from "../../Student/Wallet/Histories";
+import { getImageUrl } from "../../../api/common";
 
 export default function WalletHomeLecturer() {
   const { user } = useContext(StoreContext);
@@ -28,19 +29,23 @@ export default function WalletHomeLecturer() {
 
   return (
     <>
-      <div className="row p-2">
+      <div className="row">
         <div className="col-md-3">
-          <div className="card p-3 bg-info-subtle rounded-5 shadow-lg">
+          <div className="card p-3 shadow-none">
             <div className="d-flex align-items-center mb-2 ">
-              <img
-                src="../../../assets/images/avatar/avatar-1.jpg"
-                alt="Avatar"
-                className="rounded-circle me-3"
-                style={{ width: "50px" }}
-              />
-              <h4 className="mb-0 ">
-                {user.name}
-                <i className="bi bi-patch-check-fill text-success ms-2"></i>
+              <div className="avatar avatar-md">
+                <img
+                  alt="avatar"
+                  src={
+                    user && user.profile_picture
+                      ? getImageUrl(user.profile_picture)
+                      : "/avatarDefault.jpg"
+                  }
+                  className="rounded-circle"
+                />
+              </div>
+              <h4 className="mb-0 ms-2">
+                {user && user.name}
               </h4>
             </div>
             <div className="d-flex justify-content-between align-items-center bg-white text-dark p-2 rounded shadow-sm">
@@ -67,7 +72,7 @@ export default function WalletHomeLecturer() {
         </div>
 
         <div className="col-md-9">
-          <div className="card shadow-lg">
+          <div className="card shadow-none">
             <Histories />
           </div>
         </div>

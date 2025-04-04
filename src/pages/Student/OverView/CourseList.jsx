@@ -172,15 +172,11 @@ export default function CourseList() {
                     </svg>
                     <span>Level: {item.course.level || "N/A"}</span>
                   </li>
-<<<<<<< HEAD
-                </ul>
-                <small>By: {item.course.user.name}</small>
-=======
                 </ul> */}
                 {/* <small>By: {item.course.user.name}</small> */}
                 <div className="d-flex align-items-center mt-2">
                   <img
-                    src="../../../assets/images/avatar/avatar-2.jpg"
+                    src="/avatarDefault.jpg"
                     alt="Avatar"
                     className="rounded-circle me-2"
                     style={{ width: "30px" }}
@@ -189,7 +185,6 @@ export default function CourseList() {
                     {item.course.user.name || "Chưa cập nhật giảng viên"}
                   </span>
                 </div>
->>>>>>> bebe48181637a8f8231b357d09819c49d8a5c747
                 <div className="lh-1 mt-2 text-warning">
                   {item.highest_rating} ★ ({item.course.reviews.length} reviews)
                 </div>

@@ -56,7 +56,7 @@ export default function Lesson({ lesson, section_id, setLessons }) {
     if (!lesson) {
         return <div className="card p-2 my-2 rounded"><Skeleton /></div>;
     }
-    
+
     const handleEdit = (type) => {
         switch (type) {
             case 'video':
@@ -71,8 +71,9 @@ export default function Lesson({ lesson, section_id, setLessons }) {
                 break;
         }
     }
-    
-    
+    console.log(lesson);
+
+
     return (
         <div
             ref={setNodeRef}
@@ -89,6 +90,7 @@ export default function Lesson({ lesson, section_id, setLessons }) {
                     {lesson.type == 'coding' && (<GoCodeSquare className="tw-size-5 me-2" />)}
                 </span>
                 <p className="m-0">{lesson.title}</p>
+                {/* {lesson.type == 'quiz' && lesson.quizzes && lesson.quizzes[0].questions.length <= 0 && <p className="m-0 text-warning ms-2">(Chưa có câu hỏi nào)</p>} */}
             </div>
             <div className="d-flex align-items-center">
                 {lesson.type != 'quiz' && <i onClick={() => handleEdit(lesson.type)} className="fe fe-edit cursor-pointer mx-2"></i>}
@@ -96,8 +98,8 @@ export default function Lesson({ lesson, section_id, setLessons }) {
                 <i onClick={() => handleDelete(lesson.id)} className="fe fe-trash-2 cursor-pointer mx-2"></i>
                 <i {...listeners} className="fe fe-align-justify cursor-pointer ms-2"></i>
             </div>
-            {lesson.type == 'video' && (<EditVideoModal showVideoModal={showVideoModal} setShowVideoModal={setShowVideoModal} lesson={lesson} section_id={section_id} setLessons={setLessons}/>)}
-            {lesson.type == 'document' && (<EditDocumentModal showEditDocumentModal={showEditDocumentModal} setShowEditDocumentModal={setShowEditDocumentModal} lesson={lesson} section_id={section_id} setLessons={setLessons}/>)}
+            {lesson.type == 'video' && (<EditVideoModal showVideoModal={showVideoModal} setShowVideoModal={setShowVideoModal} lesson={lesson} section_id={section_id} setLessons={setLessons} />)}
+            {lesson.type == 'document' && (<EditDocumentModal showEditDocumentModal={showEditDocumentModal} setShowEditDocumentModal={setShowEditDocumentModal} lesson={lesson} section_id={section_id} setLessons={setLessons} />)}
         </div>
     );
 }

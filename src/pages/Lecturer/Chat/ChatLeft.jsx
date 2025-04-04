@@ -1,22 +1,24 @@
+/* eslint-disable react/prop-types */
 
-export default function ChatLeft() {
+import { getImageUrl } from "../../../api/common";
+
+export default function ChatLeft({ message }) {
     return (
         <>
             {/* chat-left */}
             <div className="d-flex mb-4">
                 <img
-                    src="../../assets/images/avatar/avatar-4.jpg"
+                    src={message && message.user.profile_picture ? getImageUrl(message.user.profile_picture) : '/avatarDefault.jpg'}
                     alt=""
                     className="rounded-circle avatar-md"
                 />
                 <div className="ms-3">
-                    <small>Hữu Hào , 09:35</small>
+                    <small>{message && message.user.name}</small>
                     <div className="d-flex">
                         <div className="card mt-2 rounded-top-md-left-0">
                             <div className="card-body p-3">
                                 <p className="mb-0 text-dark">
-                                    I just start Bootstrap, SCSS and Gulp development &amp;
-                                    setup github repository. simple example content
+                                    {message && message.message}
                                 </p>
                             </div>
                         </div>
