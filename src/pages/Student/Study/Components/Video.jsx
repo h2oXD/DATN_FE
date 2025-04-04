@@ -4,10 +4,10 @@ import { getImageUrl } from '../../../../api/common';
 import axiosClient from '../../../../api/axios';
 import { Button, Modal } from 'antd';
 
-export default function Video({ lesson, course_id, setRefresh, setCurrentTime, currentTime }) {
+export default function Video({ lesson, course_id, setRefresh, setCurrentTime, currentTime, setHasCompleted, hasCompleted }) {
     const [watchedPercentage, setWatchedPercentage] = useState(0);
     const videoRef = useRef(null);
-    const [hasCompleted, setHasCompleted] = useState(false); // Trạng thái đã gọi API hay chưa
+
     const lastTimeRef = useRef(0); // Lưu thời điểm trước khi tua
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [warningCount, setWarningCount] = useState(0); // Số lần vi phạm
@@ -39,7 +39,7 @@ export default function Video({ lesson, course_id, setRefresh, setCurrentTime, c
             if (currentTime > lastTimeRef.current) {
                 setMaxWatchedTime(currentTime);
             }
-            if(percentage < 1){
+            if (percentage < 1) {
                 setHasCompleted(false)
             }
             // Hoàn thành 80% thì gọi API

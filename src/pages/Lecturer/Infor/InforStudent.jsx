@@ -1,4 +1,18 @@
+import { useEffect } from "react";
+import axiosClient from "../../../api/axios";
+
 export default function InforStudent() {
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await axiosClient.get(`/lecturer-course-student-infor`)
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetch()
+  }, [])
   return (
     <>
       <div className="d-flex">
@@ -36,18 +50,16 @@ export default function InforStudent() {
                     </div>
 
                     <div className="col-auto">
-                      <form>
-                        <select className="form-select">
-                          <option value="">Nhập môn lập trình</option>
-                          <option value="">
-                            Lập trình cơ sở với JavaScript
-                          </option>
-                          <option value="">
-                            Lập trình JavaScript nâng cao
-                          </option>
-                          <option value="">Thiết kế UI/UX</option>
-                        </select>
-                      </form>
+                      <select className="form-select">
+                        <option value="">Nhập môn lập trình</option>
+                        <option value="">
+                          Lập trình cơ sở với JavaScript
+                        </option>
+                        <option value="">
+                          Lập trình JavaScript nâng cao
+                        </option>
+                        <option value="">Thiết kế UI/UX</option>
+                      </select>
                     </div>
                   </div>
                 </div>

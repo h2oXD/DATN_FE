@@ -5,7 +5,7 @@ import GuestLayout from "./layouts/GuestLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
 import StudentLayout from "./layouts/StudentLayout";
 import CourseDetail from "./pages/Student/CourseDetail/CourseDetail";
-import CourseList from "./pages/Guest/CourseList";
+// import CourseList from "./pages/Guest/CourseList";
 import Home from "./pages/Guest/Home";
 import Edit from "./pages/Lecturer/Course/Edit";
 import List from "./pages/Lecturer/Course/List";
@@ -71,6 +71,8 @@ import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
 import ProfileStudent from "./pages/Student/Profile/Infor";
 import EditBlog from "./pages/Student/Blog/EditBlog";
 import PostDetail from "./pages/Student/Blog/Detail";
+import HomeCourseList from "./pages/Guest/Course/HomCourseList";
+import LecturerShowInfo from "./pages/Guest/LecturerShowInfo";
 
 function App() {
   return (
@@ -80,11 +82,12 @@ function App() {
           {/* Khách */}
           <Route path="/" element={<GuestLayout />}>
             <Route index element={<Home />} />
-            <Route path="/course" element={<CourseList />} />
+            <Route path="/course" element={<HomeCourseList />} />
             <Route path="/course/:course_id/coursedetail" element={<CourseDetailGuest />} />
             <Route path="/resetPassword" element={<ResetPassword />} />
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/loginGoogle" element={<LoginGoogle />} />
+            <Route path="/lecturer/:id" element={<LecturerShowInfo />} />
           </Route>
           <Route path="/google/callback" element={<GoogleCallback />} />
 
@@ -109,6 +112,7 @@ function App() {
             <Route path="/student/course/:course_id/review" element={<Review />} />
             <Route path="/student/wallethome" element={<WalletHome />} />
             <Route path="/student/profile" element={<ProfileStudent/>} />
+            <Route path="/student/chat" element={<ChatLayout />} />
           </Route>
 
           {/* Đăng ký giảng viên */}

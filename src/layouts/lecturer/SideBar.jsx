@@ -57,14 +57,14 @@ export default function SideBar({ collapsed }) {
               className="text-dark"
               component={<Link to={"/lecturer/inforLecturers"} />}
             >
-              Giảng viên
+              Thông tin bản thân
             </MenuItem>
             <MenuItem
               className="text-dark"
               active={currentPath === "/lecturer/inforStudents"}
               component={<Link to={"/lecturer/inforStudents"} />}
             >
-              Học viên
+              Học viên với khoá học
             </MenuItem>
           </SubMenu>
           <MenuItem

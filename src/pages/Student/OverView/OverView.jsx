@@ -6,7 +6,7 @@ export default function OverView() {
   return (
     <>
       <div className="card">
-        <MentorList />
+        {/* <MentorList /> */}
         <CourseList />
         <CourseFree />
       </div>

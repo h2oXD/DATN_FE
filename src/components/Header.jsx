@@ -8,7 +8,7 @@ const Header = () => {
   const token = Cookies.get("token");
   return (
     <nav className="navbar navbar-expand-lg sticky-top" style={{ zIndex: "999" }}>
-      <div className="container-fluid px-0">
+      <div className="container px-0">
         <Link to="/" className="navbar-brand" href="">
           <img src="/logo.png" width={"133px"} height={"31px"} alt="" />
         </Link>
@@ -42,7 +42,7 @@ const Header = () => {
             <li className="nav-item">
               <Link
                 to="/"
-                className="nav-link active"
+                className="nav-link"
                 aria-current="page"
                 href="#"
               >
@@ -50,10 +50,20 @@ const Header = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link
+                to="/course"
+                className="nav-link"
+                aria-current="page"
+                href="#"
+              >
+                Khóa học
+              </Link>
+            </li>
+            {/* <li className="nav-item">
               <a className="nav-link" href="#">
                 Khoá học
               </a>
-            </li>
+            </li> */}
             <CategoriesDropdown />
           </ul>
           <form className="mt-3 mt-lg-0 ms-lg-3 d-flex align-items-center">

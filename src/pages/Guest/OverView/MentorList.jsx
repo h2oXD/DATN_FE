@@ -59,11 +59,13 @@ export default function MentorList() {
   return (
     <>
       <div className="mt-3">
-        <h3 className="my-1 text-center">Giảng viên nổi bật</h3>
+        <h3 className="my-1 text-center fw-bold">ĐỘI NGŨ GIẢNG VIÊN</h3>
+      <div className="mx-auto bg-warning mt-2 mb-3" style={{ width: "80px", height: "2px" }}></div>
         <div className="position-relative d-flex overflow-x-hidden pb-lg-4">
           <div className="animate-marquee d-flex gap-3">
             {mentors && mentors.map((mentor, index) => (
               <Link
+                to={`/lecturer/${mentor.id}`}
                 key={index}
                 className="bg-white text-center shadow-sm text-wrap rounded-4 border card-lift border tw-min-w-[200px]"
               >

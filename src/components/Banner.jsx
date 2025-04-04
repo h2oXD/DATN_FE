@@ -18,6 +18,7 @@ export default function Banner() {
       .get("/banners") // Endpoint API
       .then((response) => {
         setBanners(response.data.banners);
+        console.log(response.data.banners);
         setLoading(false);
       })
       .catch((error) => {
@@ -64,9 +65,10 @@ export default function Banner() {
                 <div className="d-flex align-items-center p-2 rounded-4">
                   <div className="col-md-1"></div>
                   <div className="col-md-6">
-                    <h2 className="h1 mb-3">{banner.title}</h2>
-                    <p className="fs-4">Khám phá ngay!</p>
-                    <button className="btn btn-primary">Xem chi tiết</button>
+                    <h3 className="mb-3">{banner.title}</h3>
+                    <p className="fs-4">{banner.description}</p>
+                    <a href={banner.link}
+                    className="btn btn-primary" target="_blank" rel="noopener noreferrer">Xem chi tiết</a>
                   </div>
                   <div className="col-md-5">
                     <img
