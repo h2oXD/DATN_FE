@@ -10,27 +10,43 @@ export default function CourseList() {
   const [courses, setCourses] = useState([]);
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [registeredCourses, setRegisteredCourses] = useState([]);
 
   useEffect(() => {
-    setLoading(true);
-    axiosClient
-      .get("/student/home")
-      .then((response) => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosClient.get("/student/home");
         if (response.data && response.data.topCourses) {
           setCourses(response.data.topCourses);
           console.log(response.data.topCourses);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Lỗi khi lấy danh sách khoá học:", error);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    const fetchRegisteredCourses = async () => {
+      try {
+        const response = await axiosClient.get("/user/courses");
+        setRegisteredCourses(response.data.data.map((item) => item.course_id));
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách khóa học đã đăng ký:", error);
+      }
+    };
+
+    fetchCourses();
+    fetchRegisteredCourses();
   }, []);
 
   const handleCourseClick = (id) => {
-    nav(`/course/${id}/coursedetail`);
+    if (registeredCourses.includes(id)) {
+      nav(`/student/course/${id}`); // Điều hướng vào học nếu đã đăng ký
+    } else {
+      nav(`/course/${id}/coursedetail`); // Điều hướng vào chi tiết nếu chưa đăng ký
+    }
   };
 
   const scrollLeft = () => {
@@ -64,10 +80,11 @@ export default function CourseList() {
 
   return (
     <div className="mt-1 p-3 position-relative">
-      <h3 className="mb-2 text-center">Khoá học nổi bật</h3>
+      <h3 className="mb-2 text-center fw-bold">KHÓA HỌC NỔI BẬT</h3>
+      <div className="mx-auto bg-warning mt-2 mb-3" style={{ width: "80px", height: "2px" }}></div>
 
       {/* Nút điều hướng */}
-      <div className="position-absolute top-0 end-0 d-flex mt-2 p-3">
+      <div className="position-absolute top-0 end-0 d-flex mt-4 p-3">
         <a className="text-dark me-2" onClick={scrollLeft}>
           <i className="bi bi-chevron-left"></i>
         </a>
@@ -89,18 +106,20 @@ export default function CourseList() {
         {courses.map((item) => (
           <div className="col-md-3" key={item.course.id}>
             <div className="card p-2 rounded-3">
-              <Link to={`/course/${item.course.id}/coursedetail`}>
                 <div
+                  onClick={() => handleCourseClick(item.course.id)}
                   style={{
                     position: "relative",
                     borderRadius: "10px",
                     overflow: "hidden",
                     boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer",
                   }}
                 >
                   <img
                     src={
-                      item.course.thumbnail && getImageUrl(item.course.thumbnail) ||
+                      (item.course.thumbnail &&
+                        getImageUrl(item.course.thumbnail)) ||
                       "/default-thumbnail.jpg"
                     }
                     alt="course"
@@ -119,14 +138,115 @@ export default function CourseList() {
                     >
                       <div className="d-flex align-items-center gap-1">
                         {item.course.level}
-                        {item.course.level == 'Sơ cấp' && <svg className="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="2" height="6" rx="1" fill="#19cb98" /><rect x="7" y="5" width="2" height="9" rx="1" fill="#D3D3D3" /><rect x="11" y="2" width="2" height="12" rx="1" fill="#D3D3D3" /></svg>}
-                        {item.course.level == 'Trung cấp' && <svg className="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="2" height="6" rx="1" fill="#ffaa46" /><rect x="7" y="5" width="2" height="9" rx="1" fill="#ffaa46" /><rect x="11" y="2" width="2" height="12" rx="1" fill="#D3D3D3" /></svg>}
-                        {item.course.level == 'Chuyên gia' && <svg className="" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="8" width="2" height="6" rx="1" fill="#e53f3c" /><rect x="7" y="5" width="2" height="9" rx="1" fill="#e53f3c" /><rect x="11" y="2" width="2" height="12" rx="1" fill="#e53f3c" /></svg>}
+                        {item.course.level == "Sơ cấp" && (
+                          <svg
+                            className=""
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="8"
+                              width="2"
+                              height="6"
+                              rx="1"
+                              fill="#19cb98"
+                            />
+                            <rect
+                              x="7"
+                              y="5"
+                              width="2"
+                              height="9"
+                              rx="1"
+                              fill="#D3D3D3"
+                            />
+                            <rect
+                              x="11"
+                              y="2"
+                              width="2"
+                              height="12"
+                              rx="1"
+                              fill="#D3D3D3"
+                            />
+                          </svg>
+                        )}
+                        {item.course.level == "Trung cấp" && (
+                          <svg
+                            className=""
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="8"
+                              width="2"
+                              height="6"
+                              rx="1"
+                              fill="#ffaa46"
+                            />
+                            <rect
+                              x="7"
+                              y="5"
+                              width="2"
+                              height="9"
+                              rx="1"
+                              fill="#ffaa46"
+                            />
+                            <rect
+                              x="11"
+                              y="2"
+                              width="2"
+                              height="12"
+                              rx="1"
+                              fill="#D3D3D3"
+                            />
+                          </svg>
+                        )}
+                        {item.course.level == "Chuyên gia" && (
+                          <svg
+                            className=""
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="8"
+                              width="2"
+                              height="6"
+                              rx="1"
+                              fill="#e53f3c"
+                            />
+                            <rect
+                              x="7"
+                              y="5"
+                              width="2"
+                              height="9"
+                              rx="1"
+                              fill="#e53f3c"
+                            />
+                            <rect
+                              x="11"
+                              y="2"
+                              width="2"
+                              height="12"
+                              rx="1"
+                              fill="#e53f3c"
+                            />
+                          </svg>
+                        )}
                       </div>
                     </span>
                   )}
                 </div>
-              </Link>
               <div className="px-1 py-1">
                 <h4 className="mt-1 mb-1 text-truncate-line-2">
                   <span
@@ -181,7 +301,11 @@ export default function CourseList() {
                 {/* <small>By: {item.course.user.name}</small> */}
                 <div className="d-flex align-items-center mt-2">
                   <img
-                    src={item.course.user.profile_picture ? getImageUrl(item.course.user.profile_picture) : '/avatarDefault.jpg'}
+                    src={
+                      item.course.user.profile_picture
+                        ? getImageUrl(item.course.user.profile_picture)
+                        : "/avatarDefault.jpg"
+                    }
                     alt="Avatar"
                     className="rounded-circle me-2"
                     style={{ width: "30px" }}
@@ -191,7 +315,8 @@ export default function CourseList() {
                   </span>
                 </div>
                 <div className="lh-1 mt-2 text-warning">
-                  {item.highest_rating} ★ ({item.course.reviews.length} đánh giá)
+                  {item.highest_rating} ★ ({item.course.reviews.length} đánh
+                  giá)
                 </div>
               </div>
 

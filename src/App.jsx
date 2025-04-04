@@ -5,7 +5,7 @@ import GuestLayout from "./layouts/GuestLayout";
 import LecturerLayout from "./layouts/LecturerLayout";
 import StudentLayout from "./layouts/StudentLayout";
 import CourseDetail from "./pages/Student/CourseDetail/CourseDetail";
-import CourseList from "./pages/Guest/CourseList";
+// import CourseList from "./pages/Guest/CourseList";
 import Home from "./pages/Guest/Home";
 import Edit from "./pages/Lecturer/Course/Edit";
 import List from "./pages/Lecturer/Course/List";
@@ -67,7 +67,9 @@ import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 
 import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
 import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
+import HomeCourseList from "./pages/Guest/Course/HomCourseList";
 import LecturerShowInfo from "./pages/Guest/LecturerShowInfo";
+
 
 function App() {
   return (
@@ -77,7 +79,7 @@ function App() {
           {/* Khách */}
           <Route path="/" element={<GuestLayout />}>
             <Route index element={<Home />} />
-            <Route path="/course" element={<CourseList />} />
+            <Route path="/course" element={<HomeCourseList />} />
             <Route path="/course/:course_id/coursedetail" element={<CourseDetailGuest />} />
             <Route path="/resetPassword" element={<ResetPassword />} />
             <Route path="/changePassword" element={<ChangePassword />} />

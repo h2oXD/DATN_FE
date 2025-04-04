@@ -78,6 +78,17 @@ export default function Voucher() {
               </p>
 
               <p className="text-muted mb-1">{voucher.description}</p>
+              {voucher.type === "percent" && voucher.discount_max_price && (
+                <p className="text-muted mb-1">
+                  Giảm tối đa:{" "}
+                  <span className="fw-semibold">
+                    {voucher.discount_max_price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </span>
+                </p>
+              )}
               <p className="text-muted fst-italic mb-1">
                 Còn <span className="fw-semibold">{voucher.count}</span> lượt sử
                 dụng. Hết hạn:{" "}
