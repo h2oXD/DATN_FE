@@ -268,7 +268,7 @@ import {
   FaInfinity,
   FaMoneyBillWave,
   FaShieldAlt,
-  FaUserCircle,
+  
 } from "react-icons/fa";
 import axiosClient from "../../../api/axios";
 import { toast } from "react-toastify";
@@ -282,6 +282,7 @@ const WalletWithdraw = () => {
   const [bankName, setBankName] = useState("Vietcombank");
   const [bankNumber, setBankNumber] = useState("");
   const [accountName, setAccountName] = useState("");
+  const [qrImage, setQrImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useContext(StoreContext);
   const navigate = useNavigate();
@@ -312,6 +313,14 @@ const WalletWithdraw = () => {
       );
     }
   };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setQrImage(file);
+    }
+  };
+  
+
 
   const handleWithdraw = async () => {
     if (!amount || amount < 50000) {
@@ -326,28 +335,31 @@ const WalletWithdraw = () => {
       toast.info("Vui lòng nhập đầy đủ thông tin tài khoản ngân hàng");
       return;
     }
-
+  
     setLoading(true);
     try {
-      const response = await axiosClient.post("/lecturer/wallets/withdraw", {
-        amount: Number(amount),
-        bank_name: bankName,
-        bank_number: bankNumber,
-        bank_nameUser: accountName,
-        qr_image: "", // Có thể bỏ qua nếu không cần
+      const formData = new FormData();
+      formData.append("amount", Number(amount));
+      formData.append("bank_name", bankName);
+      formData.append("bank_number", bankNumber);
+      formData.append("bank_nameUser", accountName);
+      
+      if (qrImage) {
+        formData.append("qr_image", qrImage); // Gửi ảnh QR lên server
+      }
+  
+      console.log("Dữ liệu gửi đi:", [...formData.entries()]); // Kiểm tra dữ liệu gửi lên
+  
+      const response = await axiosClient.post("/lecturer/wallets/withdraw", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
+  
       console.log("Response từ API:", response.data); // Kiểm tra response
-
+  
       if (response.data.status === "success") {
-        toast.success(
-          "Gửi yêu cầu rút tiền thành công! Vui lòng chờ phê duyệt."
-        );
-
+        toast.success("Gửi yêu cầu rút tiền thành công! Vui lòng chờ phê duyệt.");
         setAmount("");
-        // setBankNumber("");
-        // setAccountName("");
-
-        // Chờ admin duyệt, không cập nhật balance ngay lập tức
+        setQrImage(null);
       }
     } catch (error) {
       alert(error.response?.data?.message || "Đã xảy ra lỗi khi rút tiền");
@@ -355,6 +367,7 @@ const WalletWithdraw = () => {
       setLoading(false);
     }
   };
+  
   // Gọi fetchWallet mỗi 30s để cập nhật số dư nếu có thay đổi từ admin
   useEffect(() => {
     fetchWallet();
@@ -527,6 +540,11 @@ const WalletWithdraw = () => {
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value)}
               />
+            </div>
+            <div className="mt-2">
+            <h5 className="fw-bold">Tải lên mã QR (tùy chọn)</h5>
+            <input type="file" accept="image/*" className="form-control" onChange={handleFileChange} />
+            {qrImage && <img src={URL.createObjectURL(qrImage)} alt="QR Preview" className="mt-3 w-10" />}
             </div>
             <button
               className="btn btn-primary w-100 mt-3 fw-bold"

@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import Footer from "../../../components/Footer";
+import { getImageUrl } from "../../../api/common";
 
 export default function PostDetail() {
   const { id } = useParams(); // Lấy ID từ URL
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [author, setAuthor] = useState(null); // Lưu thông tin tác giả
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -15,6 +17,7 @@ export default function PostDetail() {
         setLoading(true);
         const response = await axiosClient.get(`/posts/${id}`);
         setPost(response.data.post);
+        
       } catch (err) {
         if (err.response) {
           // Xử lý theo mã lỗi từ API
@@ -50,12 +53,29 @@ export default function PostDetail() {
     <>
       <div className="container mt-4">
         <h2 className="fw-bold">{post.title}</h2>
-        <img
+        {/* <img
           src={`http://datn_be.test/${post.thumbnail}`}
           alt={post.title}
           className="img-fluid rounded mb-3"
-        />
-        <p className="text-muted">Đã xem: {post.views} lần</p>
+        /> */}
+        
+        <div className="d-flex align-items-center">
+  <div className="position-relative">
+    <img
+      src={post && post.thumbnail ? getImageUrl(post.thumbnail) : "/avatarDefault.jpg"}
+      alt={post.title}
+      className="rounded-circle border border-3 border-warning"
+      style={{ width: "50px", height: "50px" }}
+    />
+    
+  </div>
+  <div className="ms-2">
+    <strong className="me-1">Tác giả: {post.user_id}</strong> 
+    <i className="bi bi-patch-check-fill text-primary"></i>
+    <p className="text-muted">Đã xem: {post.views} lần</p>
+  </div>
+</div>
+
         <div
           className="post-content text-dark fs-6 lh-lg"
           dangerouslySetInnerHTML={{ __html: post.content }}
