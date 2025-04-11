@@ -74,9 +74,11 @@ export default function WalletStudent() {
 
   const performDeposit = () => {
     axiosClient
-      .post("/user/wallets/deposit", { amount: selectedAmount })
+      .post("/createMomo", { amount: selectedAmount })
       .then((response) => {
-        window.location.href = response.data.payment_url;
+        console.log(response);
+        
+        window.location.href = response.data;
       })
       .catch((error) => {
         setError("Lỗi khi nạp tiền: " + error.response.data.message);

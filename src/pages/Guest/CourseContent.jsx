@@ -154,74 +154,73 @@ export default function CourseContent() {
                 <div>
                   {/* <!-- List group --> */}
                   <ul className="list-group list-group-flush">
-                    {course && course.sections.map((section, index) => (
-                      <li key={index} className="list-group-item px-0 pt-0">
-                        {/* <!-- Toggle --> */}
-                        <a
-                          className="h4 mb-0 d-flex align-items-center active"
-                          data-bs-toggle="collapse"
-                          href="#courseTwo"
-                          aria-expanded="true"
-                          aria-controls="courseTwo"
-                        >
-                          <div className="me-auto">{section.title}</div>
-                          {/* <!-- Chevron --> */}
-                          <span className="chevron-arrow ms-4">
-                            <i className="fe fe-chevron-down fs-4"></i>
-                          </span>
-                        </a>
-                        {/* <!-- Row --> */}
-                        {/* <!-- Collapse --> */}
-                        <div
-                          className="collapse show"
-                          id="courseTwo"
-                          data-bs-parent="#courseAccordion"
-                        >
-                          <div className="pt-3 pb-2">
-                            {section && section.lessons.map((lesson, index) => (
-                              <a key={index}
-                                className="mb-2 d-flex justify-content-between align-items-center text-inherit border p-2"
-                              >
-                                <div className="text-truncate">
-                                  <span className="">
-                                    {lesson.type == 'video' && (<><MdOutlineOndemandVideo className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Video:</p></>)}
-                                    {lesson.type == 'document' && (<><IoDocumentTextOutline className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Tài liệu:</p></>)}
-                                    {lesson.type == 'quiz' && (<><IoIosHelpCircleOutline className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Trắc nghiệm:</p></>)}
-                                    {lesson.type == 'coding' && (<><GoCodeSquare className="tw-size-5 me-2" /><p className="m-0 me-2 tw-inline tw-font-semibold">Coding:</p></>)}
-                                  </span>
-                                  <span>{lesson.title}</span>
-                                </div>
-                                <div className="text-truncate">
-                                  <span>{lesson.is_preview == 1 && (<a onClick={() => { setPreview(lesson.id) }} className="tw-cursor-pointer">Xem trước</a>)}</span>
-                                  <Modal
-                                    open={preivew == lesson.id}
-                                    onCancel={() => { setPreview(false) }}
-                                    width={700}
-                                    footer={null}
+                    {course &&
+                      course.sections.map((section, index) => (
+                        <li key={index} className="list-group-item px-0 py- border-0">
+                          <a
+                            className="h4 mb-0 d-flex align-items-center text-dark fw-semibold p-2 bg-light rounded-2"
+                            data-bs-toggle="collapse"
+                            href={`#courseTwo${index}`}
+                            aria-expanded="true"
+                            aria-controls={`courseTwo${index}`}
+                          >
+                            <div className="me-auto">{section.title}</div>
+                            <span className="chevron-arrow ms-4">
+                              <i className="fe fe-chevron-down fs-4 text-muted"></i>
+                            </span>
+                          </a>
+                          <div className="collapse" id={`courseTwo${index}`} data-bs-parent="#courseAccordion">
+                            <div className="pt-3">
+                              {section &&
+                                section.lessons.map((lesson, index) => (
+                                  <a
+                                    key={index}
+                                    className="mb-2 d-flex justify-content-between align-items-center text-dark border p-3 rounded-2 hover-bg-light"
+                                    style={{ transition: 'background-color 0.2s' }}
                                   >
-                                    <h3>{lesson.title}</h3>
-                                    {lesson.is_preview == 1 && lesson.type == 'video' &&
-                                      <video
-                                        controls
-                                        className="w-100 rounded border"
-                                        src={getImageUrl(lesson.videos.video_url)}
-                                      ></video>
-                                    }
-                                    {lesson.is_preview == 1 && lesson.type == 'document' &&
-                                      <>
-                                        <p>{lesson.documents.description}</p>
-                                        <a href={getImageUrl(lesson.documents.document_url)} download="document_name.pdf">Tải xuống</a>
-                                      </>
-                                    }
-                                  </Modal>
-                                </div>
-                              </a>
-                            ))}
+                                    <div className="text-truncate d-flex align-items-center">
+                                      <span className="me-2">
+                                        {lesson.type === 'video' && <MdOutlineOndemandVideo className="tw-size-5 text-primary" />}
+                                        {lesson.type === 'document' && <IoDocumentTextOutline className="tw-size-5 text-primary" />}
+                                        {lesson.type === 'quiz' && <IoIosHelpCircleOutline className="tw-size-5 text-primary" />}
+                                        {lesson.type === 'coding' && <GoCodeSquare className="tw-size-5 text-primary" />}
+                                      </span>
+                                      <span className="fw-medium">{lesson.title}</span>
+                                    </div>
+                                    <div className="text-truncate">
+                                      {lesson.is_preview === 1 && (
+                                        <a onClick={() => setPreview(lesson.id)} className="text-primary fw-medium">
+                                          Xem trước
+                                        </a>
+                                      )}
+                                      <Modal
+                                        open={preivew == lesson.id}
+                                        onCancel={() => { setPreview(false) }}
+                                        width={700}
+                                        footer={null}
+                                      >
+                                        <h3>{lesson.title}</h3>
+                                        {lesson.is_preview == 1 && lesson.type == 'video' &&
+                                          <video
+                                            controls
+                                            className="w-100 rounded border"
+                                            src={getImageUrl(lesson.videos.video_url)}
+                                          ></video>
+                                        }
+                                        {lesson.is_preview == 1 && lesson.type == 'document' &&
+                                          <>
+                                            <p>{lesson.documents.description}</p>
+                                            <a href={getImageUrl(lesson.documents.document_url)} download="document_name.pdf">Tải xuống</a>
+                                          </>
+                                        }
+                                      </Modal>
+                                    </div>
+                                  </a>
+                                ))}
+                            </div>
                           </div>
-                        </div>
-                      </li>
-                    ))}
-
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </div>
