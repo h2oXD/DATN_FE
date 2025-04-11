@@ -172,7 +172,7 @@ export default function BuyCourse() {
             </small> */}
             <div className="d-flex align-items-center">
               <img
-                src="../../../assets/images/avatar/avatar-2.jpg"
+                src={course && course.lecturer.profile_picture ? getImageUrl(course.lecturer.profile_picture) : '/avatarDefault.jpg'}
                 alt="Avatar"
                 className="rounded-circle me-2"
                 style={{ width: "20px" }}

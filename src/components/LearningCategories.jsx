@@ -36,7 +36,9 @@ export default function LearningCategories() {
   }, []);
 
   if (loading) {
-    return <Skeleton />;
+    return <div className="container py-3 px-5">
+      <Skeleton />
+    </div>;
   }
 
   return (

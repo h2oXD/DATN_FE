@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../api/axios";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import { getImageUrl } from "../../../api/common";
+import { toast } from "react-toastify";
 
 export default function MyBlog() {
   const [activeTab, setActiveTab] = useState("published");
@@ -62,7 +63,7 @@ export default function MyBlog() {
     try {
       await axiosClient.delete(`/posts/${postId}`);
       setArticles(articles.filter((article) => article.id !== postId));
-      alert("Bài viết đã được xóa thành công.");
+      toast.success("Bài viết đã được xóa thành công.");
     } catch (err) {
       err("Lỗi khi xóa bài viết. Vui lòng thử lại.");
     }

@@ -132,6 +132,9 @@ export default function Basic() {
                 toast.success("Cập nhật thành công");
             } catch (error) {
                 console.log(error);
+                if (error.response.status == 422) {
+                    toast.error('Dữ liệu không hợp lệ')
+                }
             } finally {
                 setIsSubmitting(false); // Kết thúc loading dù thành công hay thất bại
             }

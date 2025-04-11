@@ -94,9 +94,9 @@ export default function MyCourse() {
                 </div>
                 <div className="card-footer d-flex justify-content-between small">
                   <div>
-                    <i className="bi bi-play-circle me-1"></i>{" "}
-                    {item.progress.completed_lessons}/
-                    {item.progress.total_lessons} Bài học
+                    {/* <i className="bi bi-play-circle me-1"></i>{" "} */}
+                    {/* {item.progress.completed_lessons}/
+                    {item.progress.total_lessons} Bài học */}
                   </div>
                   <Link
                     to={`/student/course/${item.course.id}`}
