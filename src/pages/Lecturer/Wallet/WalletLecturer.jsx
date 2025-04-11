@@ -369,11 +369,11 @@ const WalletWithdraw = () => {
   };
   
   // Gọi fetchWallet mỗi 30s để cập nhật số dư nếu có thay đổi từ admin
-  useEffect(() => {
-    fetchWallet();
-    const interval = setInterval(fetchWallet, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   fetchWallet();
+  //   const interval = setInterval(fetchWallet, 30000);
+  //   return () => clearInterval(interval);
+  // }, []);
   return (
     <div className="card">
       <div className="row">
