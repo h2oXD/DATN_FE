@@ -90,8 +90,9 @@ export default function Voucher() {
                 </p>
               )}
               <p className="text-muted fst-italic mb-1">
-                Còn <span className="fw-semibold">{voucher.count}</span> lượt sử
-                dụng. Hết hạn:{" "}
+                {/* Còn <span className="fw-semibold">{voucher.count}</span> lượt sử
+                dụng.  */}
+                Hết hạn:{" "}
                 {new Date(voucher.end_time).toLocaleDateString("vi-VN")}.
               </p>
             </div>

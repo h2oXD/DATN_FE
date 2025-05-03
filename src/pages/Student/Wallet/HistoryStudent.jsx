@@ -46,7 +46,7 @@ export default function HistoryStudent() {
                     : history.type === "withdraw"
                     ? "Rút tiền"
                     : history.type === "payment"
-                    ? "Thanh toán" 
+                    ? "Thanh toán"
                     : "Chưa xác định"}
                 </td>
                 <td className="text-center">

@@ -1,89 +1,143 @@
-import { useState } from "react";
-import { Card, Rate, Input, Button, List, Avatar, Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Row, Col, Rate, Avatar, Spin, Alert, Select } from "antd";
+import axiosClient from "../../../api/axios";
+
+const { Option } = Select;
+
+const getInitials = (name) => {
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
 
 const CourseReview = () => {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      name: "Nguyễn Văn A",
-      rating: 5,
-      comment: "Khóa học rất hay!",
-      avatar: "https://i.pravatar.cc/150?img=1",
-    },
-    {
-      id: 2,
-      name: "Trần Thị B",
-      rating: 4,
-      comment: "Nội dung dễ hiểu, giảng viên nhiệt tình.",
-      avatar: "https://i.pravatar.cc/150?img=2",
-    },
-  ]);
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("all");
 
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-  const [isCompleted, setIsCompleted] = useState(true); // Giả lập học viên đã hoàn thành khóa học
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleSubmit = () => {
-    if (!rating || !comment) return;
-    const newReview = {
-      id: reviews.length + 1,
-      name: "Bạn",
-      rating,
-      comment,
-      avatar: "https://i.pravatar.cc/150?img=3",
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axiosClient.get(`/lecturer/courses`);
+        setCourses(response.data.courses.data || []); 
+        console.log(response.data.courses.data);
+        if (response.data.courses.data.length > 0) {
+          setSelectedCourse(response.data.courses.data[0].id); 
+        }
+      } catch (err) {
+        setError("Không thể tải danh sách khóa học. Vui lòng thử lại sau.");
+        console.log(err)
+      }
     };
-    setReviews([newReview, ...reviews]);
-    setRating(0);
-    setComment("");
-    setIsModalOpen(false);
+
+    fetchCourses();
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCourse) return;
+
+    const fetchReviews = async () => {
+      setLoading(true);
+      try {
+        const response = await axiosClient.get(`/courses/${selectedCourse}/reviews`);
+        setReviews(response.data.reviews || []); // Ensure reviews is always an array
+      } catch (err) {
+        setError("Không thể tải đánh giá. Vui lòng thử lại sau.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [selectedCourse]);
+
+  const handleCourseChange = (value) => {
+    setSelectedCourse(value);
   };
 
+  const handleFilterChange = (value) => {
+    setFilter(value);
+  };
+
+  const filteredReviews = reviews.filter((review) => {
+    if (filter === "all") return true;
+    return review.rating === parseInt(filter, 10);
+  });
+
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '20px' }}>
+        <Spin tip="Đang tải dữ liệu..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <Alert message="Lỗi" description={error} type="error" showIcon />;
+  }
+
   return (
-    <Card title="Đánh giá khóa học">
-      {isCompleted && (
-        <Button type="primary" onClick={() => setIsModalOpen(true)}>
-          Đánh giá ngay
-        </Button>
-      )}
-      <Modal
-        title="Đánh giá khóa học"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={null}
+    <div style={{ padding: "20px" }}>
+      <Select
+        value={selectedCourse}
+        style={{ marginBottom: 20, width: 300 }}
+        onChange={handleCourseChange}
       >
-        <Rate value={rating} onChange={setRating} />
-        <Input.TextArea
-          rows={3}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Viết đánh giá của bạn..."
-          style={{ marginTop: 8 }}
-        />
-        <Button type="primary" onClick={handleSubmit} style={{ marginTop: 8 }}>
-          Gửi đánh giá
-        </Button>
-      </Modal>
-      <List
-        itemLayout="horizontal"
-        dataSource={reviews}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar src={item.avatar} />}
-              title={<strong>{item.name}</strong>}
-              description={
+        {courses.map((course) => (
+          <Option key={course.id} value={course.id}>
+            {course.title}
+          </Option>
+        ))}
+      </Select>
+
+      <Select
+        defaultValue="all"
+        style={{ marginBottom: 20, width: 200, marginLeft: 20 }}
+        onChange={handleFilterChange}
+      >
+        <Option value="all">Tất cả</Option>
+        <Option value="5">5 sao</Option>
+        <Option value="4">4 sao</Option>
+        <Option value="3">3 sao</Option>
+        <Option value="2">2 sao</Option>
+        <Option value="1">1 sao</Option>
+      </Select>
+
+      <Row gutter={[16, 16]}>
+        {filteredReviews.map((review, index) => (
+          <Col key={index} xs={24} sm={12} md={12} lg={6}>
+            <Card>
+              <div style={{ display: "flex", alignItems: "center", marginBottom: 12 }}>
+                <Avatar
+                  size="large"
+                  style={{ backgroundColor: "#ccc", marginRight: 12 }}
+                >
+                  {getInitials(review.reviewer.name)}
+                </Avatar>
                 <div>
-                  <Rate value={item.rating} disabled style={{ fontSize: 14 }} />
-                  <p>{item.comment}</p>
+                  <div style={{ fontWeight: "bold" }}>{review.reviewer.name}</div>
+                  <div style={{ fontSize: "12px", color: "#888" }}>
+                    {new Date(review.created_at).toLocaleDateString("vi-VN")}
+                  </div>
                 </div>
-              }
-            />
-          </List.Item>
-        )}
-      />
-    </Card>
+              </div>
+              <Rate disabled defaultValue={review.rating} style={{ color: "#fadb14" }} />
+              <div style={{ marginTop: 8 }}>{review.review_text}</div>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </div>
   );
 };
 
 export default CourseReview;
+
+
+

@@ -5,13 +5,15 @@ import {
   FaCode,
   FaLanguage,
   FaPaintBrush,
-  FaUserGraduate
+  FaUserGraduate,
 } from "react-icons/fa";
 import axiosClient from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function LearningCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -50,7 +52,12 @@ export default function LearningCategories() {
       ></div>
       <div className="row g-3 justify-content-center">
         {categories.map((category, index) => (
-          <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-2 ">
+          <div
+            key={index}
+            className="col-12 col-sm-6 col-md-4 col-lg-2"
+            onClick={() => navigate(`/category?category_id=${category.id}`)} // Điều hướng đến trang danh mục
+            style={{ cursor: "pointer" }}
+          >
             <div className="card shadow-sm p-3 text-center h-100 d-flex flex-column align-items-center justify-content-center">
               {category.name === "Công nghệ thông tin" && (
                 <FaCode className="text-secondary" size={30} />

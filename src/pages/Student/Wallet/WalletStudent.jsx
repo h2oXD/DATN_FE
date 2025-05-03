@@ -7,13 +7,12 @@ import {
   FaInfoCircle,
   FaMoneyBillWave,
   FaShieldAlt,
-  FaUserCircle,
 } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../../api/axios";
-import { StoreContext } from "../../../contexts/StoreProvider";
 import { getImageUrl } from "../../../api/common";
+import { StoreContext } from "../../../contexts/StoreProvider";
 
 export default function WalletStudent() {
   const [wallet, setWallet] = useState(null);
@@ -85,16 +84,31 @@ export default function WalletStudent() {
       });
   };
 
+  const handleMomoDeposit = () => {
+    if (selectedAmount < 50000) {
+      setError("Số tiền nạp tối thiểu là 50.000 VND");
+      return;
+    }
+
+    axiosClient
+      .post("/createMomo", { amount: selectedAmount })
+      .then((response) => {
+        if (response.data) {
+          window.location.href = response.data; // Chuyển hướng đến URL thanh toán MoMo
+        }
+      })
+      .catch((error) => {
+        setError("Lỗi khi tạo yêu cầu nạp tiền qua MoMo: " + error.message);
+      });
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("status") === "success") {
+    const status = params.get("status");
+    if (status === "success") {
       toast.success("Nạp tiền thành công!", { position: "top-right" });
-      params.delete("status");
-      const newUrl =
-        params.toString() === ""
-          ? window.location.pathname
-          : `${window.location.pathname}?${params.toString()}`;
-      window.history.replaceState({}, "", newUrl);
+    } else if (status === "failed") {
+      toast.error("Nạp tiền thất bại!", { position: "top-right" });
     }
   }, []);
 
@@ -147,7 +161,10 @@ export default function WalletStudent() {
                   <div className="d-flex text-dark rounded">
                     <h5 className="mb-0 me-2">Số dư:</h5>
                     <h5 className="text-dark mb-0">
-                      <b>{wallet.balance ? wallet.balance.toLocaleString() : 0} VNĐ</b>
+                      <b>
+                        {wallet.balance ? wallet.balance.toLocaleString() : 0}{" "}
+                        VNĐ
+                      </b>
                     </h5>
                   </div>
                 </div>
@@ -277,11 +294,18 @@ export default function WalletStudent() {
                 VND
               </p>
               <button
-                className="btn btn-primary w-15"
+                className="btn btn-outline-primary w-20"
                 disabled={selectedAmount < 50000}
                 onClick={handleDeposit}
               >
-                Nạp tiền
+                Nạp tiền qua VnPay
+              </button>
+              <button
+                className="btn btn-outline-success w-20 ms-2"
+                disabled={selectedAmount < 50000}
+                onClick={handleMomoDeposit}
+              >
+                Nạp tiền qua MoMo
               </button>
               {message && <p className="text-success mt-1">{message}</p>}
             </div>
@@ -291,7 +315,7 @@ export default function WalletStudent() {
 
       <Modal
         title="Xác nhận nạp tiền"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
