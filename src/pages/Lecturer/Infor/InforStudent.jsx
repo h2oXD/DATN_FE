@@ -177,15 +177,15 @@ export default function InforStudent() {
               <h5>SĐT: {student?.phone_number || "Chưa cập nhật"}</h5>
                         </div>
                         <div className="d-flex justify-content-between border-bottom py-2 mt-4 fs-6">
-                          <span>Ngày tạo</span>
-                          <span className="text-dark">
+                          {/* <span>Ngày tạo</span> */}
+                          {/* <span className="text-dark">
                             {student.created_at?.substring(0, 10) || "N/A"}
-                          </span>
+                          </span> */}
                         </div>
 
                         <div className="d-flex justify-content-center mt-2">
   <button
-    className="btn btn-sm btn-outline-secondary m-1"
+    className="btn btn-sm btn-outline-secondary m-1 "
     onClick={() => navigate(`/lecturer/students/${student.id}`)}
   >
     Xem thông tin

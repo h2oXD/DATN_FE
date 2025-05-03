@@ -241,41 +241,66 @@ export default function StudentDetail() {
     <strong className="me-2">📚 Khóa học hiện tại</strong>
   </div>
   <div className="card-body">
-    {student.current_courses && student.current_courses.length > 0 ? (
-      <div className="row g-3">
+    {student.current_courses.length > 0 ? (
+      <div className="row g-4">
         {student.current_courses.map((course, index) => (
           <div className="col-md-6 col-lg-4" key={index}>
-            <div className="card h-100 shadow-sm border rounded-3">
+            <div className="card h-100 border-0 shadow-sm rounded-4">
               <img
-                                src={getImageUrl(course.thumbnail)}
-                                
-                                className="card-img-top"
-                              />
-              <div className="card-body">
-                <h5 className="card-title fw-semibold mb-2">{course.title}</h5>
-                <p className="mb-2 text-muted small">
-                  Ngày đăng ký: {moment(course.enrolled_at).format("DD/MM/YYYY")}
+                src={getImageUrl(course.thumbnail) || "/assets/images/default-course.jpg"}
+                alt="Course thumbnail"
+                className="card-img-top rounded-top-4"
+                style={{ height: "180px", objectFit: "cover" }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title fw-bold text-primary mb-2">{course.title}</h5>
+
+                <p className="text-muted small mb-2">
+                  <FaCalendarPlus className="me-1 text-secondary" />
+                  Đăng ký: {moment(course.enrolled_at).format("DD/MM/YYYY")}
                 </p>
-                <div className="d-flex justify-content-between align-items-center">
-                  <span className="badge bg-success">Tiến độ: {course.progress_percent || 0}%</span>
-                  <span className={`badge ${course.progress_status === "in_progress" ? "bg-info" : "bg-secondary"}`}>
-                    {course.progress_status === "in_progress" ? "Đang học" : "Khác"}
-                  </span>
+
+                {/* Thanh tiến độ */}
+                <div className="mb-2">
+                  <div className="d-flex justify-content-between align-items-center mb-1">
+                    <small className="text-muted">Tiến độ</small>
+                    <small className="fw-semibold text-primary">
+                      {parseInt(course.progress_percent)}%
+                    </small>
+                  </div>
+                  <div className="progress rounded-pill" style={{ height: "10px" }}>
+                    <div
+                      className="progress-bar bg-info"
+                      role="progressbar"
+                      style={{ width: `${parseInt(course.progress_percent)}%` }}
+                      aria-valuenow={parseInt(course.progress_percent)}
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
                 </div>
+
+                {/* Trạng thái */}
+                <span
+                  className={`badge ${course.progress_status === "in_progress" ? "bg-info" : "bg-secondary"} mt-auto`}
+                >
+                  {course.progress_status === "in_progress" ? "Đang học" : "Đã hoàn thành"}
+                </span>
               </div>
             </div>
           </div>
         ))}
       </div>
     ) : (
-      <p className="text-muted mb-0">Chưa có khóa học nào.</p>
+      <p className="text-muted">Chưa có khóa học nào.</p>
     )}
   </div>
 </div>
 
 
+
       {/* Lịch sử khóa học */}
-      <div className="card shadow-sm border-0">
+      {/* <div className="card shadow-sm border-0">
         <div className="card-header bg-white">
           <strong>📖 Lịch sử khóa học</strong>
         </div>
@@ -293,7 +318,7 @@ export default function StudentDetail() {
             <p className="text-muted mb-0">Chưa có lịch sử khóa học.</p>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

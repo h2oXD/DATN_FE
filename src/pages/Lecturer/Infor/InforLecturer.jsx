@@ -303,30 +303,26 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../../api/axios";
 import { FaFileAlt, FaUsers, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import EditInfor from "../Profile/EditInfor";
-// import EditInfor from "./EditInfor";
 
-export default function InforLecturer() {
-  // State lưu trữ dữ liệu từ API
+import { getImageUrl } from "../../../api/common";
+import EditInfor from "../Profile/EditInfor";
+
+export default function ProfileLecturer() {
   const [user, setUser] = useState(null);
   const [courses, setCourses] = useState([]);
   const [statistics, setStatistics] = useState(null);
 
-  // Gọi API khi component được render
   useEffect(() => {
-    // Lấy thông tin cá nhân giảng viên
     axiosClient
       .get("/user")
       .then((response) => setUser(response.data))
       .catch((error) => console.error("Lỗi lấy thông tin giảng viên:", error));
 
-    // Lấy danh sách khóa học
     axiosClient
       .get("/lecturer/courses")
-      .then((response) => setCourses(response.data))
+      .then((response) => setCourses(response.data.courses.data))
       .catch((error) => console.error("Lỗi lấy danh sách khóa học:", error));
 
-    // Lấy số lượng học viên & đánh giá
     axiosClient
       .get("/lecturer/statistics")
       .then((response) => setStatistics(response.data))
@@ -336,21 +332,20 @@ export default function InforLecturer() {
   return (
     <>
       <div className="row">
-        {/* Thông tin cá nhân */}
+        {/* Cột trái: Thông tin giảng viên + Thống kê */}
         <div className="col-md-4">
-          <div className="card p-3">
+          <div className="card p-3 mb-3">
             <div className="text-center">
               <img
-                                                alt="avatar"
-                                                src={
-                                                  user && user.profile_picture
-                                                    ? getImageUrl(user.profile_picture)
-                                                    : "/avatarDefault.jpg"
-                                                }
-                                                className="rounded-circle tw-w-32 tw-ml-26 tw-my-2"
-                                              />
+                alt="avatar"
+                src={
+                  user && user.profile_picture
+                    ? getImageUrl(user.profile_picture)
+                    : "/avatarDefault.jpg"
+                }
+                className="rounded-circle tw-w-32 tw-ml-26 tw-my-2"
+              />
               <h3 className="mt-3">{user?.name || "Đang tải..."}</h3>
-              
               <h5>Email: {user?.email || "Chưa cập nhật"}</h5>
               <h5>SĐT: {user?.phone_number || "Chưa cập nhật"}</h5>
             </div>
@@ -363,54 +358,9 @@ export default function InforLecturer() {
               <EditInfor />
             </Link>
           </div>
-        </div>
 
-        {/* Danh sách khóa học */}
-        <div className="col-md-8">
-          <div className="card border-0">
-            <div className="card-header">
-              <h4 className="mb-0">
-                My Courses <span className="fs-6">({courses.length})</span>
-              </h4>
-            </div>
-
-            <div className="card-body">
-              <ul className="list-group list-group-flush">
-                {courses.length > 0 ? (
-                  courses.map((course) => (
-                    <li key={course.id} className="list-group-item px-0 pb-3 pt-0">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <a href="#">
-                          <div className="d-lg-flex align-items-center">
-                            <div>
-                              <img
-                                src={course.image || "../assets/images/course/course-css.jpg"}
-                                alt={course.title}
-                                className="rounded img-4by3-lg"
-                              />
-                            </div>
-                            <div className="ms-lg-3 mt-2 mt-lg-0">
-                              <h4 className="text-primary-hover">{course.title}</h4>
-                              <p className="mb-0">{course.duration || "Không có thời lượng"}</p>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <p>Không có khóa học nào.</p>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Thống kê */}
-      <div className="row mt-2">
-        <div className="col-md-4">
-          <div className="card p-5">
+          {/* Thống kê */}
+          <div className="card p-4">
             <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
               <div>
                 <h5 className="mb-0">{courses.length}</h5>
@@ -420,7 +370,7 @@ export default function InforLecturer() {
             </div>
             <div className="d-flex justify-content-between align-items-center border-bottom py-2">
               <div>
-                <h5 className="mb-0">{statistics?.students || 0}</h5>
+                <h5 className="mb-0">{statistics?.total_students || 0}</h5>
                 <p className="text-muted mb-0">Tổng số học viên</p>
               </div>
               <FaUsers size={20} />
@@ -434,8 +384,189 @@ export default function InforLecturer() {
             </div>
           </div>
         </div>
+
+        {/* Cột phải: Danh sách khóa học */}
+        <div className="col-md-8">
+          <div className="card border-0">
+            <div className="card-header">
+              <h4 className="mb-0">
+                My Courses <span className="fs-5">({courses.length})</span>
+              </h4>
+            </div>
+
+            <div className="card-body">
+  <div className="row">
+    {courses.length > 0 ? (
+      courses.map((course) => (
+        <div key={course.id} className="col-md-4 mb-4">
+          <div className="card h-100 shadow-sm border-0">
+            
+            <div className="card-body">
+            <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <img
+              src={
+                course.thumbnail
+                  ? getImageUrl(course.thumbnail)
+                  : "/default-thumbnail.jpg"
+              }
+              alt="Course Thumbnail"
+              className="card-img-top rounded-top"
+              style={{ height: "180px", objectFit: "cover" }}
+            />
+                  {course.level && (
+                    <span
+                      className="badge bg-dark-soft"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        padding: "5px 10px",
+                        backgroundColor: "white",
+                      }}
+                    >
+                      <div className="d-flex align-items-center gap-1">
+                        {course.level}
+                        {course.level == "Sơ cấp" && (
+                          <svg
+                            className=""
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="8"
+                              width="2"
+                              height="6"
+                              rx="1"
+                              fill="#19cb98"
+                            />
+                            <rect
+                              x="7"
+                              y="5"
+                              width="2"
+                              height="9"
+                              rx="1"
+                              fill="#D3D3D3"
+                            />
+                            <rect
+                              x="11"
+                              y="2"
+                              width="2"
+                              height="12"
+                              rx="1"
+                              fill="#D3D3D3"
+                            />
+                          </svg>
+                        )}
+                        {course.level == "Trung cấp" && (
+                          <svg
+                            className=""
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="8"
+                              width="2"
+                              height="6"
+                              rx="1"
+                              fill="#ffaa46"
+                            />
+                            <rect
+                              x="7"
+                              y="5"
+                              width="2"
+                              height="9"
+                              rx="1"
+                              fill="#ffaa46"
+                            />
+                            <rect
+                              x="11"
+                              y="2"
+                              width="2"
+                              height="12"
+                              rx="1"
+                              fill="#D3D3D3"
+                            />
+                          </svg>
+                        )}
+                        {course.level == "Chuyên gia" && (
+                          <svg
+                            className=""
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="8"
+                              width="2"
+                              height="6"
+                              rx="1"
+                              fill="#e53f3c"
+                            />
+                            <rect
+                              x="7"
+                              y="5"
+                              width="2"
+                              height="9"
+                              rx="1"
+                              fill="#e53f3c"
+                            />
+                            <rect
+                              x="11"
+                              y="2"
+                              width="2"
+                              height="12"
+                              rx="1"
+                              fill="#e53f3c"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </span>
+                  )}
+                </div>  
+              <h5 className="card-title fw-bold tw-mt-4">{course.title}</h5>
+              <div className="d-flex align-items-center mb-2">
+              <span className="text-danger fw-bold tw-mr-3">
+                  {Number(course.price_sale).toLocaleString("vi-VN")}₫
+                </span>
+                <span className="text-muted text-decoration-line-through me-2 tw-text-xs">
+                  {Number(course.price_regular).toLocaleString("vi-VN")}₫
+                </span>
+                
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p>Không có khóa học nào.</p>
+    )}
+  </div>
+</div>
+
+          </div>
+        </div>
       </div>
     </>
   );
 }
-

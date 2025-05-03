@@ -185,33 +185,64 @@ const ProfileStudent = () => {
             {/* Danh sách khóa học */}
             <div className="row">
               {courses.map((course) => (
-                <div key={course.id} className="col-md-6 mb-4">
+                <div key={course.id} className="col-md-4 mb-2">
                   <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
                     <div className="position-relative">
-                      <img
+                      {/* <img
                         src={course.course.thumbnail || "/default-thumbnail.jpg"}
                         className="img-fluid w-100"
                         alt="Course Thumbnail"
                         style={{ height: "150px", objectFit: "cover" }}
-                      />
+                      /> */}
+                      <img                    
+                                          src={
+                                            (getImageUrl(course.course.thumbnail)) ||
+                                            "/default-thumbnail.jpg"
+                                          }
+                                          alt="Course Thumbnail"
+                                          className="rounded img-4by3-lg w-100"
+                                        />
                     </div>
                     <div className="p-3">
                       <h5 className="mb-2" style={{ fontSize: "1rem" }}>
                         {course.course.title}
                       </h5>
-                      <p className="text-danger fw-bold mb-2" style={{ fontSize: "0.9rem" }}>
+                      <div className="mb-2">
+  <div className="d-flex justify-content-between align-items-center mb-1">
+    <small className="text-muted">Tiến độ hoàn thành</small>
+    <small className="fw-semibold text-primary">
+      {parseInt(course.progress.progress_percent)}%
+    </small>
+  </div>
+  <div className="progress rounded-pill" style={{ height: "10px" }}>
+    <div
+      className="progress-bar bg-info"
+      role="progressbar"
+      style={{ width: `${parseInt(course.progress.progress_percent)}%` }}
+      aria-valuenow={parseInt(course.progress.progress_percent)}
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
+</div>
+
+                  
+                      {/* <p className="text-danger fw-bold mb-2" style={{ fontSize: "0.9rem" }}>
                         {course.course.price_sale ? `${course.course.price_sale} VNĐ` : "Miễn phí"}
-                      </p>
-                      <div className="d-flex justify-content-between text-muted small">
-                        <span>
+                      </p> */}
+                      {/* <div className="d-flex justify-content-between text-muted small"> */}
+                        {/* <span>
                           <FaUsers className="me-1" /> {course.progress.completed_lessons}/{course.progress.total_lessons}
-                        </span>
-                        <span>
+                        </span> */}
+                        {/* <span>
                           <FaClock className="me-1" /> {course.progress.progress_percentage}% hoàn thành
-                        </span>
-                      </div>
+                        </span> */}
+                      {/* </div> */}
+                      
                     </div>
+                    
                   </div>
+                  
                 </div>
               ))}
             </div>
