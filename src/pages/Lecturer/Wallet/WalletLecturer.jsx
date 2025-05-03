@@ -350,7 +350,7 @@ const WalletWithdraw = () => {
   
       console.log("Dữ liệu gửi đi:", [...formData.entries()]); // Kiểm tra dữ liệu gửi lên
   
-      const response = await axiosClient.post("/lecturer/wallets/withdraw", formData, {
+      const response = await axiosClient.post("/user/wallets/withdraw", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
   

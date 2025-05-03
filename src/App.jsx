@@ -73,6 +73,7 @@ import EditBlog from "./pages/Student/Blog/EditBlog";
 import PostDetail from "./pages/Student/Blog/Detail";
 import HomeCourseList from "./pages/Guest/Course/HomCourseList";
 import LecturerShowInfo from "./pages/Guest/LecturerShowInfo";
+import StudentDetail from "./pages/Lecturer/Infor/StudentDetail";
 
 function App() {
   return (
@@ -112,6 +113,7 @@ function App() {
             <Route path="/student/course/:course_id/review" element={<Review />} />
             <Route path="/student/wallethome" element={<WalletHome />} />
             <Route path="/student/profile" element={<ProfileStudent/>} />
+            
             <Route path="/student/chat" element={<ChatLayout />} />
           </Route>
 
@@ -157,6 +159,7 @@ function App() {
             <Route path="/lecturer/instructorReviews" element={<InstructorReviews />} />
             <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
             <Route path="/lecturer/profile" element={<ProfileLecturer />} />
+            <Route path="/lecturer/students/:id" element={<StudentDetail />} />
           </Route>
 
           <Route path="/lecturer/quiz/edit" element={<RequireQuizParams><EditQuiz /></RequireQuizParams>} />

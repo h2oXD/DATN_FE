@@ -251,7 +251,7 @@ const WithdrawalHistory = () => {
 
   useEffect(() => {
     axiosClient
-      .get("/lecturer/wallet/withdraw-histories")
+      .get("/user/wallet/withdraw-histories")
       .then((response) => {
         if (response.data.histories) {
           const formattedData = response.data.histories.map((tx) => {
@@ -323,7 +323,7 @@ const WithdrawalHistory = () => {
 
     axiosClient
       .post(
-        `/lecturer/wallets/withdraws/${selectedTransaction.id}/complain`,
+        `/user/wallets/withdraws/${selectedTransaction.id}/complain`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" }, // Đảm bảo gửi đúng kiểu dữ liệu

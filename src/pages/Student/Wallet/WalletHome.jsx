@@ -60,6 +60,12 @@ export default function WalletHome() {
               >
                 <i className="bi bi-wallet2 me-1"></i> Nạp tiền
               </Link>
+              <Link
+                className="btn btn-danger w-auto px-3 ms-3"
+                to={"/lecturer/walletLecturer"}
+              >
+                <i className="bi bi-cash me-1"></i> Rút tiền
+              </Link>
             </div>
           </div>
         </div>

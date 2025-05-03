@@ -211,7 +211,7 @@ const ComplaintHistory = () => {
 
   useEffect(() => {
     axiosClient
-      .get("/lecturer/wallet/complain")
+      .get("/user/wallet/complain")
       .then((response) => {
         if (response.data.status === "success") {
           setComplaints(response.data["Danh sách khiếu nại"]);
@@ -225,7 +225,7 @@ const ComplaintHistory = () => {
   const fetchComplaintDetail = async (complaintId) => {
     try {
       const response = await axiosClient.get(
-        `/lecturer/wallet/complains/${complaintId}`
+        `/user/wallet/complains/${complaintId}`
       );
       console.log("Dữ liệu API trả về:", response.data); // Kiểm tra dữ liệu
 
@@ -277,7 +277,7 @@ const ComplaintHistory = () => {
                 <th>#</th>
                 <th>Trạng thái</th>
                 <th>Ngày yêu cầu</th>
-                <th>Số tiền hoàn</th>
+                {/* <th>Số tiền hoàn</th> */}
                 <th>Phản hồi từ Admin</th>
                 <th>Hành động</th>
               </tr>
@@ -309,14 +309,14 @@ const ComplaintHistory = () => {
                       ? new Date(complaint.request_date).toLocaleString("vi-VN")
                       : "N/A"}
                   </td>
-                  <td>
+                  {/* <td>
                     {complaint.money_refund !== null &&
                     !isNaN(Number(complaint.money_refund))
                       ? `${Number(complaint.money_refund).toLocaleString(
                           "vi-VN"
                         )} VND`
                       : "Đang cập nhật..."}
-                  </td>
+                  </td> */}
 
                   {/* <img
                     src={getImageUrl(complaint.proof_img)}
@@ -428,7 +428,7 @@ const ComplaintHistory = () => {
               </div>
 
               {/* Số tiền hoàn */}
-              <div className="mb-3 p-3 border rounded bg-light">
+              {/* <div className="mb-3 p-3 border rounded bg-light">
                 <h6 className="text-dark fw-bold">Số tiền hoàn:</h6>
                 <p
                   className={`fw-bold ${
@@ -444,7 +444,7 @@ const ComplaintHistory = () => {
                       )} VND`
                     : "Chưa có thông tin"}
                 </p>
-              </div>
+              </div> */}
 
               {/* Phản hồi từ Admin */}
               <div className="mb-3 p-3 border rounded bg-light">
