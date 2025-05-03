@@ -76,6 +76,7 @@ import EditBlog from "./pages/Student/Blog/EditBlog";
 import PostDetail from "./pages/Student/Blog/Detail";
 import HomeCourseList from "./pages/Guest/Course/HomCourseList";
 import LecturerShowInfo from "./pages/Guest/LecturerShowInfo";
+import StudentDetail from "./pages/Lecturer/Infor/StudentDetail";
 import CategoryPage from "./components/categories/CategoryPage";
 
 function App() {
@@ -116,6 +117,8 @@ function App() {
             <Route path="/student/walletStudent" element={<WalletStudent />} />
             <Route path="/student/course/:course_id/review" element={<Review />} />
             <Route path="/student/wallethome" element={<WalletHome />} />
+            <Route path="/student/profile" element={<ProfileStudent/>} />
+            
             <Route path="/student/PurchaseHistory" element={<PurchaseHistory />} />
             <Route path="/student/profile" element={<ProfileStudent />} />
             <Route path="/student/chat" element={<ChatLayout />} />
@@ -164,6 +167,7 @@ function App() {
             <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
             <Route path="/lecturer/SalesHistory" element={<SalesHistory />} />
             <Route path="/lecturer/profile" element={<ProfileLecturer />} />
+            <Route path="/lecturer/students/:id" element={<StudentDetail />} />
           </Route>
 
           <Route path="/lecturer/quiz/edit" element={ <RequireQuizParams><EditQuiz /></RequireQuizParams>}/>
