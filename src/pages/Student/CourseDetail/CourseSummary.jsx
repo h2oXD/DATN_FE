@@ -64,7 +64,7 @@ export default function CourseSummary() {
 
     try {
       const response = await axiosClient.post(
-        `/user/courses/${course_id}/create-payment`,
+        `/user/wallets/deposit`,
         { amount: 0 }, // Đăng ký khóa học miễn phí
         { withCredentials: true }
       );

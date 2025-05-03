@@ -20,6 +20,7 @@ export default function WalletStudent() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isMomoModalVisible, setIsMomoModalVisible] = useState(false); // thêm modal MoMo
   const { user } = useContext(StoreContext);
 
   useEffect(() => {
@@ -27,7 +28,6 @@ export default function WalletStudent() {
       .get("/user/wallets")
       .then((response) => {
         setWallet(response.data.wallet);
-        console.log(response.data.wallet);
       })
       .catch((error) => {
         console.error("Lỗi khi lấy thông tin ví:", error);
@@ -50,18 +50,13 @@ export default function WalletStudent() {
     setSelectedAmount(amount);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
+  // VnPay modal handlers
+  const showModal = () => setIsModalVisible(true);
   const handleOk = () => {
     setIsModalVisible(false);
     performDeposit();
   };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const handleCancel = () => setIsModalVisible(false);
 
   const handleDeposit = () => {
     if (selectedAmount < 50000) {
@@ -82,17 +77,28 @@ export default function WalletStudent() {
       });
   };
 
+  // MoMo modal handlers
+  const showMomoModal = () => setIsMomoModalVisible(true);
+  const handleMomoOk = () => {
+    setIsMomoModalVisible(false);
+    performMomoDeposit();
+  };
+  const handleMomoCancel = () => setIsMomoModalVisible(false);
+
   const handleMomoDeposit = () => {
     if (selectedAmount < 50000) {
       setError("Số tiền nạp tối thiểu là 50.000 VND");
       return;
     }
+    showMomoModal();
+  };
 
+  const performMomoDeposit = () => {
     axiosClient
       .post("/createMomo", { amount: selectedAmount })
       .then((response) => {
         if (response.data) {
-          window.location.href = response.data; // Chuyển hướng đến URL thanh toán MoMo
+          window.location.href = response.data;
         }
       })
       .catch((error) => {
@@ -112,31 +118,28 @@ export default function WalletStudent() {
 
   if (!wallet) {
     return (
-      <>
-        <div className="row">
-          <div className="col-md-4">
-            <div className="card p-4 shadow-sm text-center border-0">
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-            </div>
-          </div>
-
-          {/* <!-- Chọn mệnh giá --> */}
-          <div className="col-md-8">
-            <div className="card p-4">
-              <Skeleton />
-              <Skeleton />
-            </div>
+      <div className="row">
+        <div className="col-md-4">
+          <div className="card p-4 shadow-sm text-center border-0">
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
           </div>
         </div>
-      </>
+        <div className="col-md-8">
+          <div className="card p-4">
+            <Skeleton />
+            <Skeleton />
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
     <>
       <div className="row">
+        {/* Ví người dùng */}
         <div className="col-md-4">
           <div className="card p-4 shadow-sm text-center border-0">
             <div className="d-flex flex-column alert border tw-rounded">
@@ -203,7 +206,7 @@ export default function WalletStudent() {
           </div>
         </div>
 
-        {/* <!-- Chọn mệnh giá --> */}
+        {/* Chọn mệnh giá */}
         <div className="col-md-8">
           <div className="card p-4">
             <p>
@@ -212,61 +215,21 @@ export default function WalletStudent() {
             </p>
             <h4>Chọn mệnh giá</h4>
             <div className="row g-3">
-              <div className="col-md-4">
-                <button
-                  className="btn btn-outline-primary w-100"
-                  onClick={() => handleAmountClick(50000)}
-                >
-                  <FaCoins className="me-2 text-warning" />
-                  50.000 VND
-                </button>
-              </div>
-              <div className="col-md-4">
-                <button
-                  className="btn btn-outline-primary fw-bold w-100"
-                  onClick={() => handleAmountClick(100000)}
-                >
-                  <FaCoins className="me-2 text-warning" />
-                  100.000 VND
-                </button>
-              </div>
-              <div className="col-md-4">
-                <button
-                  className="btn btn-outline-primary fw-bold w-100"
-                  onClick={() => handleAmountClick(200000)}
-                >
-                  <FaCoins className="me-2 text-warning" />
-                  200.000 VND
-                </button>
-              </div>
-              <div className="col-md-4">
-                <button
-                  className="btn btn-outline-primary fw-bold w-100"
-                  onClick={() => handleAmountClick(300000)}
-                >
-                  <FaCoins className="me-2 text-warning" />
-                  300.000 VND
-                </button>
-              </div>
-              <div className="col-md-4">
-                <button
-                  className="btn btn-outline-primary fw-bold w-100"
-                  onClick={() => handleAmountClick(500000)}
-                >
-                  <FaCoins className="me-2 text-warning" />
-                  500.000 VND
-                </button>
-              </div>
-              <div className="col-md-4">
-                <button
-                  className="btn btn-outline-primary fw-bold w-100"
-                  onClick={() => handleAmountClick(1000000)}
-                >
-                  <FaCoins className="me-2 text-warning" />
-                  1.000.000 VND
-                </button>
-              </div>
+              {[50000, 100000, 200000, 300000, 500000, 1000000].map(
+                (amount) => (
+                  <div className="col-md-4" key={amount}>
+                    <button
+                      className="btn btn-outline-primary fw-bold w-100"
+                      onClick={() => handleAmountClick(amount)}
+                    >
+                      <FaCoins className="me-2 text-warning" />
+                      {amount.toLocaleString("vi-VN")} VND
+                    </button>
+                  </div>
+                )
+              )}
             </div>
+
             <div className="mt-3">
               <label htmlFor="customAmount" className="form-label">
                 Bạn cũng có thể nhập số tiền muốn nạp
@@ -283,6 +246,7 @@ export default function WalletStudent() {
               </div>
               {error && <p className="text-danger mt-1">{error}</p>}
             </div>
+
             <div className="mt-3">
               <p>
                 <strong>Tổng:</strong>{" "}
@@ -311,6 +275,7 @@ export default function WalletStudent() {
         </div>
       </div>
 
+      {/* Modal xác nhận nạp VnPay */}
       <Modal
         title="Xác nhận nạp tiền"
         open={isModalVisible}
@@ -322,6 +287,20 @@ export default function WalletStudent() {
           không?
         </p>
       </Modal>
+
+      {/* Modal xác nhận nạp MoMo */}
+      <Modal
+        title="Xác nhận nạp tiền qua MoMo"
+        open={isMomoModalVisible}
+        onOk={handleMomoOk}
+        onCancel={handleMomoCancel}
+      >
+        <p>
+          Bạn có chắc chắn muốn nạp {selectedAmount.toLocaleString("vi-VN")} VND
+          qua MoMo không?
+        </p>
+      </Modal>
+
       <ToastContainer />
     </>
   );
