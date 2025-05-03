@@ -1,57 +1,102 @@
-import { Table, Tag, Typography, Select, DatePicker, Space, Input } from "antd"
-import dayjs from "dayjs"
-import { useState } from "react"
+import { DatePicker, Input, Select, Space, Table, Tag, Typography } from "antd";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import axiosClient from "../../../api/axios";
 
-const { Text } = Typography
-const { RangePicker } = DatePicker
-const { Search } = Input
-
-const data = [
-  {
-    id: "HD001",
-    course: "Lập trình Python cơ bản",
-    date: "04/04/2025 - 14:25",
-    paymentMethod: "Ví nội bộ",
-    amount: "499.000đ",
-    status: "success",
-    details: "Thanh toán qua ví, số dư trước: 1.000.000đ, số dư sau: 501.000đ",
-    dateObj: dayjs("2025-04-04 14:25"),
-  },
-]
+const { Text } = Typography;
+const { RangePicker } = DatePicker;
+const { Search } = Input;
 
 const statusColor = {
   success: "green",
   failed: "red",
   pending: "gray",
-}
+};
 
 export default function PurchaseHistory() {
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [dateRange, setDateRange] = useState(null)
-  const [searchText, setSearchText] = useState("")
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateRange, setDateRange] = useState(null);
+  const [searchText, setSearchText] = useState("");
+  const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+  const [loading, setLoading] = useState(false);
+
+  const fetchPurchaseHistory = async (current = 1, pageSize = 10) => {
+    setLoading(true);
+    try {
+      const res = await axiosClient.get("/student/course-list", {
+        params: {
+          page: current,
+          limit: pageSize,
+        },
+      });
+
+      const raw = res.data["Danh sách khóa học đã mua"] || [];
+      const total = res.data.total || raw.length;
+
+      raw.sort(
+        (a, b) => new Date(b.transaction_date) - new Date(a.transaction_date)
+      );
+
+      const mapped = raw.map((item) => ({
+        id: item.id,
+        course: item.course?.title || "Không có tên",
+        date: dayjs(item.transaction_date).format("DD/MM/YYYY - HH:mm"),
+        paymentMethod:
+          item.amount === "0.00"
+            ? "Miễn phí"
+            : item.payment_method === "bank_transfer"
+            ? "VNPay"
+            : "Ví",
+        amount:
+          item.amount === "0.00"
+            ? "Miễn phí"
+            : Number(item.amount).toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }),
+        status: item.status,
+        dateObj: dayjs(item.transaction_date),
+      }));
+
+      setData(mapped);
+      setPagination((prev) => ({
+        ...prev,
+        total,
+        current,
+      }));
+    } catch (err) {
+      console.error("Lỗi khi tải dữ liệu lịch sử mua:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPurchaseHistory(pagination.current, pagination.pageSize);
+  }, [pagination.current]);
 
   const filteredData = data.filter((item) => {
-    const matchStatus = statusFilter === "all" || item.status === statusFilter
+    const matchStatus = statusFilter === "all" || item.status === statusFilter;
     const matchDate =
       !dateRange ||
       (item.dateObj &&
         item.dateObj.isAfter(dateRange[0].startOf("day")) &&
-        item.dateObj.isBefore(dateRange[1].endOf("day")))
+        item.dateObj.isBefore(dateRange[1].endOf("day")));
     const matchSearch =
       !searchText ||
       Object.values(item)
         .join(" ")
         .toLowerCase()
-        .includes(searchText.toLowerCase())
-    return matchStatus && matchDate && matchSearch
-  })
+        .includes(searchText.toLowerCase());
+    return matchStatus && matchDate && matchSearch;
+  });
 
   const columns = [
-    {
-      title: "Mã giao dịch",
-      dataIndex: "id",
-      key: "id",
-    },
     {
       title: "Khóa học",
       dataIndex: "course",
@@ -66,6 +111,8 @@ export default function PurchaseHistory() {
       title: "Thanh toán",
       dataIndex: "paymentMethod",
       key: "paymentMethod",
+      render: (method) =>
+        method === "Miễn phí" ? <Tag color="blue">{method}</Tag> : method,
     },
     {
       title: "Số tiền",
@@ -78,11 +125,15 @@ export default function PurchaseHistory() {
       key: "status",
       render: (status) => (
         <Tag color={statusColor[status]}>
-          {status === "success" ? "Thành công" : status === "failed" ? "Thất bại" : "Đang xử lý"}
+          {status === "success"
+            ? "Thành công"
+            : status === "failed"
+            ? "Thất bại"
+            : "Đang xử lý"}
         </Tag>
       ),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -97,7 +148,13 @@ export default function PurchaseHistory() {
       </div>
 
       {/* Bộ lọc */}
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: 10,
+        }}
+      >
         <Space size="middle" wrap>
           <Search
             placeholder="Tìm kiếm..."
@@ -105,7 +162,11 @@ export default function PurchaseHistory() {
             onChange={(e) => setSearchText(e.target.value)}
             style={{ width: 220 }}
           />
-          <Select value={statusFilter} onChange={setStatusFilter} style={{ width: 180 }}>
+          <Select
+            value={statusFilter}
+            onChange={setStatusFilter}
+            style={{ width: 180 }}
+          >
             <Select.Option value="all">Tất cả trạng thái</Select.Option>
             <Select.Option value="success">Thành công</Select.Option>
             <Select.Option value="failed">Thất bại</Select.Option>
@@ -115,11 +176,25 @@ export default function PurchaseHistory() {
         </Space>
       </div>
 
+      {/* Bảng hiển thị */}
       <Table
         columns={columns}
         dataSource={filteredData}
         rowKey="id"
+        loading={loading}
+        pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: pagination.total,
+          showSizeChanger: false,
+        }}
+        onChange={(newPagination) =>
+          setPagination((prev) => ({
+            ...prev,
+            current: newPagination.current,
+          }))
+        }
       />
     </div>
-  )
+  );
 }

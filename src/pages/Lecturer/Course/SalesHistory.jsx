@@ -1,52 +1,131 @@
-import { Collapse, DatePicker, Input, Select, Space, Table, Typography } from "antd"
-import dayjs from "dayjs"
-import { useState } from "react"
+import {
+  Collapse,
+  DatePicker,
+  Input,
+  Select,
+  Space,
+  Table,
+  Typography,
+  Spin,
+  Pagination,
+} from "antd";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import axiosClient from "../../../api/axios";
 
-const { Text } = Typography
-const { RangePicker } = DatePicker
-const { Search } = Input
-const { Panel } = Collapse
-
-const instructorSalesData = [
-  {
-    id: "GV001",
-    course: "Lập trình Python cơ bản",
-    saleDate: "04/04/2025 - 14:25",
-    studentsEnrolled: 30,
-    income: "14.970.000đ",
-    pricePerStudent: "499.000đ",
-    paymentMethod: "Ví nội bộ",
-    status: "success",
-    students: [
-      { name: "Nguyễn Văn A", email: "a@example.com", amount: "499.000đ", purchaseDate: "04/04/2025", paymentMethod: "Ví nội bộ" }
-    ], 
-    saleDateObj: dayjs("2025-04-04 14:25"),
-  },
-
-]
+const { Text } = Typography;
+const { RangePicker } = DatePicker;
+const { Search } = Input;
+const { Panel } = Collapse;
 
 export default function SalesHistory() {
-  const [courseFilter, setCourseFilter] = useState("all") // Filter by course name
-  const [dateRange, setDateRange] = useState(null)
-  const [searchText, setSearchText] = useState("")
+  const [courses, setCourses] = useState([]);
+  const [studentDetails, setStudentDetails] = useState({});
+  const [loadingStudents, setLoadingStudents] = useState({});
+  const [studentPagination, setStudentPagination] = useState({});
+  const [courseFilter, setCourseFilter] = useState("all");
+  const [dateRange, setDateRange] = useState(null);
+  const [searchText, setSearchText] = useState("");
 
-  // Lọc dữ liệu theo bộ lọc và tìm kiếm
-  const filteredData = instructorSalesData.filter((item) => {
-    const matchCourse = courseFilter === "all" || item.course.toLowerCase().includes(courseFilter.toLowerCase())
+  const PAGE_SIZE = 3;
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await axiosClient.get("/lecturer/sell-course-list");
+        const {
+          ["Danh sách khóa học đã bán"]: list,
+          ["Tổng doanh thu"]: stats,
+        } = res.data;
+
+        const mapped = list.map((course) => {
+          const stat = stats.find((s) => s.ID === course.id);
+          return {
+            id: course.id,
+            course: course.title,
+            saleDate: dayjs(course.created_at).format("DD/MM/YYYY - HH:mm"),
+            saleDateObj: dayjs(course.created_at),
+            pricePerStudent: course.is_free
+              ? "Miễn phí"
+              : Number(
+                  course.price_sale || course.price_regular
+                ).toLocaleString("vi-VN") + "đ",
+            studentsEnrolled: stat?.["Số lượt mua"] || 0,
+            income: course.is_free
+              ? "0đ"
+              : Number(stat?.["Doanh thu"] || 0).toLocaleString("vi-VN") + "đ",
+            profit: course.is_free
+              ? "0đ"
+              : Number(stat?.["Lợi nhuận"] || 0).toLocaleString("vi-VN") + "đ",
+            isFree: course.is_free === 1,
+          };
+        });
+
+        setCourses(mapped);
+      } catch (err) {
+        console.error("Lỗi khi fetch danh sách khóa học:", err);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  const fetchStudents = async (courseId) => {
+    try {
+      setLoadingStudents((prev) => ({ ...prev, [courseId]: true }));
+      const res = await axiosClient.get(
+        `/lecturer/sell-course/${courseId}/studentList`
+      );
+      const list = res.data.students.map((s) => ({
+        name: s["Tên"],
+        email: s["Email"],
+        amount: Number(s["Số tiền thanh toán"]).toLocaleString("vi-VN") + "đ",
+        purchaseDate: dayjs(s["Ngày thanh toán"]).format("DD/MM/YYYY - HH:mm"),
+        paymentMethod:
+          s["Phương thức thanh toán"] === "bank_transfer"
+            ? "VNPay"
+            : s["Phương thức thanh toán"] === "wallet"
+            ? "Ví"
+            : s["Phương thức thanh toán"],
+      }));
+
+      setStudentDetails((prev) => ({
+        ...prev,
+        [courseId]: list,
+      }));
+
+      setStudentPagination((prev) => ({
+        ...prev,
+        [courseId]: {
+          current: 1,
+          pageSize: PAGE_SIZE,
+        },
+      }));
+    } catch (err) {
+      console.error("Lỗi khi fetch chi tiết học viên:", err);
+    } finally {
+      setLoadingStudents((prev) => ({ ...prev, [courseId]: false }));
+    }
+  };
+
+  const filteredData = courses.filter((item) => {
+    const matchCourse =
+      courseFilter === "all" ||
+      item.course.toLowerCase().includes(courseFilter.toLowerCase());
     const matchDate =
       !dateRange ||
       (item.saleDateObj &&
         item.saleDateObj.isAfter(dateRange[0].startOf("day")) &&
-        item.saleDateObj.isBefore(dateRange[1].endOf("day")))
-
+        item.saleDateObj.isBefore(dateRange[1].endOf("day")));
     const matchSearch =
       !searchText ||
       Object.values(item)
         .join(" ")
         .toLowerCase()
-        .includes(searchText.toLowerCase())
-    return matchCourse && matchDate && matchSearch
-  })
+        .includes(searchText.toLowerCase());
+
+    return matchCourse && matchDate && matchSearch;
+  });
 
   const columns = [
     {
@@ -58,7 +137,6 @@ export default function SalesHistory() {
       title: "Ngày bắt đầu bán",
       dataIndex: "saleDate",
       key: "saleDate",
-      render: (text) => dayjs(text, "DD/MM/YYYY - HH:mm").format("DD/MM/YYYY - HH:mm"),
     },
     {
       title: "Giá bán",
@@ -75,63 +153,154 @@ export default function SalesHistory() {
       dataIndex: "income",
       key: "income",
     },
-  ]
+    {
+      title: "Lợi nhuận",
+      dataIndex: "profit",
+      key: "profit",
+    },
+  ];
 
   return (
     <div>
-      {/* Tiêu đề */}
-      <div style={{ marginBottom: 12 }}>
-        <Typography.Title level={2} style={{ marginBottom: 0 }}>
-          Lịch sử bán khóa học của giảng viên
-        </Typography.Title>
-        <Text type="secondary" className="ms-3">
-          Lọc và xem các giao dịch bán khóa học của giảng viên.
-        </Text>
-      </div>
+      <Typography.Title level={2}>Lịch sử bán khóa học</Typography.Title>
+      <Text type="secondary">
+        Lọc và xem các giao dịch bán khóa học của giảng viên.
+      </Text>
 
-      {/* Bộ lọc */}
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
-        <Space size="middle" wrap>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          margin: "16px 0",
+        }}
+      >
+        <Space>
           <Search
             placeholder="Tìm kiếm..."
             allowClear
             onChange={(e) => setSearchText(e.target.value)}
             style={{ width: 220 }}
           />
-          <Select value={courseFilter} onChange={setCourseFilter} style={{ width: 180 }}>
+          <Select
+            value={courseFilter}
+            onChange={setCourseFilter}
+            style={{ width: 180 }}
+          >
             <Select.Option value="all">Tất cả khóa học</Select.Option>
-            <Select.Option value="Lập trình Python cơ bản">Lập trình Python cơ bản</Select.Option>
-            <Select.Option value="Thiết kế Web với HTML/CSS">Thiết kế Web với HTML/CSS</Select.Option>
-            <Select.Option value="ReactJS từ A-Z">ReactJS từ A-Z</Select.Option>
+            {courses.map((c) => (
+              <Select.Option key={c.id} value={c.course}>
+                {c.course}
+              </Select.Option>
+            ))}
           </Select>
           <RangePicker value={dateRange} onChange={setDateRange} />
         </Space>
       </div>
 
-      {/* Bảng hiển thị lịch sử bán khóa học */}
       <Table
         columns={columns}
         dataSource={filteredData}
-        expandable={{
-          expandedRowRender: (record) => (
-            <Collapse defaultActiveKey={[]} ghost>
-              <Panel header="Chi tiết học viên" key="1">
-                <ul>
-                  {record.students.map((student, index) => (
-                    <li key={index}>
-                      <strong>{student.name}</strong> - {student.email}<br />
-                      <span>Số tiền: {student.amount}</span><br />
-                      <span>Ngày mua: {student.purchaseDate}</span><br />
-                      <span>Phương thức thanh toán: {student.paymentMethod}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Panel>
-            </Collapse>
-          ),
-        }}
         rowKey="id"
+        pagination={{ pageSize: 5 }}
+        expandable={{
+          expandedRowRender: (record) => {
+            const students = studentDetails[record.id];
+            const loading = loadingStudents[record.id];
+            const pagination = studentPagination[record.id] || {
+              current: 1,
+              pageSize: PAGE_SIZE,
+            };
+
+            const startIdx = (pagination.current - 1) * pagination.pageSize;
+            const endIdx = startIdx + pagination.pageSize;
+            const paginatedStudents = students?.slice(startIdx, endIdx);
+
+            return (
+              <Collapse ghost defaultActiveKey={[]}>
+                <Panel header="Chi tiết học viên" key="1">
+                  {loading ? (
+                    <Spin />
+                  ) : students && students.length > 0 ? (
+                    <>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns:
+                            "repeat(auto-fill, minmax(360px, 1fr))",
+                          gap: 16,
+                          marginBottom: 16,
+                        }}
+                      >
+                        {paginatedStudents.map((s, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              border: "1px solid #d9d9d9",
+                              borderRadius: 8,
+                              padding: 16,
+                              background: "#fafafa",
+                            }}
+                          >
+                            <Space direction="vertical" size={4}>
+                              <Text strong>
+                                {s.name} -{" "}
+                                <Text type="secondary">{s.email}</Text>
+                              </Text>
+                              {!record.isFree && (
+                                <>
+                                  <Text>
+                                    💰 <strong>Số tiền:</strong> {s.amount}
+                                  </Text>
+                                  <Text>
+                                    🧾 <strong>Phương thức thanh toán:</strong>{" "}
+                                    {s.paymentMethod}
+                                  </Text>
+                                </>
+                              )}
+                              <Text>
+                                📅 <strong>Ngày mua:</strong> {s.purchaseDate}
+                              </Text>
+                            </Space>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          marginTop: 8,
+                        }}
+                      >
+                        <Pagination
+                          current={pagination.current}
+                          pageSize={pagination.pageSize}
+                          total={students.length}
+                          onChange={(page) =>
+                            setStudentPagination((prev) => ({
+                              ...prev,
+                              [record.id]: { ...pagination, current: page },
+                            }))
+                          }
+                          size="small"
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <Text type="secondary">Không có học viên.</Text>
+                  )}
+                </Panel>
+              </Collapse>
+            );
+          },
+
+          onExpand: (expanded, record) => {
+            if (expanded && !studentDetails[record.id]) {
+              fetchStudents(record.id);
+            }
+          },
+        }}
       />
     </div>
-  )
+  );
 }

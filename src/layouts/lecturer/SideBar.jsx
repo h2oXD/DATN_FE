@@ -102,7 +102,14 @@ export default function SideBar({ collapsed }) {
           >
             Tin nhắn
           </MenuItem>
-          <SubMenu
+          <MenuItem
+            className="text-dark"
+            icon={<DanhGiaIcon />}
+            component={<Link to={"/lecturer/courseReviews"} />}
+          >
+            Đánh giá
+          </MenuItem>
+          {/* <SubMenu
             className="text-dark"
             label="Đánh giá"
             icon={<DanhGiaIcon />}
@@ -121,7 +128,7 @@ export default function SideBar({ collapsed }) {
             >
               Giảng viên
             </MenuItem>
-          </SubMenu>
+          </SubMenu> */}
           {/* <MenuItem
             className="text-dark"
             icon={<LiaQuestionSolid className="tw-size-7" />}
