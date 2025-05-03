@@ -214,6 +214,11 @@ export default function BuyCourse() {
               checked={paymentMethod === "wallet"}
               onChange={() => setPaymentMethod("wallet")}
             />
+            <img
+              
+              className="me-2"
+              style={{ maxWidth: "50px", height: "30px" }}
+            />{" "}
             Ví
           </label>
         </div>

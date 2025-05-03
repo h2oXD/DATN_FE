@@ -67,6 +67,9 @@ import CurriculumView from "./pages/Lecturer/Course/Show/CurriculumView";
 
 import ComplaintHistory from "./pages/Lecturer/Wallet/ComplainHistory";
 import WithdrawalHistory from "./pages/Lecturer/Wallet/WithdrawHistory";
+import PurchaseHistory from "./pages/Student/CoursePage/PurchaseHistory";
+import SalesHistory from "./pages/Lecturer/Course/SalesHistory";
+
 import ProfileLecturer from "./pages/Lecturer/Profile/Infor";
 import ProfileStudent from "./pages/Student/Profile/Infor";
 import EditBlog from "./pages/Student/Blog/EditBlog";
@@ -74,6 +77,7 @@ import PostDetail from "./pages/Student/Blog/Detail";
 import HomeCourseList from "./pages/Guest/Course/HomCourseList";
 import LecturerShowInfo from "./pages/Guest/LecturerShowInfo";
 import StudentDetail from "./pages/Lecturer/Infor/StudentDetail";
+import CategoryPage from "./components/categories/CategoryPage";
 
 function App() {
   return (
@@ -89,6 +93,7 @@ function App() {
             <Route path="/changePassword" element={<ChangePassword />} />
             <Route path="/loginGoogle" element={<LoginGoogle />} />
             <Route path="/lecturer/:id" element={<LecturerShowInfo />} />
+            <Route path="/category" element={<CategoryPage />} />
           </Route>
           <Route path="/google/callback" element={<GoogleCallback />} />
 
@@ -114,6 +119,8 @@ function App() {
             <Route path="/student/wallethome" element={<WalletHome />} />
             <Route path="/student/profile" element={<ProfileStudent/>} />
             
+            <Route path="/student/PurchaseHistory" element={<PurchaseHistory />} />
+            <Route path="/student/profile" element={<ProfileStudent />} />
             <Route path="/student/chat" element={<ChatLayout />} />
           </Route>
 
@@ -131,17 +138,17 @@ function App() {
           <Route path="/student/certificate/:id" element={<ShowCertificate />} />
 
           {/* Giảng Viên */}
-          <Route path="/lecturer" element={<LecturerProvider><LecturerLayout /></LecturerProvider>}>
+          <Route path="/lecturer" element={<LecturerProvider><LecturerLayout /></LecturerProvider>} >
             <Route index element={<DashboardLecturer />} />
             <Route path="/lecturer/course" element={<List />} />
             <Route path="/lecturer/quiz" element={<ListQuiz />} />
-            <Route path="/lecturer/course/:course_id/edit" element={<CourseProvider><Edit /></CourseProvider>}>
+            <Route path="/lecturer/course/:course_id/edit" element={<CourseProvider><Edit /></CourseProvider>} >
               <Route index element={<Navigate to="goals" replace />} />
               <Route path="basic" element={<Basic />} />
               <Route path="goals" element={<Goals />} />
               <Route path="curriculum" element={<Curriculum />} />
             </Route>
-            <Route path="/lecturer/course/:course_id/view" element={<ShowCourse />}>
+            <Route path="/lecturer/course/:course_id/view" element={<ShowCourse />} >
               <Route index element={<Navigate to="goals" replace />} />
               <Route path="basic" element={<BasicView />} />
               <Route path="goals" element={<GoalsView />} />
@@ -158,11 +165,12 @@ function App() {
             <Route path="/lecturer/courseReviews" element={<CourseReviews />} />
             <Route path="/lecturer/instructorReviews" element={<InstructorReviews />} />
             <Route path="/lecturer/dashboard" element={<DashboardLecturer />} />
+            <Route path="/lecturer/SalesHistory" element={<SalesHistory />} />
             <Route path="/lecturer/profile" element={<ProfileLecturer />} />
             <Route path="/lecturer/students/:id" element={<StudentDetail />} />
           </Route>
 
-          <Route path="/lecturer/quiz/edit" element={<RequireQuizParams><EditQuiz /></RequireQuizParams>} />
+          <Route path="/lecturer/quiz/edit" element={ <RequireQuizParams><EditQuiz /></RequireQuizParams>}/>
 
           <Route path="*" element={<PageNotFound />} />
           <Route path="404" element={<PageNotFound />} />

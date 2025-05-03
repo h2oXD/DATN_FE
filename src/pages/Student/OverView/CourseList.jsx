@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import axiosClient from "../../../api/axios";
-import { Link, useNavigate } from "react-router-dom";
-import { isEmptyArray } from "formik";
 import { Skeleton } from "antd";
+import { isEmptyArray } from "formik";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosClient from "../../../api/axios";
 import { getImageUrl } from "../../../api/common";
 
 export default function CourseList() {
@@ -105,146 +105,146 @@ export default function CourseList() {
         {courses.map((item) => (
           <div className="col-md-3" key={item.course.id}>
             <div className="card p-2 rounded-3">
-                <div
-                  onClick={() => handleCourseClick(item.course.id)}
-                  style={{
-                    position: "relative",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                    cursor: "pointer",
-                  }}
-                >
-                  <img
-                    src={
-                      getImageUrl(item.course.thumbnail) ||
-                      "/default-thumbnail.jpg"
-                    }
-                    alt="course"
-                    className="rounded img-4by3-lg w-100"
-                  />
-                  {item.course.level && (
-                    <span
-                      className="badge bg-dark-soft"
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        right: "10px",
-                        padding: "5px 10px",
-                        backgroundColor: "white",
-                      }}
-                    >
-                      <div className="d-flex align-items-center gap-1">
-                        {item.course.level}
-                        {item.course.level == "Sơ cấp" && (
-                          <svg
-                            className=""
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="3"
-                              y="8"
-                              width="2"
-                              height="6"
-                              rx="1"
-                              fill="#19cb98"
-                            />
-                            <rect
-                              x="7"
-                              y="5"
-                              width="2"
-                              height="9"
-                              rx="1"
-                              fill="#D3D3D3"
-                            />
-                            <rect
-                              x="11"
-                              y="2"
-                              width="2"
-                              height="12"
-                              rx="1"
-                              fill="#D3D3D3"
-                            />
-                          </svg>
-                        )}
-                        {item.course.level == "Trung cấp" && (
-                          <svg
-                            className=""
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="3"
-                              y="8"
-                              width="2"
-                              height="6"
-                              rx="1"
-                              fill="#ffaa46"
-                            />
-                            <rect
-                              x="7"
-                              y="5"
-                              width="2"
-                              height="9"
-                              rx="1"
-                              fill="#ffaa46"
-                            />
-                            <rect
-                              x="11"
-                              y="2"
-                              width="2"
-                              height="12"
-                              rx="1"
-                              fill="#D3D3D3"
-                            />
-                          </svg>
-                        )}
-                        {item.course.level == "Chuyên gia" && (
-                          <svg
-                            className=""
-                            width="16"
-                            height="16"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="3"
-                              y="8"
-                              width="2"
-                              height="6"
-                              rx="1"
-                              fill="#e53f3c"
-                            />
-                            <rect
-                              x="7"
-                              y="5"
-                              width="2"
-                              height="9"
-                              rx="1"
-                              fill="#e53f3c"
-                            />
-                            <rect
-                              x="11"
-                              y="2"
-                              width="2"
-                              height="12"
-                              rx="1"
-                              fill="#e53f3c"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                    </span>
-                  )}
-                </div>              
+              <div
+                onClick={() => handleCourseClick(item.course.id)}
+                style={{
+                  position: "relative",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                  cursor: "pointer",
+                }}
+              >
+                <img
+                  src={
+                    getImageUrl(item.course.thumbnail) ||
+                    "/default-thumbnail.jpg"
+                  }
+                  alt="course"
+                  className="rounded img-4by3-lg w-100"
+                />
+                {item.course.level && (
+                  <span
+                    className="badge bg-dark-soft"
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      padding: "5px 10px",
+                      backgroundColor: "white",
+                    }}
+                  >
+                    <div className="d-flex align-items-center gap-1">
+                      {item.course.level}
+                      {item.course.level == "Sơ cấp" && (
+                        <svg
+                          className=""
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="3"
+                            y="8"
+                            width="2"
+                            height="6"
+                            rx="1"
+                            fill="#19cb98"
+                          />
+                          <rect
+                            x="7"
+                            y="5"
+                            width="2"
+                            height="9"
+                            rx="1"
+                            fill="#D3D3D3"
+                          />
+                          <rect
+                            x="11"
+                            y="2"
+                            width="2"
+                            height="12"
+                            rx="1"
+                            fill="#D3D3D3"
+                          />
+                        </svg>
+                      )}
+                      {item.course.level == "Trung cấp" && (
+                        <svg
+                          className=""
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="3"
+                            y="8"
+                            width="2"
+                            height="6"
+                            rx="1"
+                            fill="#ffaa46"
+                          />
+                          <rect
+                            x="7"
+                            y="5"
+                            width="2"
+                            height="9"
+                            rx="1"
+                            fill="#ffaa46"
+                          />
+                          <rect
+                            x="11"
+                            y="2"
+                            width="2"
+                            height="12"
+                            rx="1"
+                            fill="#D3D3D3"
+                          />
+                        </svg>
+                      )}
+                      {item.course.level == "Chuyên gia" && (
+                        <svg
+                          className=""
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="3"
+                            y="8"
+                            width="2"
+                            height="6"
+                            rx="1"
+                            fill="#e53f3c"
+                          />
+                          <rect
+                            x="7"
+                            y="5"
+                            width="2"
+                            height="9"
+                            rx="1"
+                            fill="#e53f3c"
+                          />
+                          <rect
+                            x="11"
+                            y="2"
+                            width="2"
+                            height="12"
+                            rx="1"
+                            fill="#e53f3c"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                  </span>
+                )}
+              </div>
               <div className="px-1 py-1">
                 <h4 className="mt-1 mb-1 text-truncate-line-2">
                   <span

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   BarChart,
@@ -17,32 +16,26 @@ const RevenueChart = () => {
   const [selectedMonth, setSelectedMonth] = useState("");
 
   useEffect(() => {
-    fetchRevenueData();
+    handleFilter();
   }, []);
-
-  const fetchRevenueData = async () => {
+  const handleFilter = async () => {
     try {
       const response = await axiosClient.get("/lecturer/statistics");
       const { monthly_revenue } = response.data;
-      
-      // Chuyển đổi dữ liệu thành định dạng phù hợp với biểu đồ
+
       const formattedData = monthly_revenue.map(({ month, total }) => ({
         month,
         revenue: total,
       }));
-      
-      setFilteredData(formattedData);
+
+      const filtered =
+        selectedMonth !== ""
+          ? formattedData.filter((item) => item.month === selectedMonth)
+          : formattedData;
+
+      setFilteredData(filtered);
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu thống kê:", error);
-    }
-  };
-
-  const handleFilter = () => {
-    fetchRevenueData(); // Gọi lại API khi lọc để đảm bảo dữ liệu luôn mới nhất
-    if (selectedMonth) {
-      setFilteredData((prevData) =>
-        prevData.filter((item) => item.month === selectedMonth)
-      );
     }
   };
 
@@ -95,4 +88,3 @@ const RevenueChart = () => {
 };
 
 export default RevenueChart;
-

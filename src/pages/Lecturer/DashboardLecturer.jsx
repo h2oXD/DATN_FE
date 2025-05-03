@@ -4,14 +4,12 @@ import axiosClient from "../../api/axios";
 import RevenueChart from "./Statistics/RevenueChart";
 import StudentRegistrationChart from "./Statistics/StudentRegistrationChart";
 
-
-
 export default function DashboardLecturer() {
   const [stats, setStats] = useState({
     total_courses: 0,
     total_revenue: 0,
     total_students: 0,
-    LoiNhuan: 0,
+    profit: 0,
   });
 
   useEffect(() => {
@@ -19,10 +17,9 @@ export default function DashboardLecturer() {
       try {
         const response = await axiosClient.get("/lecturer/statistics");
         const data = response.data;
-        console.log(response);
+        console.log("Dữ liệu thống kê:", data);
 
-        // Tính tổng số học viên từ danh sách khóa học
-        const totalStudents = data.courses.reduce(
+        const totalStudents = data["courses_&_students"]?.reduce(
           (sum, course) => sum + course.enrollments_count,
           0
         );
@@ -31,7 +28,7 @@ export default function DashboardLecturer() {
           total_courses: data.total_courses,
           total_revenue: data.total_revenue,
           total_students: totalStudents,
-          LoiNhuan: data.LoiNhuan,
+          profit: data.total_revenue * 0.7,
         });
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu thống kê:", error);
@@ -74,7 +71,7 @@ export default function DashboardLecturer() {
                   Lợi nhuận
                 </span>
                 <h2 className="mt-4 fw-bold mb-1 d-flex align-items-center h1 lh-1">
-                  {parseInt(stats.LoiNhuan).toLocaleString("vi-VN")} VND
+                  {parseInt(stats.profit).toLocaleString("vi-VN")} VND
                 </h2>
               </div>
             </div>
@@ -85,7 +82,7 @@ export default function DashboardLecturer() {
             <div className="card mb-4 position-relative">
               <div className="p-4">
                 <BsBook
-className="position-absolute top-0 end-0 m-3 text-muted"
+                  className="position-absolute top-0 end-0 m-3 text-muted"
                   size={24}
                 />
                 <span className="fs-6 text-uppercase fw-semibold">
